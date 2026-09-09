@@ -1,0 +1,53 @@
+// Camera sounds
+
+"Weapon_Camera.Capture"
+{
+	"channel"		"CHAN_WEAPON"
+	"volume"		"0.7"
+	"soundlevel"		"SNDLVL_GUNFIRE"
+	"pitch"			"95,105"
+	"wave"			"weapons/camera/camera_capture.wav"
+}
+
+"Weapon_Camera.release"
+{
+	"channel"		"CHAN_WEAPON"
+	"volume"		"0.7"
+	"soundlevel"		"SNDLVL_GUNFIRE"
+	"pitch"			"95,105"
+	"wave"			"weapons/camera/camera_release.wav"
+}
+"Weapon_Camera.nextphoto"
+{
+	"channel"		"CHAN_WEAPON"
+	"volume"		"0.7"
+	"soundlevel"		"SNDLVL_GUNFIRE"
+	"pitch"			"95,105"
+	"wave"			"weapons/camera/camera_nextphoto.wav"
+}
+"Weapon_Camera.deny"
+{
+	"channel"		"CHAN_WEAPON"
+	"volume"		"0.7"
+	"soundlevel"		"SNDLVL_GUNFIRE"
+	"pitch"			"95,105"
+	"wave"			"weapons/camera/camera_deny.wav"
+}
+"Weapon_Camera.scaleup"
+{
+	"channel"		"CHAN_WEAPON"
+	"volume"		"0.7"
+	"soundlevel"		"SNDLVL_GUNFIRE"
+	"pitch"			"95,105"
+	"wave"			"weapons/camera/camera_scaleup2.wav"
+	"wave"			"weapons/camera/camera_scaleup.wav"
+}
+"Weapon_Camera.scaledown"
+{
+	"channel"		"CHAN_WEAPON"
+	"volume"		"0.7"
+	"soundlevel"		"SNDLVL_GUNFIRE"
+	"pitch"			"95,105"
+	"wave"			"weapons/camera/camera_scaledown2.wav"
+	"wave"			"weapons/camera/camera_scaledown.wav"
+}

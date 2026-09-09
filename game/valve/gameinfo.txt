@@ -1,0 +1,22 @@
+"GameInfo"
+{
+	"game"		"Valve"
+	"title"		"Valve"
+	"type"		"singleplayer_only"
+	GameData	"portalretract_part2.fgd"
+	InstancePath "tilegen/instances/"
+	
+	SupportsDX8     0
+	
+	"FileSystem"
+	{
+		"SteamAppId"	"630"
+		"ToolsAppId"	"211"
+		
+		"SearchPaths"
+		{
+			"Game"	"|gameinfo_path|."
+			"Game"	"platform"
+		}
+	}
+}

@@ -1,0 +1,27 @@
+WeaponData
+{
+	// Weapon data is loaded by both the Game and Client DLLs.
+	"printname"			"#PORTAL_placement"
+	"viewmodel"			"models/weapons/v_photo.mdl"
+	"playermodel"			"models/weapons/w_cam.mdl"
+	"anim_prefix"			"cam"
+	"bucket"			"1"
+	"bucket_position"		"3"
+
+	"clip_size"			"1"
+	"primary_ammo"			"None"
+	"secondary_ammo"		"None"
+
+	"weight"			"4"
+	"item_flags"			"0"
+	"damage"			"9"
+	"autoswitchto"			"1"
+  
+	// Sounds for the weapon. There is a max of 16 sounds per category (i.e. max 16 "single_shot" sounds)
+	SoundData
+	{
+		// NPC SECTION
+		"SPECIAL1"	"Weapon_Camera.release"
+		"SPECIAL2"	"Weapon_Camera.nextphoto"
+	}
+}
