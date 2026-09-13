@@ -51,3 +51,12 @@
 	"wave"			"weapons/camera/camera_scaledown2.wav"
 	"wave"			"weapons/camera/camera_scaledown.wav"
 }
+"Weapon_Camera.Denyscale"
+{
+	"channel"		"CHAN_WEAPON"
+	"volume"		"0.7"
+	"soundlevel"		"SNDLVL_GUNFIRE"
+	"pitch"			"95,105"
+	"wave"			"weapons/camera/camera_denyscale.wav"
+}
+

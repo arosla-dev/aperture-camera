@@ -1,4 +1,4 @@
-//==== Copyright © 2017-2018, Linus S. (PistonMiner), All rights reserved. ====//
+ï»¿//==== Copyright ï¿½ 2017-2018, Linus S. (PistonMiner), All rights reserved. ====//
 //
 // Purpose: 
 //
@@ -22,24 +22,26 @@ class CWeaponPlacement : public CWeaponPortalBase
 
 public:
 	CWeaponPlacement();
-	DECLARE_CLASS( CWeaponPlacement, CWeaponPortalBase );
+	DECLARE_CLASS(CWeaponPlacement, CWeaponPortalBase);
 	DECLARE_NETWORKCLASS();
 	DECLARE_PREDICTABLE();
+
+	virtual void Precache() override;
 
 	virtual void PrimaryAttack() override;
 	virtual void SecondaryAttack() override;
 
 	virtual void ItemPostFrame() override;
-	virtual bool Deploy( void );
-	virtual bool Holster( CBaseCombatWeapon *pSwitchingTo = NULL ) override; // to clean up the placement shadow
+	virtual bool Deploy(void);
+	virtual bool Holster(CBaseCombatWeapon* pSwitchingTo = NULL) override; // to clean up the placement shadow
 	virtual bool HasAmmo() override;
 	virtual bool HasAnyAmmo() override;
-	void	Precache();
 
 	float m_fNextScaleDelay;
+	float m_fNextDeployDelay;
 
-	bool HasPhotographedObject(CBaseEntity *entity);
-	bool RegisterPhoto(CBaseEntity *entity, const Vector &eyePosition, const QAngle &eyeAngle);
+	bool HasPhotographedObject(CBaseEntity* entity);
+	bool RegisterPhoto(CBaseEntity* entity, const Vector& eyePosition, const QAngle& eyeAngle);
 	bool HasPhotos() const;
 	void ResetPhotos();
 	void RemovePhoto(int index);
@@ -48,22 +50,24 @@ public:
 	// -1 = no photo (default). first photo is 0
 	int GetSelectedPhoto() const { return m_iSelectedPhoto; }
 
-	void SelectPhoto( int n );
+	void SelectPhoto(int n);
 	void SelectPreviousPhoto();
 	void SelectNextPhoto();
 
-	void SelectScaleLevel( int n );
+	void SelectScaleLevel(int n);
 	void SelectPreviousScaleLevel(void);
 	void SelectNextScaleLevel(void);
+
+	void killyouself(void);
 
 #ifdef CLIENT_DLL
 	virtual void	AddViewmodelBob(CBaseViewModel* viewmodel, Vector& origin, QAngle& angles);
 	virtual	float	CalcViewmodelBob(void);
 #endif
 
-	
+
 #ifdef CLIENT_DLL
-	virtual void ReceiveMessage( int classID, bf_read &msg ) override;
+	virtual void ReceiveMessage(int classID, bf_read& msg) override;
 #endif
 
 	DECLARE_ACTTABLE();
@@ -71,6 +75,11 @@ public:
 private:
 	Vector CalculateWorldspacePosition();
 	QAngle CalculateWorldspaceAngles();
+	// Photo preview entity smooth positioning 
+	Vector m_TargetWorldPosition;
+	Vector m_CurrentWorldPosition;
+
+	bool bPlacementPending = false;
 
 private:
 	CNetworkVar(int, m_nMaxPhotos);
@@ -87,7 +96,7 @@ private:
 	CNetworkVar(int, m_iSelectedScaleLevel);
 
 private:
-	CWeaponPlacement(const CWeaponPlacement &);
+	CWeaponPlacement(const CWeaponPlacement&);
 };
 
 #endif // WEAPON_PLACEMENT_SHARED_H

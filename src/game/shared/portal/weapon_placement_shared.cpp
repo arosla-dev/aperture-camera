@@ -84,7 +84,6 @@ void CWeaponPlacement::PrimaryAttack()
 
 		// Calculate world space transform
 		Vector worldSpacePosition = CalculateWorldspacePosition();
-		QAngle worldSpaceAngle = CalculateWorldspaceAngles();
 
 		// Line of sight?
 		trace_t losTrace;
@@ -104,8 +103,6 @@ void CWeaponPlacement::PrimaryAttack()
 			if (pHelper && UTIL_DistApprox(worldSpacePosition, pHelper->GetAbsOrigin()) <= pHelper->GetRadius())
 			{
 				worldSpacePosition = pHelper->GetAbsOrigin();
-				if (pHelper->UseAngles())
-					worldSpaceAngle = pHelper->GetAbsAngles();
 				break;
 			}
 		}
@@ -115,7 +112,7 @@ void CWeaponPlacement::PrimaryAttack()
 
 #ifdef GAME_DLL
 		// Teleport
-		targetEntity->Teleport(&worldSpacePosition, &worldSpaceAngle, &vec3_origin);
+		targetEntity->Teleport(&worldSpacePosition, 0, &vec3_origin);
 #endif
 		// wake up object
 		IPhysicsObject* temper = targetEntity->VPhysicsGetObject();
@@ -139,6 +136,14 @@ void CWeaponPlacement::PrimaryAttack()
 		// End placement
 		WeaponSound(SPECIAL1);
 		m_bPlacing = false;
+
+		//switch to camera after placing object
+		if (m_iSelectedPhoto == -1) {
+			CBasePlayer* player = GetPlayerOwner();
+			if (!player)
+				return;
+			player->SelectItem("weapon_camera");
+		}
 	}
 }
 
@@ -280,6 +285,11 @@ void CWeaponPlacement::ItemPostFrame()
 	BaseClass::ItemPostFrame();
 
 	CBasePlayer* pPlayer = GetPlayerOwner();
+
+	if (m_iSelectedPhoto >= m_nPhotoCount || m_iSelectedPhoto < 0 || m_iSelectedPhoto > 32) {
+		return;
+	}
+
 	if (pPlayer->m_nButtons & IN_GRENADE1)
 	{
 		if (gpGlobals->curtime < m_fNextScaleDelay)
@@ -303,26 +313,42 @@ void CWeaponPlacement::ItemPostFrame()
 
 		m_fNextScaleDelay = gpGlobals->curtime + 0.55f;
 	}
+	else if (pPlayer->m_nButtons & IN_RELOAD)
+	{
+		//p1llowguy - add rotation by pressing R here!
+
+
+		/*
+		QAngle ang = m_PhotoWorldAngles[m_iSelectedPhoto];
+		ang.y += fmod((gpGlobals->curtime * sv_placement_rotate_speed.GetFloat()), 360);
+		*/
+	}
 
 	if (m_iSelectedPhoto != -1 && m_PhotoEntities[m_iSelectedPhoto])
 	{
 #ifdef GAME_DLL
-		CBaseEntity *pEntity = m_PhotoEntities[m_iSelectedPhoto];
+		CBaseEntity* pEntity = m_PhotoEntities[m_iSelectedPhoto];
 
 		// update position / rotation
-		Vector worldPosition = CalculateWorldspacePosition();
-		QAngle worldAngles = CalculateWorldspaceAngles();
-		pEntity->Teleport( &worldPosition, &worldAngles, &vec3_origin );
+		m_TargetWorldPosition = CalculateWorldspacePosition();
+		pEntity->Teleport(&m_CurrentWorldPosition, 0, &vec3_origin);
+		pEntity->SetRenderMode(kRenderTransTexture);
+
+		if (m_CurrentWorldPosition != m_TargetWorldPosition) {
+			if (m_CurrentWorldPosition == Vector(0, 0, 0)) { m_CurrentWorldPosition = m_TargetWorldPosition; }
+			m_CurrentWorldPosition += (m_TargetWorldPosition - m_CurrentWorldPosition) * 0.35;
+		}
 #endif
 
-		//NDebugOverlay::BoxAngles(CalculateWorldspacePosition(m_PhotoEyePositions[m_iSelectedPhoto] * powf(2.f, m_iSelectedScaleLevel)),
-		//						 m_PhotoEntities[m_iSelectedPhoto]->CollisionProp()->OBBMins() * powf(2.f, m_iSelectedScaleLevel),
-		//						 m_PhotoEntities[m_iSelectedPhoto]->CollisionProp()->OBBMaxs() * powf(2.f, m_iSelectedScaleLevel),
-		//						 CalculateWorldspaceAngles(m_PhotoWorldAngles[m_iSelectedPhoto]),
-		//						 0, m_bPlacing ? 0 : 255, m_bPlacing ? 255 : 0, 128,
-		//						 0.f);
+			}
+	else {
+#ifdef GAME_DLL
+		CBaseEntity* pEntity = m_PhotoEntities[m_iSelectedPhoto];
+		pEntity->SetRenderMode(kRenderNone);
+#endif
 	}
-}
+		}
+
 
 bool CWeaponPlacement::Deploy()
 {
@@ -551,6 +577,7 @@ void CWeaponPlacement::SelectScaleLevel(int n)
 #endif
 }
 
+
 void CWeaponPlacement::SelectPreviousScaleLevel(void)
 {
 	SelectScaleLevel(m_iSelectedScaleLevel - 1);
@@ -569,6 +596,7 @@ void CWeaponPlacement::Precache(void)
 	// Precache our weapon sounds
 	PrecacheScriptSound("Weapon_Camera.scaleup");
 	PrecacheScriptSound("Weapon_Camera.scaledown");
+	PrecacheScriptSound("Weapon_Camera.deny");
 
 	BaseClass::Precache();
 }
@@ -602,24 +630,7 @@ Vector CWeaponPlacement::CalculateWorldspacePosition()
 
 QAngle CWeaponPlacement::CalculateWorldspaceAngles()
 {
-	/*CBasePlayer *player = GetPlayerOwner();
-	if (!player)
-		return vec3_angle;
-
-	Quaternion quatEyeToWorld;
-	AngleQuaternion(player->EyeAngles(), quatEyeToWorld);
-	
-	Quaternion quatRotation;
-	AngleQuaternion(eyeAngles, quatRotation);
-	QuaternionMult(quatEyeToWorld, quatRotation, quatRotation);
-
-	QAngle worldAngles;
-	QuaternionAngles(quatRotation, worldAngles);
-	return worldAngles;*/
-
 	QAngle ang = m_PhotoWorldAngles[m_iSelectedPhoto];
-	ang.y += fmod( (gpGlobals->curtime * sv_placement_rotate_speed.GetFloat()), 360 );
-
 	return ang;
 }
 
