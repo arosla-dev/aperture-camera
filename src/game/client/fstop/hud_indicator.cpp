@@ -203,7 +203,7 @@ void CHudIndicator::MsgFunc_IndicatorFlash( bf_read &msg )
 }
 
 
-ConVar hud_show_control_helper( "hud_show_control_helper", "0" );
+ConVar hud_show_control_helper( "hud_show_control_helper", "1" );
 
 //-----------------------------------------------------------------------------
 // Purpose: Draws the zoom screen

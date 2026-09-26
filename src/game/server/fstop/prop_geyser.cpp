@@ -282,6 +282,9 @@ void CPropGeyser::Precache( void )
 	PrecacheParticleSystem( "geyser_spout_small" );
 	PrecacheParticleSystem( "geyser_spout_medium" );
 	PrecacheParticleSystem( "geyser_spout_large" );
+
+	PrecacheScriptSound("ambient.steam_loop1");
+	PrecacheScriptSound("ambient.canister_loop");
 }
 
 //-----------------------------------------------------------------------------
@@ -353,6 +356,9 @@ void CPropGeyser::OnCaptured( void )
 		UTIL_Remove( m_hPushTrigger );
 		m_hPushTrigger = NULL;
 	}
+
+	StopSound("ambient.steam_loop1");
+	StopSound("ambient.canister_loop");
 
 	BaseClass::OnCaptured();
 }
@@ -476,8 +482,10 @@ void CPropGeyser::PreEruptThink( void )
 		m_hEruptionParticles->StopParticleSystem();
 	}
 
+	EmitSound("ambient.steam_loop1");
+
 	// Shake nearby players
-	// UTIL_ScreenShake( GetAbsOrigin(), 8.0f, 1.0f, geyser_pre_eruption_time.GetFloat(), (60.0f*12.0f), SHAKE_START );
+	UTIL_ScreenShake( GetAbsOrigin(), 8.0f, 1.0f, geyser_pre_eruption_time.GetFloat(), (60.0f*12.0f), SHAKE_START );
 
 	// Setup for the next phase
 	SetThink( &CPropGeyser::EruptThink );
@@ -489,6 +497,8 @@ void CPropGeyser::PreEruptThink( void )
 //-----------------------------------------------------------------------------
 void CPropGeyser::EruptThink( void )
 {
+	StopSound("ambient.steam_loop1");
+
 	// Make sure these are working
 	CreateParticleSystems();
 
@@ -502,8 +512,10 @@ void CPropGeyser::EruptThink( void )
 		m_hEruptionParticles->StartParticleSystem();
 	}
 
+	EmitSound("ambient.canister_loop");
+
 	// Shake nearby players
-	// UTIL_ScreenShake( GetAbsOrigin(), 32.0f, 1.0f, geyser_eruption_time.GetFloat(), (60.0f*12.0f), SHAKE_START );
+	UTIL_ScreenShake( GetAbsOrigin(), 32.0f, 1.0f, geyser_eruption_time.GetFloat(), (60.0f*12.0f), SHAKE_START );
 
 	StartEruptionPush();
 
@@ -609,6 +621,7 @@ void CPropGeyser::StartEruptionPush( void )
 //-----------------------------------------------------------------------------
 void CPropGeyser::StopEruptionPush( void )
 {
+	StopSound("ambient.canister_loop");
 	if ( m_hPushTrigger )
 	{
 		m_hPushTrigger->Disable();

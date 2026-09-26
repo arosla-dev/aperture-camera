@@ -461,7 +461,11 @@ bool UTIL_ObjectMayBeCaptured( CBaseEntity *pObject )
 		return false;
 	
 	//p1llowguy - dont photo this
-	if (FClassnameIs(pObject, "npc_android"))
+	if (FClassnameIs(pObject, "prop_portal"))
+		return false;
+
+	//p1llowguy - just in case
+	if (FClassnameIs(pObject, "prop_paint_bomb"))
 		return false;
 
 	return true;

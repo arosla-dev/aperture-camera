@@ -309,6 +309,8 @@ void CPropAirVent::Precache( void )
 {
 	PrecacheModel( gFanModel );
 	PrecacheParticleSystem( "airvent_small" );
+	PrecacheScriptSound("Airboat_fan_idle");
+	PrecacheScriptSound("Airboat_fan_fullthrottle");
 }
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -490,14 +492,17 @@ void CPropAirVent::CreateParticles( int nScale )
 	default:
 	case 1:
 		nSystemSize = 0;
+		EmitSound("Airboat_fan_idle");
 		break;
 
 	case 2:
 		nSystemSize = 1;
+		EmitSound("Airboat_fan_idle");
 		break;
 
 	case 4:
 		nSystemSize = 2;
+		EmitSound("Airboat_fan_fullthrottle");
 		break;
 	}
 
@@ -523,6 +528,9 @@ void CPropAirVent::OnCaptured( void )
 
 		UTIL_Remove( (CBaseEntity *) m_hPushTrigger.Get() );
 		m_hPushTrigger = NULL;
+
+		StopSound("Airboat_fan_idle");
+		StopSound("Airboat_fan_fullthrottle");
 	}
 
 	DestroyPhysicsHelpers();

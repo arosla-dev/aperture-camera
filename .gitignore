@@ -4,3 +4,4 @@
 /game/valve/SAVE
 *.tmp
 *.cache
+game/valve/cfg/config.cfg

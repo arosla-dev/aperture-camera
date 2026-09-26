@@ -184,6 +184,8 @@ public:
 	virtual bool	Reload(void);
 	virtual void	WeaponIdle(void);
 
+	float m_fNextScaleDelay;
+
 	virtual int	CapabilitiesGet(void) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
 	virtual int	GetMinBurst() { return 1; }
 	virtual int	GetMaxBurst() { return 1; }
@@ -287,6 +289,8 @@ CWeaponPlacement::~CWeaponPlacement(void)
 void CWeaponPlacement::Precache(void)
 {
 	PrecacheScriptSound("Weapon_Camera.Release");
+	PrecacheScriptSound("Weapon_Camera.scaleup");
+	PrecacheScriptSound("Weapon_Camera.scaledown");
 
 	BaseClass::Precache();
 }
@@ -657,8 +661,15 @@ void CWeaponPlacement::ItemPostFrame(void)
 		if (m_bInPlacementMode == false)
 			return;
 
+		if (gpGlobals->curtime < m_fNextScaleDelay)
+			return;
+
 		if (m_nObjectScaleLevel + 1 <= m_CaptureInfo.pPlacementQuery->GetNumScaleUpSteps(&m_CaptureInfo))
 			m_nObjectScaleLevel++;
+
+		EmitSound("Weapon_Camera.scaleup");
+
+		m_fNextScaleDelay = gpGlobals->curtime + 0.55f;
 
 		// Publish this back to the capture info so that we can cycle through objects and make them retain their sizes
 		m_CaptureInfo.nPreviewScaleLevel = m_nObjectScaleLevel;
@@ -678,8 +689,15 @@ void CWeaponPlacement::ItemPostFrame(void)
 		if (m_bInPlacementMode == false)
 			return;
 
+		if (gpGlobals->curtime < m_fNextScaleDelay)
+			return;
+
 		if (m_nObjectScaleLevel - 1 >= -(m_CaptureInfo.pPlacementQuery->GetNumScaleDownSteps(&m_CaptureInfo)))
 			m_nObjectScaleLevel--;
+
+		EmitSound("Weapon_Camera.scaledown");
+
+		m_fNextScaleDelay = gpGlobals->curtime + 0.55f;
 
 		// Publish this back to the capture info so that we can cycle through objects and make them retain their sizes
 		m_CaptureInfo.nPreviewScaleLevel = m_nObjectScaleLevel;

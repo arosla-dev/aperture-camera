@@ -134,3 +134,30 @@
 		"wave"	"physics/glass/glass_impact_bullet4.wav"
 	}
 }
+
+//F-stop
+
+"NPC_Android.Squash"
+{
+	"channel"		"CHAN_STATIC"
+	"soundlevel"		"SNDLVL_75dB"
+	"volume"		"0.7"
+	"pitch"			"100"
+
+	"wave"	"npc/antlion_grub/squashed.wav"
+}
+
+"NPC_Android.Servo"
+{
+	"channel"		"CHAN_STATIC"
+	"soundlevel"		"SNDLVL_75dB"
+	"volume"		"0.5"
+	"pitch"			"100"
+
+	"rndwave"
+	{
+		"wave"	"npc/footsteps/hardboot_generic1.wav"
+		"wave"	"npc/footsteps/hardboot_generic3.wav"
+		"wave"	"npc/footsteps/hardboot_generic5.wav"
+	}
+}

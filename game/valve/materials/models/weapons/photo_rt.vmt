@@ -1,12 +1,5 @@
-UnlitGeneric
+"UnLitGeneric"
 {
-	// default photo texture, appears for errors
-	$basetexture "black"
-	
-	Proxies
-	{
-		PhotoMaterial
-		{
-		}
-	}
+	"$basetexture"	"models/weapons/_rt_FullScreen"
+	"$surfaceprop"	"default"
 }

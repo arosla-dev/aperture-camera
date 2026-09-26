@@ -162,4 +162,22 @@
 		"wide"		"300"
 		"tall"		"420"
 	}
+	"resource"
+	{
+		"perforcefilelist.res"
+		{
+			"Browser"
+			{
+				"lastBarWidth"		"552"
+				"0_hidden"		"0"
+				"0_width"		"52"
+				"1_hidden"		"0"
+				"1_width"		"501"
+			}
+			"xpos"		"510"
+			"ypos"		"260"
+			"wide"		"580"
+			"tall"		"380"
+		}
+	}
 }

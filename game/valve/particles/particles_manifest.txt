@@ -52,4 +52,5 @@ particles_manifest
 	// F-Stop
 	"file"		"particles/chicken.pcf"
 	"file"		"particles/geyser.pcf"
+	"file"		"particles/airvents.pcf"
 }

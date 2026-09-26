@@ -591,3 +591,23 @@
 
 	"wave"	"ambient/materials/rock5.wav"
 }
+"ambient.steam_loop1"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"VOL_NORM"
+	"pitch"			"100"
+
+	"soundlevel"	"SNDLVL_100DB"
+
+	"wave"	"ambient/gas/steam_loop1.wav"
+}
+"ambient.canister_loop"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"VOL_NORM"
+	"pitch"			"100"
+
+	"soundlevel"	"SNDLVL_100DB"
+
+	"wave"	"ambient/gas/cannister_loop.wav"
+}
