@@ -35,7 +35,8 @@ game_sounds_manifest
 	"precache_file"		"scripts/npc_sounds_combine_ball.txt"
 	"precache_file"		"scripts/npc_sounds_combine_ball_episodic.txt"
 	"precache_file"		"scripts/npc_sounds_hover_turret.txt"	
-
+	"precache_file"		"scripts/npc_sounds_chicken.txt"	
+	
 	// Portal Retract
 	"precache_file"		"scripts/game_sounds_portalretract.txt"
 	"precache_file"		"scripts/npc_sounds_turret_portal_retract.txt"	

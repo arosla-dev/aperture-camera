@@ -73,6 +73,30 @@
 				"MaterialExcludeCount"		"0"
 			}
 		}
+		"0"
+		{
+			"GameDir"		"D:\Projects\aperture-camera\game\valve"
+			"Hammer"
+			{
+				"GameData0"		"D:\Projects\aperture-camera\game\bin\portal.fgd"
+				"TextureFormat"		"5"
+				"MapFormat"		"4"
+				"DefaultTextureScale"		"0.250000"
+				"DefaultLightmapScale"		"16"
+				"GameExe"		"D:\Projects\aperture-camera\game\valve.exe"
+				"DefaultSolidEntity"		"func_detail"
+				"DefaultPointEntity"		"info_player_start"
+				"BSP"		"D:\Projects\aperture-camera\game\bin\vbsp.exe"
+				"Vis"		"D:\Projects\aperture-camera\game\bin\vvis.exe"
+				"Light"		"D:\Projects\aperture-camera\game\bin\vrad.exe"
+				"GameExeDir"		"D:\Projects\aperture-camera\game"
+				"MapDir"		"D:\Projects\aperture-camera\content\mapsrc"
+				"BSPDir"		"D:\Projects\aperture-camera\game\valve\maps"
+				"PrefabDir"		"D:\Projects\aperture-camera\game\bin\Prefabs"
+				"CordonTexture"		"tools\toolsskybox"
+				"MaterialExcludeCount"		"0"
+			}
+		}
 	}
 	"SDKVersion"		"5"
 }
