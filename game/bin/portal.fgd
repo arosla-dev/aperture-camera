@@ -6,6 +6,19 @@
 
 @include "halflife2.fgd"
 
+@BaseClass = BaseCapturable : "A prop which can be captured by weapon_camera"
+[
+	scalevalue(integer)		: "Scale Value" : 0 : "Number of steps this prop starts scaled up/down from its default size (scale value 0 is default size)."
+
+	canbecaptured(boolean) : "Can Be Captured" : 1 : "OBSOLETE"
+
+	//outputs
+	output OnCameraCapture(void) : "Fired when weapon_camera takes this entity out of the world."
+	output OnCameraRelease(void) : "Fired when weapon_placement puts this entity back in the world."
+	output OnFizzled(void) : "Fired when the object is fizzled by a fizzler."
+]
+
+
 ///=============================================================================
 //
 // Logical Entities

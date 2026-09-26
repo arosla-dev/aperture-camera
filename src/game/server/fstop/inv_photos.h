@@ -14,7 +14,7 @@
 #include "photo.h"
 
 
-const int MAX_PHOTOS = 1;
+const int MAX_PHOTOS = 3;
 extern int g_CurMaxInvPhotos;
 
 //

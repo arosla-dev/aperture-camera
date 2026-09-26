@@ -7,9 +7,8 @@
 			"GameDir"		"C:\SourceCode\aperture-camera\game\valve"
 			"Hammer"
 			{
-				"GameData0"		"C:\SourceCode\portal-crossed\game\bin\base.fgd"
-				"GameData1"		"C:\SourceCode\portal-crossed\game\bin\halflife2.fgd"
-				"GameData2"		"C:\SourceCode\portal-crossed\game\bin\portal.fgd"
+				"GameData0"		"C:\SourceCode\aperture-camera\game\bin\base.fgd"
+				"GameData1"		"C:\SourceCode\aperture-camera\game\bin\portal.fgd"
 				"TextureFormat"		"5"
 				"MapFormat"		"4"
 				"DefaultTextureScale"		"0.250000"
