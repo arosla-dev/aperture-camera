@@ -253,7 +253,7 @@ void CPropLevitator::FloatThink( void )
 
 		if ( tr.fraction < 1.0f )
 		{
-#if 0
+#if 1
 			NDebugOverlay::Box( tr.startpos, -Vector(1,1,1), Vector(1,1,1), 0, 255, 0, 0, 0.05f );
 			NDebugOverlay::Box( tr.endpos, -Vector(1,1,1), Vector(1,1,1), 0, 255, 0, 0, 0.05f );
 			NDebugOverlay::Line( tr.startpos, tr.endpos, 0, 255, 0, false, 0.05f );

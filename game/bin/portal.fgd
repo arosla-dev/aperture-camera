@@ -1437,14 +1437,229 @@
 //f-stop 
 
 
-@PointClass base(Weapon, Targetname, Parentname) studio("models/weapons/w_camera/w_camera.eramdl") = weapon_camera : "Camera"
+@PointClass base(Targetname, Parentname, Angles, BaseCapturable, PortalBase) studio("models/props/portaldoor.mdl") line(255 255 0, targetname, partnername) = prop_linked_portal_door :
+"A door which is linked by a portal to another 'prop_linked_portal_door' entity."
 [
-	FieldOfView(float) : "Field of view" : "60" : "Field of view of the camera in degrees"
+	lightingorigin(target_destination) : "Lighting Origin" : "" : "Select an info_lighting to specify a location to sample lighting from for all gibs spawned by this shooter, instead of their own origins."
+	partnername(target_destination) : "Linked Partner" : : "Another 'prop_linked_portal_door' entity which will link to this one."
+
+	input SetPartner(string) : "Set a new partner door."
+	input Open(void) : "Open the door and cause the portal to activate."
+	input Close(void) : "Close the door and cause the portal to deactivate."
+
+	output OnFullyOpen(void) : "Called when the door has finished its open animation."
+	output OnFullyClosed(void) : "Called when the door has finished its close animation."
+	output OnOpen(void) : "Called when the door has started its open animation."
+	output OnClose(void) : "Called when the door has started its close animation."
 ]
 
-@PointClass base(Weapon, Targetname, Parentname) studio("models/weapons/w_models/w_photo/w_photo.mdl") = weapon_placement : "Placement"
+PointClass base(Targetname, Parentname, Angles, Global, Studiomodel, BaseCapturable) studioprop() = prop_door_portal : 
+"A portal door which allows players to tunnel through walls."
+[	
+	slavename(target_destination) : "Slave Name" : : "The name of any doors that should be slaved to this door (i.e. should open when this one opens, and close when this one closes)."
+	hardware(choices) : "Hardware Type" : 1 =
+	[
+		0 : "<None>"
+		1 : "Lever"
+		2 : "Push bar"
+		3 : "Keypad"
+	]
+	
+	ajarangles(angle) : "Ajar Angles (Pitch Yaw Roll)" : "0 0 0" : "If the door 'Spawn Position' is set to Ajar, these are the angles to spawn at, instead of being open or closed."
+	spawnpos(choices) : "Spawn Position" : 0 =
+	[
+		0 : "Closed"
+		1 : "Open forward"
+		2 : "Open back"
+		3 : "Ajar (use Ajar Angles)"
+	]
+	
+	axis(axis) : "Hinge Axis"
+	distance(float) : "Rotation Distance (deg)" : 90 : "The amount, in degrees, that the door should rotate when opened."
+	speed(integer) : "Speed" : 100 : "The speed at which the door moves."
+	soundopenoverride(sound) : "Fully Open Sound" : : "Sound played when the door has finished opening."
+	soundcloseoverride(sound) : "Fully Closed Sound" : : "Sound played when the door has finished closing."
+	soundmoveoverride(sound) : "Moving Sound" : : "Sound played when the door starts to move."
+	returndelay(integer) : "Delay Before close (-1 stay open)" : -1 : "Amount of time, in seconds, after the door has opened before it closes. If the value is set to -1, the door never closes itself."
+	dmg(integer) : "Damage Inflicted When Blocked" : 0 : "Amount of damage done to entities that block the movement of this door, per frame."
+	health(integer) : "Health (0 = Unbreakable)" : 0			// NEEDHELP: Doesn't look like this is hooked up anymore?
+	soundlockedoverride(sound) : "Locked Sound" : : "Sound played when the player tries to open the door, and fails because it's locked."
+	soundunlockedoverride(sound) : "Unlocked Sound" : : "Sound played when the door is unlocked."
+
+	forceclosed(boolean) : "Force Closed" : 1 : "If set, this door will close no matter what. Useful for doors that have to close even if the player tries to block them with objects."
+
+	spawnflags(flags) =
+	[
+		1 : "Starts Open" : 0
+		//512: "NPCs Can't" : 0
+		2048: "Starts locked" : 0
+		4096: "Door silent (No sound, and does not alert NPCs)" : 0
+		8192: "Use closes" : 1
+		16384 : "Door silent to NPCS (Does not alert NPCs)" : 0
+		32768 : "Ignore player +USE" : 0
+	]
+
+	opendir(choices) : "Open Direction" : 1 : "Force the door to open only forwards or only backwards. Both directions is the standard door behavior." =
+	[
+		0 : "Open Both Directions"
+		1 : "Open Forward Only"
+		2 : "Open Backward Only"
+	]
+
+	// Outputs
+	output OnClose(void) : "Fired when the door is told to close."
+	output OnOpen(void) : "Fired when the door is told to open."
+	output OnFullyOpen(void) : "Fired when the door reaches the fully open position."
+	output OnFullyClosed(void) : "Fired when the door reaches the fully closed position."
+	output OnBlockedClosing(void) : "Fired when the door is blocked while closing."
+	output OnBlockedOpening(void) : "Fired when the door is blocked while opening."
+	output OnUnblockedClosing(void) : "Fired when the door is unblocked while closing."
+	output OnUnblockedOpening(void) : "Fired when the door is unblocked while opening."
+	output OnLockedUse(void) : "Fired when the player uses the door, but it is locked."
+
+	// Inputs
+	input Open(void) : "Open the door, if it is not fully open."
+	input OpenAwayFrom(string) : "Open the door away from the specified entity."
+	input Close(void) : "Close the door, if it is not fully closed."
+	input Toggle(void) : "Toggle the door between open and closed."
+	input Lock(void) : "Lock the door."
+	input Unlock(void) : "Unlock the door."
+	input SetRotationDistance(float) : "Set the distance (in degrees) between Open and Closed."
+	input SetSpeed(float) : "Set the speed at which the door rotates. 100 is default."
+]
+
+@PointClass base(Targetname, Angles,BaseCapturable) studio("models/props_gameplay/aperture_door_frame.mdl") = prop_portal_tunnel : "A portal tunnel."
 [
-	PhotoCapacity(integer) : "Photo capacity" : 3 : "Maximum number of photos at any one time"
-	MinScaleLevel(integer) : "Minimum scale level" : -3 : "Minimum power of two to scale objects to when placing"
-	MaxScaleLevel(integer) : "Maximum scale level" : 3 : "Maximum power of two to scale objects to when placing"
+	failtarget(target_destination) : "Failure Target(s)" : "" : "Entities to open a portal at, should the initial portal tunnel fail."
+	failtarget_floor(target_destination) : "Floor Failure Target" : "" : "Entities to open a portal at, should the initial portal tunnel fail."
+	failtarget_ceiling(target_destination) : "Ceiling Failure Target" : "" : "Entities to open a portal at, should the initial portal tunnel fail."
+	successtarget(target_destination) : "Success Target(s)" : "" : "Entities to open a portal at when opened (tunnels through the wall if left blank)."
+]
+
+@PointClass base(Targetname, Angles, BaseCapturable) studio("models/props_gameplay/fan.mdl") = prop_air_vent : "Air vent"
+[
+]
+
+@PointClass base(Targetname, Angles, BaseCapturable) studio("models/props/metal_box.mdl") = prop_swap : "Swap box"
+[
+]
+
+@PointClass base(Targetname, Angles, BaseCapturable) studio("models/props/metal_box.mdl") = prop_reflect : "Reflecting Box"
+[
+]
+
+@SolidClass base(Targetname, Angles) = func_monopole_field : "Region that can repulse and attract"
+[
+	StartActive(boolean) : "Start Enabled" : 1
+	StartPositive(boolean) : "Start Positive" : 0
+	
+	HitboxPadding( vector ) : "Region Padding" : "0 0 96" : "Area around the region where force will be applied."
+	
+	input Toggle( void ) : "Toggle the magnet on and off."
+	input TurnOn( void ) : "Turn the magnet on."
+	input TurnOff( void ) : "Turn the magent off."
+
+	input TogglePolarity( void ) : "Change the polarity between positive and negative."
+	input TurnPositive( void ) : "Turn the polarity positive."
+	input TurnNegative( void ) : "Turn the polarity negative."
+]
+
+@PointClass base(Targetname, Angles, BaseCapturable) studio("models/flag/briefcase.mdl") = prop_monopole : "Monopole"
+[
+	StartActive(boolean) : "Start Enabled" : 1
+	StartPositive(boolean) : "Start Positive" : 1
+	
+	input Toggle( void ) : "Toggle the magnet on and off."
+	input TurnOn( void ) : "Turn the magnet on."
+	input TurnOff( void ) : "Turn the magent off."
+
+	input TogglePolarity( void ) : "Change the polarity between positive and negative."
+	input TurnPositive( void ) : "Turn the polarity positive."
+	input TurnNegative( void ) : "Turn the polarity negative."
+]
+
+@PointClass base(Targetname, Angles) studio("models/items/photograph.mdl") = item_photo : "A placeable photograph"
+[
+	target_entity(target_destination) : "Template Entity" : : "Name of the object to use as a template."
+	target_material(material) : "Displayed image" : : "Image to display on the photograph model itself."
+	
+	spawnflags(Flags) = 
+	[
+		1 : "Photo is motion disabled" : 0
+	]
+
+	target_motiondisabled(boolean) : "Start Motion Disabled" : 0 : "Whether or not the item should be motion disabled when created."
+	
+	output OnPickedUp(void) : "The item has been picked up by the player."
+]
+
+@PointClass base(BaseNPC, BaseCapturable) studio( "models/chicken/chicken.mdl" ) = npc_chicken : "Chicken"
+[
+]
+
+@SolidClass base(Trigger) = trigger_photo_eraser :
+	"Erases all photos from a player's inventory."
+[
+	output OnObjectsFizzled(void) : "The trigger has successfully fizzled objects from the player's inventory."
+]
+
+@PointClass base(BaseNPC, BaseCapturable) studio( "models/props_farm/mousetrap.mdl" ) = prop_mousetrap : "Mousetrap"
+[
+	input Snap( void ) : "Causes the mousetrap to snap."
+]
+
+@SolidClass base(Trigger) = func_placement_clip : "Specifies a region where things cannot be built."
+[
+]
+
+@PointClass base(Targetname, Angles, BaseCapturable) studio( "models/props_fstop/dollhouse04.mdl" ) = prop_building : "Building"
+[
+	target_portal(string) : "Target Portal Destination" : : "Targetname of an entity to use as a portal destination position (eg. info_target)"
+]
+
+@PointClass base(Targetname, Angles, BaseCapturable, EnableDisable) studio( "models/props_gameplay/bot_spawn.mdl" ) = prop_android_dispenser: "Android Dispenser"
+[
+	StartDisabled(boolean) : "Start Disabled" : 0
+	
+	// Outputs
+	output OnSpawnNPC(string) : "Fired when an NPC is spawned. The activator is the NPC, and the string is the name of the NPC." 
+	output OnChildKilled(string) : "Fired when a Child of the spawner is killed. The activator is the NPC, and the string is the name of the NPC."
+]
+
+@PointClass base(Targetname, Angles, BaseCapturable) studio( "models/props_fstop/tombstone001.mdl" ) = prop_tombstone : "Tombstone"
+[
+]
+
+@PointClass base(BaseNPC,BaseCapturable) studio( "models/props_gameplay/geyser.mdl" ) = prop_geyser : "Geyser"
+[
+]
+
+@PointClass base(Weapon) studio("models/weapons/w_cam.mdl") = weapon_camera : "Camera" 
+[
+	canzoom(Integer)	:		"Can Zoom"			: 1 : "(Boolean)Can this camera zoom?"
+	canscale(Integer)	:		"Can Scale"			: 1 : "(Boolean)Can this camera scale capture objects?"
+	captureslots(Integer)	:	"Capture Slots"		: 3 : "How man captured object slots does this camera have?"
+	
+	// inputs
+	input SetNumCaptureSlots(Integer)	: "Set the nuber of capture slots for this camera."
+	input SetZoomAbility(Integer)		: "Set this camera's ability to zoom."
+	input SetScaleAbility(Integer)		: "Set this camera's ability to scale captured objects."
+]
+
+@NPCClass base(TalkNPC,Parentname,BaseCapturable) studio() = npc_android : "Aperture Android"
+[
+	model(studio) : "World model" : "models/bot_male/bot_male.mdl"
+
+	output OnPlayerUse(void) : "Fires when a player +USEs the android."
+]
+
+@NPCClass base(TalkNPC,Parentname,BaseCapturable) studio() = npc_android_basic : "Aperture Android (Melee)"
+[
+	model(studio) : "World model" : "models/bot_male/bot_male.mdl"
+
+	output OnPlayerUse(void) : "Fires when a player +USEs the android."
+]
+
+@PointClass base(Targetname, BaseCapturable) studio( "models/props_gameplay/balloon.mdl" ) = prop_levitator : "Levitator"
+[
 ]

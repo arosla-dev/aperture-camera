@@ -4,7 +4,7 @@
 	{
 		"Portal-Retract"
 		{
-			"GameDir"		".\..\valve"
+			"GameDir"		"C:\SourceCode\aperture-camera\game\valve"
 			"Hammer"
 			{
 				"GameData0"		"C:\SourceCode\portal-crossed\game\bin\base.fgd"
