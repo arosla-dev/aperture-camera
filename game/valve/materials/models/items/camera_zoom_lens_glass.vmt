@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/items/camera_zoom_lens_glass"
+        "$translucent" "1"
+	"$additive" "1"
+	"envmap" "env_cubemap"
+	"%noportal" 1
+	"$surfaceprop"	"glass"
+
+}

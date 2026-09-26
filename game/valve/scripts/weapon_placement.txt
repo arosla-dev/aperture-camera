@@ -1,11 +1,13 @@
+// Photo
+
 WeaponData
 {
 	// Weapon data is loaded by both the Game and Client DLLs.
-	"printname"			"#PORTAL_placement"
+	"printname"			"#fstop_Photo"
 	"viewmodel"			"models/weapons/v_photo.mdl"
-	"playermodel"			"models/weapons/w_cam.mdl"
-	"anim_prefix"			"cam"
-	"bucket"			"1"
+	"playermodel"			"models/items/photograph.mdl"
+	"anim_prefix"			"pistol"
+	"bucket"			"0"
 	"bucket_position"		"3"
 
 	"clip_size"			"1"
@@ -15,13 +17,44 @@ WeaponData
 	"weight"			"4"
 	"item_flags"			"0"
 	"damage"			"9"
-	"autoswitchto"			"1"
+  	"autoswitchto" "1"
   
 	// Sounds for the weapon. There is a max of 16 sounds per category (i.e. max 16 "single_shot" sounds)
 	SoundData
 	{
-		// NPC SECTION
-		"SPECIAL1"	"Weapon_Camera.release"
-		"SPECIAL2"	"Weapon_Camera.nextphoto"
+		"single_shot"		"Weapon_Camera.Release"
+	}
+
+	// Weapon Sprite data is loaded by the Client DLL.
+	TextureData
+	{
+		"weapon"
+		{
+				"font"		"WeaponIcons"
+				"character"	"C"
+		}
+		"weapon_s"
+		{	
+				"font"		"WeaponIconsSelected"
+				"character"	"C"
+		}
+		"ammo"
+		{
+				"font"		"WeaponIcons"
+				"character"	"M"
+		}
+		"crosshair"
+		{
+				"font"		"Crosshairs"
+				"character"	"Q"
+		}
+		"autoaim"
+		{
+				"file"		"sprites/crosshairs"
+				"x"		"0"
+				"y"		"48"
+				"width"		"24"
+				"height"	"24"
+		}
 	}
 }

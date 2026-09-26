@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/chicken/fastchicken001"
+	"$surfaceprop"	"default"
+}

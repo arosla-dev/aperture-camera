@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$additive" "1"
+	"$surfaceprop"	"glass"
+	"$basetexture"	"models/props_gameplay/bot_spawn_glass"
+	"$translucent"	1
+}
+
+	
+	
+

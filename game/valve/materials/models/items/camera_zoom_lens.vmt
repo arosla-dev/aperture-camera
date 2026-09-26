@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/items/camera_zoom_lens"
+	"$surfaceprop"	"default"
+}

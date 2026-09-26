@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/bot_fem_lab/bot_fem_lab"
+	"$surfaceprop"	"default"
+}

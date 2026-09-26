@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/photo_backside01"
+	"$surfaceprop"	"default"
+}

@@ -273,21 +273,7 @@ void CHudViewfinder::PaintLocator( C_BaseEntity *pTarget )
 //-----------------------------------------------------------------------------
 void CHudViewfinder::PaintLocators( void )
 {
-	C_Portal_Player *pPlayer = (C_Portal_Player *) C_BasePlayer::GetLocalPlayer();
-	
-	// Now, paint them all in relation to their locations
-	for ( int i = 0; i < 16; i++ )
-	{
-		int nEntityIndex =	pPlayer->m_HL2Local.m_nLocatorEntityIndices[i];
-		if ( nEntityIndex < 0 )
-			continue;
 
-		C_BaseEntity *pEntity = C_BaseEntity::Instance( nEntityIndex );
-		if ( pEntity )
-		{
-			PaintLocator( pEntity );
-		}
-	}
 }
 
 //-----------------------------------------------------------------------------

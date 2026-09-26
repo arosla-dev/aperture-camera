@@ -1,29 +1,30 @@
+// Camera
+
 WeaponData
 {
 	// Weapon data is loaded by both the Game and Client DLLs.
-	"printname"			"#PORTAL_Camera"
+	"printname"			"#fstop_Camera"
 	"viewmodel"			"models/weapons/v_cam.mdl"
 	"playermodel"			"models/weapons/w_cam.mdl"
-	"anim_prefix"			"cam"
+	"anim_prefix"			"pistol"
 	"bucket"			"0"
-	"bucket_position"		"4"
+	"bucket_position"		"2"
 
-	"clip_size"			"1"
+	"clip_size"			"3"
 	"primary_ammo"			"None"
 	"secondary_ammo"		"None"
 
 	"weight"			"4"
 	"item_flags"			"0"
 	"damage"			"9"
-	"autoswitchto"			"1"
+  	"autoswitchto" "1"
   
 	// Sounds for the weapon. There is a max of 16 sounds per category (i.e. max 16 "single_shot" sounds)
 	SoundData
 	{
-		"SPECIAL1"		"Weapon_Camera.Capture"
-		"SPECIAL2"		"Weapon_Camera.deny"
+		"single_shot"		"Weapon_Camera.Capture"
 	}
-	
+
 	// Weapon Sprite data is loaded by the Client DLL.
 	TextureData
 	{
@@ -45,7 +46,7 @@ WeaponData
 		"crosshair"
 		{
 				"font"		"Crosshairs"
-				"character"	"."
+				"character"	"Q"
 		}
 		"autoaim"
 		{

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/items/camera_size_scroller"
+	"$surfaceprop"	"default"
+        "$selfillum" "1"
+}

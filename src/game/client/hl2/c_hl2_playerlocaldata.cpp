@@ -29,6 +29,7 @@ BEGIN_RECV_TABLE_NOBASE( C_HL2PlayerLocalData, DT_HL2Local )
 	RecvPropFloat( RECVINFO(m_flFlashBattery) ),
 	RecvPropVector( RECVINFO(m_vecLocatorOrigin) ),
 #endif
+	RecvPropArray3(RECVINFO_ARRAY(m_nLocatorEntityIndices), RecvPropInt(RECVINFO(m_nLocatorEntityIndices)))
 END_RECV_TABLE()
 
 BEGIN_PREDICTION_DATA_NO_BASE( C_HL2PlayerLocalData )

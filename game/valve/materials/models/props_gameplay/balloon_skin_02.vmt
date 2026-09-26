@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "Models/props_gameplay/balloon_skin_02"
+
+	"$bumpmap" "Models/props_gameplay/balloon_normal"
+	"$phong" "1"
+	"$phongexponenttexture" "Models/props_gameplay/balloon_exponent"
+	"$phongexponent" "25"
+	
+	"$phongboost" "4"	
+	"$phongfresnelranges"	"[1 1.5 2]"
+  	"$model"	1
+
+}

@@ -42,7 +42,7 @@ public:
 	bool	m_bStickyAutoAim;
 	bool	m_bAutoAimTarget;
 	bool	m_bPlacingPhoto;
-	int*	m_nLocatorEntityIndices;
+	int		m_nLocatorEntityIndices[10];
 #ifdef HL2_EPISODIC
 	float	m_flFlashBattery;
 	Vector	m_vecLocatorOrigin;
