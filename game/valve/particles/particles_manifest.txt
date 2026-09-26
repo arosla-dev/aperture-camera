@@ -49,6 +49,7 @@ particles_manifest
 	"file"		"particles/paint_splats_fx.pcf"
 	
 	"file"		"particles/tractor_beam_fx.pcf"
-	
+	// F-Stop
 	"file"		"particles/chicken.pcf"
+	"file"		"particles/geyser.pcf"
 }
