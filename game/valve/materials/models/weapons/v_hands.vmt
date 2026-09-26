@@ -1,5 +1,5 @@
-"VertexLitGeneric"
+VertexLitGeneric
 {
-	"$basetexture"	"models/weapons/v_hands"
-	"$surfaceprop"	"default"
+$basetexture "models/weapons/v_hands"
+$surfaceprop default
 }

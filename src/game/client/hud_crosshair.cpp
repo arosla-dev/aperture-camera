@@ -13,7 +13,7 @@
 #include "vgui_controls/controls.h"
 #include "vgui/ISurface.h"
 #include "IVRenderView.h"
-
+#include "c_basehlplayer.h"
 #ifdef PORTAL
 #include "c_portal_player.h"
 #endif // PORTAL
@@ -81,11 +81,10 @@ bool CHudCrosshair::ShouldDraw( void )
 		return false;
 #endif // PORTAL
 
-	/* disabled to avoid assuming it's an HL2 player.
 	// suppress crosshair in zoom.
-	if ( pPlayer->m_HL2Local.m_bZooming )
+	C_BaseHLPlayer* pHLPlayer = dynamic_cast<C_BaseHLPlayer*>(pPlayer);
+	if (pHLPlayer->m_HL2Local.m_bZooming)
 		return false;
-	*/
 
 	// draw a crosshair only if alive or spectating in eye
 	if ( IsX360() )

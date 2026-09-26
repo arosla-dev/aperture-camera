@@ -757,36 +757,6 @@ const int	CAMERA_FOV_MAX = (CAMERA_FOV_START+CAMERA_FOV_INCR*2);
 const int	CAMERA_FOV_MIN = (CAMERA_FOV_START-CAMERA_FOV_INCR*2);
 
 //-----------------------------------------------------------------------------
-// Purpose: Mouse wheelin'
-//-----------------------------------------------------------------------------
-void CWeaponCamera::OnMouseWheel( int nDirection )
-{
-	if ( camera_allow_zoom.GetBool() == false || !m_bCanZoom )
-		return;
-
-	// We can only do this if we're in the viewfinder
-	if ( m_bInViewfinder == false )
-		return;
-
-	CBasePlayer *pPlayer = ToBasePlayer( GetOwner() );
-	if ( pPlayer == NULL )
-		return;
-
-	float flTargetFOV = pPlayer->GetFOV();
-	if ( nDirection == MWHEEL_UP )
-	{
-		flTargetFOV -= CAMERA_FOV_INCR;
-	}
-	else if ( nDirection == MWHEEL_DOWN )
-	{
-		flTargetFOV += CAMERA_FOV_INCR;
-	}
-
-	flTargetFOV = clamp( flTargetFOV, CAMERA_FOV_MIN, CAMERA_FOV_MAX );
-	pPlayer->SetFOV( this, flTargetFOV, CAMERA_FOV_RATE );
-}
-
-//-----------------------------------------------------------------------------
 // Purpose: Capture an object
 //-----------------------------------------------------------------------------
 void CWeaponCamera::PrimaryAttack( void )
@@ -875,7 +845,7 @@ void CWeaponCamera::SecondaryAttack( void )
 		if ( Photo_Count() == 0 )
 		{
 			m_flNextSecondaryAttack = gpGlobals->curtime + 0.25f;
-			((CBasePlayer *)pPlayer)->PlayUseDenySound();
+			WeaponSound(SPECIAL2);
 			return;
 		}
 
@@ -1072,7 +1042,7 @@ void CWeaponCamera::ItemPostFrame( void )
 			bWeaponActed = true;
 		}
 	}
-	
+
 	// Do nothing
 	if ( bWeaponActed == false )
 	{

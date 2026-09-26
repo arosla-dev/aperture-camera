@@ -74,6 +74,8 @@ CBaseHudWeaponSelection *GetHudWeaponSelection()
 CBaseHudWeaponSelection::CBaseHudWeaponSelection(const char* pElementName) : CHudElement(pElementName)
 {
 	s_pInstance[GET_ACTIVE_SPLITSCREEN_SLOT()] = this;
+
+	SetHiddenBits(HIDEHUD_WEAPONSELECTION | HIDEHUD_PLAYERDEAD);
 }
 
 //-----------------------------------------------------------------------------

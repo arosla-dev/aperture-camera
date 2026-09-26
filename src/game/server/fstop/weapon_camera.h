@@ -34,7 +34,6 @@ public:
 	virtual bool	Deploy( void );
 	virtual void	OnPickedUp( CBaseCombatCharacter *pNewOwner );
 
-	virtual	void	OnMouseWheel( int nDirection );
 	virtual int		CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
 	virtual int		GetMinBurst() { return 1; }
 	virtual int		GetMaxBurst() { return 1; }

@@ -113,13 +113,13 @@ public:
 		if (bState)
 		{
 			SetRenderColor(255, 255, 255);
-			SetRenderAlpha(camera_preview_transluceny.GetInt());
+			SetRenderAlpha(64);
 			RemoveEffects(EF_ITEM_BLINK);
 		}
 		else
 		{
 			SetRenderColor(255, 0, 0);
-			SetRenderAlpha(camera_preview_transluceny.GetInt() / 2);
+			SetRenderAlpha(50);
 			AddEffects(EF_ITEM_BLINK);
 		}
 	}
@@ -181,7 +181,6 @@ public:
 	virtual bool	Deploy(void);
 	virtual bool	Holster(CBaseCombatWeapon *pSwitchingTo);
 	virtual bool	GetPlacementPosition(Vector *pOriginOut, QAngle *pAnglesOut, CInfoPlacementHelper **pHelperOut = NULL);
-	virtual void	OnMouseWheel(int nDirection);
 	virtual bool	Reload(void);
 	virtual void	WeaponIdle(void);
 
@@ -614,6 +613,19 @@ void CWeaponPlacement::ItemPostFrame(void)
 	if (pOwner == NULL)
 		return;
 
+	Assert(pOwner);
+	if (pOwner)
+	{
+		CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (pOwner->Weapon_OwnsThisType("weapon_camera"));
+
+		// if they have a weapon camera, it may restrict their ability to scale objects.
+		if (pCamera)
+		{
+			if (!pCamera->CanScaleCapturedObjects())
+				return;
+		}
+	}
+
 	bool bWeaponActed = false;
 	if (m_flNextPrimaryAttack < gpGlobals->curtime)
 	{
@@ -634,16 +646,57 @@ void CWeaponPlacement::ItemPostFrame(void)
 		}
 	}
 
+	if (pOwner)
+	{
+		pOwner->SetPlacingPhoto(m_bInPlacementMode);
+	}
+
+	if (pOwner->m_nButtons & IN_GRENADE1)
+	{
+		// Ignore the message if we're not placing
+		if (m_bInPlacementMode == false)
+			return;
+
+		if (m_nObjectScaleLevel + 1 <= m_CaptureInfo.pPlacementQuery->GetNumScaleUpSteps(&m_CaptureInfo))
+			m_nObjectScaleLevel++;
+
+		// Publish this back to the capture info so that we can cycle through objects and make them retain their sizes
+		m_CaptureInfo.nPreviewScaleLevel = m_nObjectScaleLevel;
+
+		int nIndex = pOwner->GetSelectedPhoto();
+		Photo_Update(nIndex, m_CaptureInfo);
+
+		if (m_hPhotoPreview)
+		{
+			m_hPhotoPreview->SetObjectScale(GetObjectScale(m_CaptureInfo));
+		}
+	}
+
+	if (pOwner->m_nButtons & IN_GRENADE2)
+	{
+		// Ignore the message if we're not placing
+		if (m_bInPlacementMode == false)
+			return;
+
+		if (m_nObjectScaleLevel - 1 >= -(m_CaptureInfo.pPlacementQuery->GetNumScaleDownSteps(&m_CaptureInfo)))
+			m_nObjectScaleLevel--;
+
+		// Publish this back to the capture info so that we can cycle through objects and make them retain their sizes
+		m_CaptureInfo.nPreviewScaleLevel = m_nObjectScaleLevel;
+
+		int nIndex = pOwner->GetSelectedPhoto();
+		Photo_Update(nIndex, m_CaptureInfo);
+
+		if (m_hPhotoPreview)
+		{
+			m_hPhotoPreview->SetObjectScale(GetObjectScale(m_CaptureInfo));
+		}
+	}
+
 	// Do nothing
 	if (bWeaponActed == false)
 	{
 		WeaponIdle();
-	}
-
-	CPortal_Player *pPlayer = (CPortal_Player *)ToBasePlayer(GetOwner());
-	if (pPlayer)
-	{
-		pPlayer->SetPlacingPhoto(m_bInPlacementMode);
 	}
 
 	// At this point, the primary attacks may have removed our photo preview
@@ -674,65 +727,6 @@ void CWeaponPlacement::ItemPostFrame(void)
 	if (vm != NULL)
 	{
 		vm->SetPoseParameter("photo_scale", flScale);
-	}
-}
-
-
-//-----------------------------------------------------------------------------
-// Purpose: Mouse wheelin'
-//-----------------------------------------------------------------------------
-void CWeaponPlacement::OnMouseWheel(int nDirection)
-{
-	// Ignore the message if we're not placing
-	if (m_bInPlacementMode == false)
-		return;
-
-	CPortal_Player *pPlayer = (CPortal_Player *)ToBasePlayer(GetOwner());
-	Assert(pPlayer);
-	if (pPlayer)
-	{
-		CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (pPlayer->Weapon_OwnsThisType("weapon_camera"));
-
-		// if they have a weapon camera, it may restrict their ability to scale objects.
-		if (pCamera)
-		{
-			if (!pCamera->CanScaleCapturedObjects())
-				return;
-		}
-	}
-
-	if (!m_CaptureInfo.hCapturedEnt.Get() || !m_CaptureInfo.pPlacementQuery)
-	{
-		Assert(0);
-		return;
-	}
-
-	// See if we need to swap the scaling direction
-	if (camera_reverse_scaling_direction.GetBool())
-	{
-		nDirection *= -1;
-	}
-
-	if (nDirection == MWHEEL_UP)
-	{
-		if (m_nObjectScaleLevel + 1 <= m_CaptureInfo.pPlacementQuery->GetNumScaleUpSteps(&m_CaptureInfo))
-			m_nObjectScaleLevel++;
-	}
-	else if (nDirection == MWHEEL_DOWN)
-	{
-		if (m_nObjectScaleLevel - 1 >= -(m_CaptureInfo.pPlacementQuery->GetNumScaleDownSteps(&m_CaptureInfo)))
-			m_nObjectScaleLevel--;
-	}
-
-	// Publish this back to the capture info so that we can cycle through objects and make them retain their sizes
-	m_CaptureInfo.nPreviewScaleLevel = m_nObjectScaleLevel;
-
-	int nIndex = pPlayer->GetSelectedPhoto();
-	Photo_Update(nIndex, m_CaptureInfo);
-
-	if (m_hPhotoPreview)
-	{
-		m_hPhotoPreview->SetObjectScale(GetObjectScale(m_CaptureInfo));
 	}
 }
 
