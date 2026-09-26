@@ -70,7 +70,7 @@ public:
 		if ( m_bDisabled == false )
 		{
 			// We want to hit camera traces!
-			SetCollisionGroup( COLLISION_GROUP_CAMERA_SOLID );
+			SetCollisionGroup(COLLISION_GROUP_WEAPON);
 			RemoveSolidFlags( FSOLID_NOT_SOLID ); // HACK: We want camera traces to hit this!
 		}
 	}
@@ -96,7 +96,7 @@ public:
 	
 	virtual void Enable( void )
 	{
-		SetCollisionGroup( COLLISION_GROUP_CAMERA_SOLID );
+		SetCollisionGroup(COLLISION_GROUP_WEAPON);
 		RemoveSolidFlags( FSOLID_NOT_SOLID ); // HACK: We want camera traces to hit this!
 	}
 

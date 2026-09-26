@@ -159,7 +159,7 @@ bool CBaseEntity::CPhotoPlacementQuery::CheckPlacement( CaptureInfo_t &captureIn
 	ray.Init( vPlacementOrigin, vPlacementOrigin + ( vPlacementDirection * captureInfo.pPlacementQuery->GetMaxPlacementDistance() ) );
 	trace_t tr;
 
-	traceFilterCollisionGroup.m_collisionGroup = COLLISION_GROUP_PLACEMENT_SOLID;
+	traceFilterCollisionGroup.m_collisionGroup = COLLISION_GROUP_WEAPON;
 	enginetrace->TraceRay( ray, MASK_SHOT, pFinalTraceFilter, &tr );
 
 	// Only place on the world, or on portal collision simulators
@@ -172,7 +172,7 @@ bool CBaseEntity::CPhotoPlacementQuery::CheckPlacement( CaptureInfo_t &captureIn
 	// Now try camera solid blockers (xray fizzlers, etc)
 	trace_t trTest;
 
-	traceFilterCollisionGroup.m_collisionGroup = COLLISION_GROUP_CAMERA_SOLID;
+	traceFilterCollisionGroup.m_collisionGroup = COLLISION_GROUP_WEAPON;
 	enginetrace->TraceRay( ray, MASK_SHOT, pFinalTraceFilter, &trTest );
 
 	// use closest hit

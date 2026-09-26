@@ -35,6 +35,7 @@
 #include "sceneentity.h"	// has the VCD precache function
 #include "collisionutils.h"
 #include "sendprop_priorities.h"
+#include "fstop/weapon_camera.h"
 
 // Max mass the player can lift with +use
 #define PORTAL_PLAYER_MAX_LIFT_MASS 85
@@ -258,6 +259,8 @@ BEGIN_DATADESC( CPortal_Player )
 
 	DEFINE_EMBEDDEDBYREF( m_pExpresser ),
 
+	DEFINE_EMBEDDED(m_PhotoInventory),
+
 END_DATADESC()
 
 const char *g_pszChellModel = "models/player/chell.mdl";
@@ -370,6 +373,7 @@ void CPortal_Player::Precache( void )
 
 	PrecacheScriptSound( "NPC_Citizen.die" );
 	PrecacheScriptSound( "Player.JumpPowerUse" );
+	PrecacheScriptSound("PhotoInventory.Erased");
 }
 
 void CPortal_Player::CreateSounds()
@@ -445,6 +449,17 @@ void CPortal_Player::GiveAllItems( void )
 	{
 		pPortalGun->SetCanFirePortal1();
 		pPortalGun->SetCanFirePortal2();
+	}
+
+	GiveNamedItem("weapon_camera");
+	GiveNamedItem("weapon_placement");
+
+	// Fully upgrade the camera
+	CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (Weapon_OwnsThisType("weapon_camera"));
+	if (pCamera)
+	{
+		pCamera->SetZoomAbility(true);
+		pCamera->SetScaleAbility(true);
 	}
 }
 
@@ -526,6 +541,9 @@ void CPortal_Player::NotifySystemEvent(CBaseEntity *pNotify, notify_system_event
 void CPortal_Player::OnRestore( void )
 {
 	BaseClass::OnRestore();
+
+	m_PhotoInventory.OnRestore();
+
 	if ( m_pExpresser )
 	{
 		m_pExpresser->SetOuter ( this );

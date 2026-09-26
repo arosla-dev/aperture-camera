@@ -660,6 +660,7 @@ void CPortalRenderable_FlatBasic::AddToVisAsExitPortal( ViewCustomVisibility_t *
 
 void CPortalRenderable_FlatBasic::DrawPreStencilMask( void )
 {
+	return;
 	if ( ( m_fOpenAmount > 0.0f ) && ( m_fOpenAmount < 1.0f ) )
 	{
 		DrawSimplePortalMesh( m_Materials.m_Portal_Refract[ ( ( m_bIsPortal2 ) ? ( 1 ) : ( 0 ) ) ] );

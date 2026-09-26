@@ -62,4 +62,10 @@ void RegisterUserMessages()
 	usermessages->Register( "RemoveAllPaint", 0 );
 	usermessages->Register( "PaintAllSurfaces", sizeof( BYTE ) );
 	usermessages->Register( "RemovePaint", sizeof( long ) );
+
+	usermessages->Register("InventoryFlash", sizeof(float) + 1);
+	usermessages->Register("IndicatorFlash", sizeof(float) + 1);
+	usermessages->Register("ControlHelperAnimate", 2);
+	usermessages->Register("TakePhoto", sizeof(long) + sizeof(uint8));
+	usermessages->Register("Flash", sizeof(float) + sizeof(Vector));
 }

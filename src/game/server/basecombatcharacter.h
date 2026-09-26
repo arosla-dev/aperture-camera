@@ -437,6 +437,18 @@ public:
 	virtual void OnNavAreaChanged( CNavArea *enteredArea, CNavArea *leftArea ) { }	// invoked (by UpdateLastKnownArea) when we enter a new nav area (or it is reset to NULL)
 	virtual void OnNavAreaRemoved( CNavArea *removedArea );
 
+	START_BRANCHING_SINGLETON_DEFINITION(CPhotoPlacementQuery)
+	{
+	public:
+		virtual bool GetPlacementPosition_NoHelper(CaptureInfo_t & captureInfo, CheckPlacementData_t & placementData, Vector & positionOut, QAngle & anglesOut);
+
+	protected:
+		virtual CameraInfo_ScaleData_t* GetSimpleScales(void);
+	};
+	END_BRANCHING_SINGLETON_DEFINITION(CPhotoPlacementQuery);
+
+	virtual void OnReleased(void);
+
 	// -----------------------
 	// Notification from INextBots.
 	// -----------------------

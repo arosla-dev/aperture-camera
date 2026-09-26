@@ -274,7 +274,7 @@ CBaseEntity * CWeaponCamera::FindFirstCapturableObject( const Vector &vecOrigin,
 
 	// Make sure the path between the target ent and the camera is unobstructed
 	trace_t tr;
-	CTraceFilterEitherOfTwoCollisionGroups filter( GetOwner(), COLLISION_GROUP_NONE, COLLISION_GROUP_CAMERA_SOLID );
+	CTraceFilterEitherOfTwoCollisionGroups filter( GetOwner(), COLLISION_GROUP_NONE, COLLISION_GROUP_WEAPON);
 	UTIL_TraceLine( vecOrigin, vecEnd, MASK_SHOT, &filter, &tr );
 
 	CBaseEntity* pCaptureEnt = NULL;

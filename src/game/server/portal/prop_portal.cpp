@@ -36,6 +36,7 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
+extern bool UTIL_FizzlePlayerPhotos(CPortal_Player* pPlayer);
 
 #define MINIMUM_FLOOR_PORTAL_EXIT_VELOCITY 50.0f
 #define MINIMUM_FLOOR_TO_FLOOR_PORTAL_EXIT_VELOCITY 225.0f
@@ -1343,6 +1344,13 @@ void CProp_Portal::TeleportTouchingEntity( CBaseEntity *pOther )
 	//	NDebugOverlay::EntityBounds( pOther, 0, 255, 0, 128, 60.0f );
 
 	Assert( (bPlayer == false) || (pOtherAsPlayer->m_hPortalEnvironment.Get() == m_hLinkedPortal.Get()) );
+
+	// Fizzle if we are a part of a prop_portal_tunnel
+	if (bPlayer && GetOwnerEntity() && FClassnameIs(GetOwnerEntity(), "prop_portal_tunnel"))
+	{
+		CPortal_Player* pPlayer = (CPortal_Player*)pOtherAsPlayer;
+		UTIL_FizzlePlayerPhotos(pPlayer);
+	}
 }
 
 

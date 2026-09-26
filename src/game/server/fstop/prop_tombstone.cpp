@@ -227,7 +227,7 @@ void CPropTombstone::OnReleased( void )
 // Portal tunnel (temp)
 //------------------------------------------------------------------------------
 
-class CPropTombstone_PlacementQuery : public CBaseCapturedObjectPlacementQuery
+class CPropTombstone_PlacementQuery : public CBaseEntity
 {
 	bool GetPlacementPosition( const Vector &vecEndPoint, const Vector &vecEndNormal, CaptureInfo_t &captureInfo, int nScaleStep, Vector *pOriginOut, QAngle *pAnglesOut )
 	{

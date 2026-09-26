@@ -89,7 +89,7 @@ BEGIN_DATADESC( CNPC_Bullseye )
 	DEFINE_KEYFIELD( m_fAutoaimRadius, FIELD_FLOAT, "autoaimradius" ),
 	DEFINE_KEYFIELD( m_flFieldOfView, FIELD_FLOAT, "minangle" ),
 	DEFINE_KEYFIELD( m_flMinDistValidEnemy, FIELD_FLOAT, "mindist" ),
-
+	DEFINE_KEYFIELD(m_nTargetObjectSize, FIELD_INTEGER, "target_size"),
 
 
 	// DEFINE_FIELD( m_bPerfectAccuracy, FIELD_BOOLEAN ),	// Don't save
@@ -373,7 +373,13 @@ bool CNPC_Bullseye::CanBeAnEnemyOf( CBaseEntity *pEnemy )
 		}
 	}
 
-
+	// Entities must match in size expectations
+	CBaseAnimating* pAnim = pEnemy->GetBaseAnimating();
+	if (pAnim)
+	{
+		if (m_nTargetObjectSize != pAnim->GetObjectScaleLevel())
+			return false;
+	}
 
 	return BaseClass::CanBeAnEnemyOf( pEnemy );
 }

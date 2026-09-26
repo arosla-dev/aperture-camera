@@ -27,6 +27,8 @@ class CPortal_Player;
 #include "paintable_entity.h"
 #include "trigger_tractorbeam.h"
 
+#include "fstop/inv_photos.h"
+
 struct PortalPlayerStatistics_t
 {
 	int iNumPortalsPlaced;
@@ -59,6 +61,22 @@ public:
 	virtual void Spawn( void );
 	virtual void OnRestore( void );
 	virtual void Activate( void );
+
+	virtual void InitialSpawn(void);
+	virtual void ItemPostFrame(void);
+
+	void	SetPlacingPhoto(bool bPlacing);
+	void	OnPhotoAdded(int nIndex);
+	void	OnPhotoRemoved(int nIndex);
+	void	SetSelectedPhoto(int nIndex);
+	int		GetSelectedPhoto(void);
+	void	ClearPhotos(void);
+	void	StripPhotos(bool bNotifyPlayer = true);
+	void	FlashDenyIndicator(float flDuration, unsigned char nType);
+	void	FlashInventory(float flDuration, unsigned char nType);
+	void	Flash(float flDuration, const Vector& vecPosition);
+	void	ControlHelperAnimate(unsigned char nActiveIcon, bool bClear = false);
+	void	UpdateLocatorEntityIndices(int* pIndices, int nNumIndices);
 
 	virtual void NotifySystemEvent( CBaseEntity *pNotify, notify_system_event_t eventType, const notify_system_event_params_t &params );
 
@@ -226,6 +244,9 @@ public:
 	Vector GetPaintGunShootPosition();
 
 	bool m_bCatapulted;
+
+	// We have a photo inventory in the aperture mod
+	CPhotoInventory m_PhotoInventory;
 
 	CNetworkVar( bool, m_bPitchReorientation );
 	CNetworkHandle( CProp_Portal, m_hPortalEnvironment ); //if the player is in a portal environment, this is the associated portal

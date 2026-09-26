@@ -468,6 +468,8 @@ private:
 	bool	PassesProximityFilter( CBaseEntity *pCaller, CBaseEntity *pEnemy );
 	bool	PassesMobbedFilter( CBaseEntity *pCaller, CBaseEntity *pEnemy );
 
+	int			m_nObjectSize;				// Size the object must be
+	bool		PassesSizeFilter(CBaseEntity* pEnemy);
 
 	string_t	m_iszEnemyName;				// Name or classname
 	float		m_flRadius;					// Radius (enemies are acquired at this range)
@@ -502,7 +504,8 @@ bool CFilterEnemy::PassesFilterImpl( CBaseEntity *pCaller, CBaseEntity *pEntity 
 	if ( PassesMobbedFilter( pCaller, pEntity ) == false )
 		return false;
 
-
+	if (PassesSizeFilter(pEntity) == false)
+		return false;
 
 	// The filter has been passed, meaning:
 	//	- If we wanted all criteria to fail, they have
@@ -521,7 +524,19 @@ bool CFilterEnemy::PassesDamageFilterImpl( const CTakeDamageInfo &info )
 	return false;
 }
 
+//-----------------------------------------------------------------------------
+// Purpose: Tests the enemy's size against a desired size
+// Input  : *pEnemy - Entity being assessed
+// Output : Returns true on success, false on failure.
+//-----------------------------------------------------------------------------
+bool CFilterEnemy::PassesSizeFilter(CBaseEntity* pEnemy)
+{
+	CBaseAnimating* pAnim = pEnemy->GetBaseAnimating();
+	if (pAnim == NULL)
+		return false;
 
+	return (pAnim->GetObjectScaleLevel() == m_nObjectSize);
+}
 
 //-----------------------------------------------------------------------------
 // Purpose: Tests the enemy's name or classname
@@ -691,7 +706,37 @@ BEGIN_DATADESC( CFilterEnemy )
 	DEFINE_KEYFIELD( m_flOuterRadius, FIELD_FLOAT, "filter_outer_radius" ),
 	DEFINE_KEYFIELD( m_nMaxSquadmatesPerEnemy, FIELD_INTEGER, "filter_max_per_enemy" ),
 	DEFINE_FIELD( m_iszPlayerName, FIELD_STRING ),
-
+	DEFINE_KEYFIELD(m_nObjectSize, FIELD_INTEGER, "filter_object_size"),
 END_DATADESC()
 
 
+// ###################################################################
+//	> FilterSize
+// ###################################################################
+
+class CFilterSize : public CBaseFilter
+{
+	DECLARE_CLASS(CFilterSize, CBaseFilter);
+	DECLARE_DATADESC();
+
+public:
+	int	m_nFilterSize;
+
+	bool PassesFilterImpl(CBaseEntity* pCaller, CBaseEntity* pEntity)
+	{
+		CBaseAnimating* pAnim = pEntity->GetBaseAnimating();
+		if (pAnim == NULL)
+			return false;
+
+		return (pAnim->GetObjectScaleLevel() == m_nFilterSize);
+	}
+};
+
+LINK_ENTITY_TO_CLASS(filter_size, CFilterSize);
+
+BEGIN_DATADESC(CFilterSize)
+
+// Keyfields
+DEFINE_KEYFIELD(m_nFilterSize, FIELD_INTEGER, "filtersize"),
+
+END_DATADESC()

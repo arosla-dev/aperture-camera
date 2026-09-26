@@ -15,6 +15,7 @@
 #include "studio.h"
 #include "datacache/idatacache.h"
 #include "tier0/threadtools.h"
+#include "fstop/photo.h"
 
 struct animevent_t;
 struct matrix3x4_t;
@@ -354,8 +355,20 @@ public:
 
 	bool PrefetchSequence( int iSequence );
 
+	// Camera interface
+	START_BRANCHING_SINGLETON_DEFINITION(CPhotoPlacementQuery)
+	{
+	public:
+		virtual bool GetPlacementPosition_NoHelper(CaptureInfo_t & captureInfo, CheckPlacementData_t & placementData, Vector & positionOut, QAngle & anglesOut);
+	};
+	END_BRANCHING_SINGLETON_DEFINITION(CPhotoPlacementQuery);
 
-
+	virtual bool MayBeCaptured(void);
+	virtual bool TestPreCapture(void) { return true; }
+	virtual void OnCaptured(void);
+	virtual void OnReleased(void);
+	virtual void OnFizzled(void);
+	virtual bool ShouldSavePhysics(void);
 
 private:
 	void LockStudioHdr();
@@ -368,7 +381,12 @@ private:
 public:
 	bool CanSkipAnimation( void );
 
-
+	public:
+		void SetObjectScaleLevel(int nScaleLevel) { m_nObjectScaleLevel = nScaleLevel; }
+		int GetObjectScaleLevel(void) { return m_nObjectScaleLevel; }
+	protected:
+		int	m_nObjectScaleLevel;
+		bool m_bCanBeCaptured;			// Set true this prop allows capture by weapon_camera
 
 public:
 
@@ -503,7 +521,7 @@ inline void CBaseAnimating::ResetSequence(int nSequence)
 
 inline float CBaseAnimating::GetPlaybackRate() const
 {
-
+	return m_flPlaybackRate * (1.0f / sqrt(GetModelScale()));
 
 	// Slow the animation while partially frozen
 	return m_flPlaybackRate * clamp( 1.0f - m_flFrozen, 0.0f, 1.0f );

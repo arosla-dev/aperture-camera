@@ -16,6 +16,7 @@
 #include "prediction.h"
 #include "viewpostprocess.h"
 #include "glow_outline_effect.h"
+#include "c_basehlplayer.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -196,6 +197,19 @@ void CHLModeManager::LevelShutdown( void )
 	}
 }
 
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+bool ClientModePortalNormal::ShouldDrawViewModel(void)
+{
+
+	// Don't draw the viewmodel while zoomed in
+	C_BaseHLPlayer* pHLPlayer = (C_BaseHLPlayer*)C_BasePlayer::GetLocalPlayer();
+	if (pHLPlayer && pHLPlayer->m_HL2Local.m_bZooming)
+		return false;
+
+	return true;
+}
 
 //-----------------------------------------------------------------------------
 // Purpose: 

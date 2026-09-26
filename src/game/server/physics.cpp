@@ -2181,7 +2181,8 @@ void CCollisionEvent::UpdateDamageEvents( void )
 		}
 #endif
 
-
+		if (event.pEntity->IsPlayer())
+			continue;
 
 		event.pEntity->TakeDamage( event.info );
 		int iEntBits2 = event.pEntity->IsAlive() ? 0x0001 : 0;

@@ -40,6 +40,7 @@ public:
 	
 	virtual void	SetBlurFade( float scale );
 	virtual float	GetBlurFade( void ) { return m_BlurFadeScale; }
+	virtual bool	ShouldDrawViewModel();
 	
 private:
 

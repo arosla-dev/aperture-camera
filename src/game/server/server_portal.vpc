@@ -405,9 +405,6 @@ $Project "Server (Portal)"
 			
 			$File "portal/point_paint_detector.h"
 			$File "portal/point_paint_detector.cpp"
-
-			$File "portal/info_placement_helper.cpp"
-			$File "portal/info_placement_helper.h"
 			
 			$File	"$SRCDIR\game\shared\portal\trigger_tractorbeam_shared.h"
 			$File	"$SRCDIR\game\shared\portal\trigger_tractorbeam_shared.cpp"

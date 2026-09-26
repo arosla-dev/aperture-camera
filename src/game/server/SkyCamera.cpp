@@ -18,6 +18,20 @@ template <> CSkyCamera *CEntityClassList<CSkyCamera>::m_pClassList = NULL;
 
 CHandle<CSkyCamera> g_hActiveSkybox = NULL;
 
+//------------------------------------------------------------------------------
+// Purpose: NPC step trough AI
+//------------------------------------------------------------------------------
+void CC_SkyboxSwap(void)
+{
+	// Make this cyclical for now!
+	if (g_SkyList.m_pClassList->m_pNext)
+	{
+		g_SkyList.m_pClassList->m_pNext->m_pNext = g_SkyList.m_pClassList;
+	}
+
+	g_SkyList.m_pClassList = g_SkyList.m_pClassList->m_pNext;
+}
+static ConCommand skybox_swap("skybox_swap", CC_SkyboxSwap, "Swap through the skyboxes in our queue", FCVAR_CHEAT);
 
 
 //-----------------------------------------------------------------------------
