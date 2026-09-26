@@ -472,7 +472,7 @@ void CNPC_Chicken::FootstepSound( bool bRightFoot )
 void CNPC_Chicken::HandleAnimEvent( animevent_t *pEvent )
 {
 	// Peck!
-	if ( pEvent->event == AE_CHICKEN_PECK )
+	if ( pEvent->Event() == AE_CHICKEN_PECK )
 	{
 		// Get our beak's position
 		Vector vecPeckPos;
@@ -491,12 +491,12 @@ void CNPC_Chicken::HandleAnimEvent( animevent_t *pEvent )
 		EmitSound( "NPC_BaseZombie.Swat" );
 	}
 
-	if ( pEvent->event == AE_CHICKEN_FOOTSTEP_RIGHT || pEvent->event == AE_CHICKEN_FOOTSTEP_LEFT )
+	if ( pEvent->Event() == AE_CHICKEN_FOOTSTEP_RIGHT || pEvent->Event() == AE_CHICKEN_FOOTSTEP_LEFT )
 	{
 		// Only bother if we're big!
 		if ( GetObjectScaleLevel() == 1 )
 		{
-			FootstepSound( pEvent->event == AE_CHICKEN_FOOTSTEP_RIGHT );
+			FootstepSound( pEvent->Event() == AE_CHICKEN_FOOTSTEP_RIGHT );
 		}
 	}
 }

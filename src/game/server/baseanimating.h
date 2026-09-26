@@ -463,7 +463,9 @@ protected:
 public:
 	COutputEvent m_OnIgnite;
 
-
+	COutputEvent m_OnCameraCapture;	// captured by weapon_camera
+	COutputEvent m_OnCameraRelease; // put back into the world by weapon_camera
+	COutputEvent m_OnFizzled;		// Fizzled by a fizzler
 
 private:
 	CStudioHdr			*m_pStudioHdr;

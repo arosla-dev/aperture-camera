@@ -11,6 +11,7 @@
 // Used for maintaining unique IDs to portals
 extern int g_PortalGUID;
 
+#if 0 //TODO - fix it later
 class CPropBuilding : public CBaseAnimating
 {
 public:
@@ -239,3 +240,4 @@ CameraInfo_ScaleData_t *CPropBuilding::CPhotoPlacementQuery::GetSimpleScales( vo
 }
 
 
+#endif

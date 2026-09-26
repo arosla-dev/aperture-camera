@@ -610,7 +610,7 @@ void CNPC_HoverTurret::MaintainGroundHeight( void )
 
 	if ( tr.fraction != 1.0f )
 	{
-		float speedAdj = max( 16, (-zSpeed*0.5f) );
+		float speedAdj = MAX( 16, (-zSpeed*0.5f) );
 
 		m_vForceVelocity += Vector(0,0,1) * ( speedAdj * ( 1.0f - tr.fraction ) );
 	}

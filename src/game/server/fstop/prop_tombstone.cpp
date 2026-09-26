@@ -8,6 +8,7 @@
 #include "monstermaker.h"
 #include "ai_basenpc.h"
 
+#if 0 //TODO - make it works?
 class CPropTombstone : public CBaseAnimating
 {
 public:
@@ -284,3 +285,4 @@ ICapturedObjectPlacementQuery *CPropTombstone::GetPlacementQuery( void )
 { 
 	return &g_PropTombstone_PlacementQuery; 
 }
+#endif

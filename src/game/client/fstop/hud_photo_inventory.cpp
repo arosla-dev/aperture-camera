@@ -541,9 +541,9 @@ void CHudPhotoInventory::MsgFunc_InventoryFlash(bf_read &msg)
 
 	case FLASH_INVENTORY_STRIPPED:
 		// Save off the last state here
-		m_bLastState[0] = msg.ReadByte();
-		m_bLastState[1] = msg.ReadByte();
-		m_bLastState[2] = msg.ReadByte();
+		m_bLastState[0] = (msg.ReadByte() != 0);
+		m_bLastState[1] = (msg.ReadByte() != 0);
+		m_bLastState[2] = (msg.ReadByte() != 0);
 
 		m_flFadeInTime = gpGlobals->curtime + 0.1f;
 		m_flFadeOutTime = m_flDisplayTime - 0.5f;

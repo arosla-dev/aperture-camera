@@ -258,7 +258,7 @@ void CMonopoleField::DoMagnetSuck( CBaseEntity *pOther )
 
 				if ( flDist > 0.0f )
 				{
-					flDist = max( flDist, 50.f );
+					flDist = MAX( flDist, 50.f );
 					
 					float flDirection = 1.0f;
 					if ( !m_bPositive )

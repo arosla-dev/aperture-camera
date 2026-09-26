@@ -570,7 +570,7 @@ void CPropGeyser::StartEruptionPush( void )
 		{
 			if ( vecMins[i] > vecMaxs[i] )
 			{
-				swap( vecMins[i], vecMaxs[i] );
+				V_swap( vecMins[i], vecMaxs[i] );
 			}
 		}
 

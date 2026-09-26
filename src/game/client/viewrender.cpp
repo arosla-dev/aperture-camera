@@ -3288,7 +3288,7 @@ void CViewRender::ViewDrawPhoto(ITexture* pRenderTarget, C_BaseEntity* pTargetEn
 	bool bHandle = pTargetEntity->GetRenderHandle() == INVALID_CLIENT_RENDER_HANDLE;
 	if (bHandle)
 	{
-		ClientLeafSystem()->AddRenderable(pTargetEntity, RENDER_GROUP_OPAQUE);
+		ClientLeafSystem()->AddRenderable(pTargetEntity, false, RENDERABLE_IS_OPAQUE, RENDERABLE_MODEL_UNKNOWN_TYPE);
 		ClientLeafSystem()->RenderableChanged(pTargetEntity->m_hRender);
 		ClientLeafSystem()->PreRender();
 	}

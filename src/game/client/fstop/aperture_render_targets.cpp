@@ -16,11 +16,11 @@ void CApertureRenderTargets::InitLargePhotoTextures(IMaterialSystem* pMaterialSy
 	for (int i = 0; i != ARRAYSIZE(m_LargePhotoTextures); ++i)
 	{
 		char szName[256];
-		if (i = 1)
+		if (i == 1)
 			Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto%1");
-		if (i = 2)
+		if (i == 2)
 			Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto%2");
-		if (i = 3)
+		if (i == 3)
 			Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto%3");
 
 		m_LargePhotoTextures[i].Init(pMaterialSystem->CreateNamedRenderTargetTextureEx2(

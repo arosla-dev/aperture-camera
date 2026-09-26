@@ -36,7 +36,7 @@ void UTIL_AlignBBox( Vector &vecMins, Vector &vecMaxs )
 	{
 		if ( vecMins[i] > vecMaxs[i] )
 		{
-			swap( vecMins[i], vecMaxs[i] );
+			V_swap( vecMins[i], vecMaxs[i] );
 		}
 	}
 }
@@ -304,7 +304,7 @@ void CPropPortalTunnel::Spawn( void )
 
 	SetMoveType( MOVETYPE_NONE );
 	SetSolid( SOLID_OBB_YAW );
-	SetCollisionGroup( COLLISION_GROUP_CAMERA_SOLID );
+	SetCollisionGroup( COLLISION_GROUP_WEAPON );
 
 	SetModel( PORTAL_TUNNEL_MODEL_NAME );
 
@@ -480,7 +480,6 @@ void CPropPortalTunnel::CreateTunnel( void )
 	if ( pPortal )
 	{
 		pPortal->RemovePortalMicAndSpeaker();
-		pPortal->m_bHACKUseMicrophones = false;
 	}
 
 	vFinalPosition = GetAbsOrigin();

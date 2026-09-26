@@ -2481,3 +2481,292 @@ CON_COMMAND( startneurotoxins, "Starts the nerve gas timer." )
 	if( pPlayer )
 		pPlayer->SetNeuroToxinDamageTime( fCoundownTime );
 }
+
+void CPortal_Player::SetPlacingPhoto(bool bPlacing)
+{
+	m_HL2Local.m_bPlacingPhoto = bPlacing;
+}
+
+void CPortal_Player::ItemPostFrame(void)
+{
+	BaseClass::ItemPostFrame();
+
+	// Update whether or not we're placing photos
+	CBaseCombatWeapon* pWeapon = GetActiveWeapon();
+	if (pWeapon == NULL)
+	{
+		SetPlacingPhoto(false);
+	}
+}
+
+// Need player inventory settings
+void CPortal_Player::OnPhotoAdded(int nIndex)
+{
+	if (nIndex < 0 || nIndex > 2)
+		return;
+
+	// m_HL2Local.m_bHasPhotoInInventory.GetForModify( nIndex ) = true;
+}
+
+void CPortal_Player::OnPhotoRemoved(int nIndex)
+{
+	if (nIndex < 0 || nIndex > 2)
+		return;
+
+	// m_HL2Local.m_bHasPhotoInInventory.GetForModify( nIndex ) = false;
+}
+
+void CPortal_Player::SetSelectedPhoto(int nIndex)
+{
+	Assert(nIndex >= 0 && nIndex < 3);
+	if (nIndex < 0 || nIndex >= 3)
+		return;
+
+	// m_HL2Local.m_nSelectedPhoto = nIndex;
+}
+
+int CPortal_Player::GetSelectedPhoto(void)
+{
+	return 0;
+	// return m_HL2Local.m_nSelectedPhoto;
+}
+
+void CPortal_Player::ClearPhotos(void)
+{
+	/*
+	m_HL2Local.m_nSelectedPhoto = -1;
+	m_HL2Local.m_bHasPhotoInInventory.GetForModify(0) = false;
+	m_HL2Local.m_bHasPhotoInInventory.GetForModify(1) = false;
+	m_HL2Local.m_bHasPhotoInInventory.GetForModify(2) = false;
+	*/
+}
+
+void CPortal_Player::StripPhotos(bool bNotifyPlayer /*= true*/)
+{
+	// Let the player know we just stripped their photos from them
+	if (bNotifyPlayer)
+	{
+		if (Photo_Count())
+		{
+			EmitSound("PhotoInventory.Erased");
+			FlashInventory(2.0f, FLASH_INVENTORY_STRIPPED);
+		}
+	}
+
+	// Stop having a selected photo
+	ClearPhotos();
+
+	// Clear all photos
+	Photo_Purge();
+
+	CBaseCombatWeapon* pWeapon = GetActiveWeapon();
+	if (pWeapon && FClassnameIs(pWeapon, "weapon_placement"))
+	{
+		// Attempt to go back to the camera, but holster failing that
+		CBasePlayer* pPlayer = UTIL_GetLocalPlayer();
+		if (pPlayer->SwitchToNextBestWeapon(pWeapon) == false)
+		{
+			pWeapon->Holster(NULL);
+		}
+	}
+}
+
+void CPortal_Player::FlashDenyIndicator(float flDuration, unsigned char nType)
+{
+	// we've been denied the pickup, display a hud icon to show that
+	CSingleUserRecipientFilter user(this);
+	user.MakeReliable();
+
+	UserMessageBegin(user, "IndicatorFlash");
+	WRITE_BYTE(nType);
+	WRITE_FLOAT(flDuration);
+	MessageEnd();
+
+	// Play the denial noise
+	PlayUseDenySound();
+}
+
+void CPortal_Player::ControlHelperAnimate(unsigned char nActiveIcon, bool bClear /*= false*/)
+{
+	// we've been denied the pickup, display a hud icon to show that
+	CSingleUserRecipientFilter user(this);
+	user.MakeReliable();
+
+	UserMessageBegin(user, "ControlHelperAnimate");
+	WRITE_BYTE((unsigned char)bClear);
+	WRITE_BYTE(nActiveIcon);
+	MessageEnd();
+}
+
+void CPortal_Player::FlashInventory(float flDuration, unsigned char nType)
+{
+	// we've been denied the pickup, display a hud icon to show that
+	CSingleUserRecipientFilter user(this);
+	user.MakeReliable();
+
+	UserMessageBegin(user, "InventoryFlash");
+	WRITE_FLOAT(flDuration);
+	WRITE_BYTE(nType);
+	// WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[0] );
+	// WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[1] );
+	// WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[2] );
+	MessageEnd();
+
+	if (nType == FLASH_INVENTORY_FULL)
+	{
+		// Play the denial noise
+		PlayUseDenySound();
+	}
+}
+
+void CPortal_Player::Flash(float flDuration, const Vector& vecPosition)
+{
+	// we've been denied the pickup, display a hud icon to show that
+	CSingleUserRecipientFilter user(this);
+	user.MakeReliable();
+
+	UserMessageBegin(user, "Flash");
+	WRITE_FLOAT(flDuration);
+	WRITE_FLOAT(vecPosition.x);
+	WRITE_FLOAT(vecPosition.y);
+	WRITE_FLOAT(vecPosition.z);
+	MessageEnd();
+}
+
+void CPortal_Player::InitialSpawn(void)
+{
+	BaseClass::InitialSpawn();
+
+	// Clear our all photos
+	if (gpGlobals->eLoadType == MapLoad_NewGame)
+	{
+		Photo_Purge();
+	}
+
+}
+
+//------------------------------------------------------------------------------
+// Purpose: 
+//------------------------------------------------------------------------------
+void CPortal_Player::UpdateLocatorEntityIndices(int* pIndices, int nNumIndices)
+{
+	for (int i = 0; i < 16; i++)
+	{
+		if (i >= nNumIndices)
+		{
+			m_HL2Local.m_nLocatorEntityIndices.GetForModify(i) = -1;
+		}
+		else
+		{
+			m_HL2Local.m_nLocatorEntityIndices.GetForModify(i) = pIndices[i];
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+// Purpose: 
+//------------------------------------------------------------------------------
+void CC_Next_Photo(void)
+{
+	// FIXME: This code is now obsolete
+	return;
+
+	if (Photo_Count() == 0)
+		return;
+
+	CBasePlayer* pPlayer = UTIL_GetLocalPlayer();
+	if (pPlayer == NULL)
+		return;
+
+	CBaseCombatWeapon* pWeapon = pPlayer->GetActiveWeapon();
+	if (pWeapon == NULL)
+		return;
+
+	// If we're cycling but not in placement mode, then swap over to it but don't cycle
+	if (FClassnameIs(pWeapon, "weapon_camera"))
+	{
+		pPlayer->SwitchToNextBestWeapon(pWeapon);
+		return;
+	}
+
+	// Otherwise cycle and change
+	if (Photo_Count() > 1)
+	{
+		// Cycle our photos
+		Photo_Cycle(true);
+
+		pWeapon->Reload();
+	}
+}
+
+static ConCommand next_photos("next_photo", CC_Next_Photo, "Next photo in our inventory (if any)", 0);
+
+void SwitchToPhoto(int nIndex)
+{
+	// FIXME: This code is now obsolete
+	return;
+
+	if (Photo_Count() == 0)
+		return;
+
+	// Must be a valid photo
+	if (Photo_IsValid(nIndex) == false)
+		return;
+
+	CPortal_Player* pPlayer = (CPortal_Player*)UTIL_GetLocalPlayer();
+	if (pPlayer == NULL)
+		return;
+
+	CBaseCombatWeapon* pWeapon = pPlayer->GetActiveWeapon();
+	if (pWeapon == NULL)
+		return;
+
+	bool bPlayReload = (pPlayer->GetSelectedPhoto() != nIndex);
+
+	// Take this as the new selection
+	pPlayer->SetSelectedPhoto(nIndex);
+
+	// If we're cycling but not in placement mode, then swap over to it
+	if (FClassnameIs(pWeapon, "weapon_camera"))
+	{
+		pPlayer->SwitchToNextBestWeapon(pWeapon);
+	}
+	else
+	{
+		// Don't swap if it's our already selected photo
+		if (bPlayReload)
+		{
+			pWeapon->Reload();
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+// Purpose: 
+//------------------------------------------------------------------------------
+void CC_Select_Photo1(void)
+{
+	// SwitchToPhoto( 0 );
+}
+
+static ConCommand select_photo1("select_photo1", CC_Select_Photo1, "Select photograph in slot 1", 0);
+
+//------------------------------------------------------------------------------
+// Purpose: 
+//------------------------------------------------------------------------------
+void CC_Select_Photo2(void)
+{
+	// SwitchToPhoto( 1 );
+}
+
+static ConCommand select_photo2("select_photo2", CC_Select_Photo2, "Select photograph in slot 2", 0);
+
+//------------------------------------------------------------------------------
+// Purpose: 
+//------------------------------------------------------------------------------
+void CC_Select_Photo3(void)
+{
+	// SwitchToPhoto( 2 );
+}
+
+static ConCommand select_photo3("select_photo3", CC_Select_Photo3, "Select photograph in slot 3", 0);

@@ -26,6 +26,8 @@
 #define BLAST_SPEED_NON_PLAYER 1000.0f
 #define BLAST_SPEED 3000.0f
 
+ConVar portal_square_portals("portal_square_portals", "0", FCVAR_NONE);
+ConVar portal_portal_width("portal_portal_width", "72", FCVAR_NONE);
 
 IMPLEMENT_NETWORKCLASS_ALIASED( WeaponPortalgun, DT_WeaponPortalgun )
 
@@ -508,7 +510,11 @@ float CWeaponPortalgun::TraceFirePortal( bool bPortal2, const Vector &vTraceStar
 	VectorAngles( tr.plane.normal, vUp, qFinalAngles );
 
 	vFinalPosition = tr.endpos;
-	return VerifyPortalPlacement( CProp_Portal::FindPortal( m_iPortalLinkageGroupID, bPortal2 ), vFinalPosition, qFinalAngles, iPlacedBy, bTest );
+	CProp_Portal* pPlacePortal = CProp_Portal::FindPortal(m_iPortalLinkageGroupID, bPortal2);
+	float fHalfWidth, fHalfHeight;
+	CProp_Portal::GetPortalSize(fHalfWidth, fHalfHeight, pPlacePortal);
+
+	return VerifyPortalPlacement(pPlacePortal, vFinalPosition, qFinalAngles, fHalfWidth, fHalfHeight, iPlacedBy, bTest);
 }
 
 float CWeaponPortalgun::FirePortal( bool bPortal2, Vector *pVector /*= 0*/, bool bTest /*= false*/ )
@@ -639,6 +645,12 @@ float CWeaponPortalgun::FirePortal( bool bPortal2, Vector *pVector /*= 0*/, bool
 		pPortal->SetContextThink( &CProp_Portal::DelayedPlacementThink, gpGlobals->curtime + fDelay, s_pDelayedPlacementContext ); 
 		pPortal->m_vDelayedPosition = vFinalPosition;
 		pPortal->m_hPlacedBy = this;
+
+		if (portal_square_portals.GetBool())
+		{
+			float flWidth = portal_portal_width.GetFloat();
+			pPortal->Resize(flWidth, flWidth);
+		}
 	}
 
 	return fPlacementSuccess;
@@ -743,3 +755,180 @@ static void change_portalgun_linkage_id_f( const CCommand &args )
 }
 
 ConCommand change_portalgun_linkage_id( "change_portalgun_linkage_id", change_portalgun_linkage_id_f, "Changes the portal linkage ID for the portal gun held by the commanding player.", FCVAR_CHEAT );
+
+float UTIL_TraceFirePortal(bool bPortal2, const Vector& vTraceStart, const Vector& vDirection, trace_t& tr, Vector& vFinalPosition, QAngle& qFinalAngles, int iPlacedBy, bool bTest /*= false*/)
+{
+	CTraceFilterSimpleClassnameList baseFilter(NULL /*FIXME*/, COLLISION_GROUP_NONE);
+	UTIL_Portal_Trace_Filter(&baseFilter);
+	CTraceFilterTranslateClones traceFilterPortalShot(&baseFilter);
+
+	Ray_t rayEyeArea;
+	rayEyeArea.Init(vTraceStart + vDirection * 24.0f, vTraceStart + vDirection * -24.0f);
+
+	float fMustBeCloserThan = 2.0f;
+
+	CProp_Portal* pNearPortal = UTIL_Portal_FirstAlongRay(rayEyeArea, fMustBeCloserThan);
+
+	if (!pNearPortal)
+	{
+		// Check for portal near and infront of you
+		rayEyeArea.Init(vTraceStart + vDirection * -24.0f, vTraceStart + vDirection * 48.0f);
+
+		fMustBeCloserThan = 2.0f;
+
+		pNearPortal = UTIL_Portal_FirstAlongRay(rayEyeArea, fMustBeCloserThan);
+	}
+
+	if (pNearPortal && pNearPortal->IsActivedAndLinked())
+	{
+		iPlacedBy = PORTAL_PLACED_BY_PEDESTAL;
+
+		Vector vPortalForward;
+		pNearPortal->GetVectors(&vPortalForward, 0, 0);
+
+		if (vDirection.Dot(vPortalForward) < 0.01f)
+		{
+			// If shooting out of the world, fizzle
+			if (!bTest)
+			{
+				CProp_Portal* pPortal = CProp_Portal::FindPortal(0 /*FIXME:LinkageGroup*/, bPortal2, true);
+
+				pPortal->m_iDelayedFailure = ((pNearPortal->m_bIsPortal2) ? (PORTAL_FIZZLE_NEAR_RED) : (PORTAL_FIZZLE_NEAR_BLUE));
+				VectorAngles(vPortalForward, pPortal->m_qDelayedAngles);
+				pPortal->m_vDelayedPosition = pNearPortal->GetAbsOrigin();
+
+				vFinalPosition = pPortal->m_vDelayedPosition;
+				qFinalAngles = pPortal->m_qDelayedAngles;
+
+				UTIL_TraceLine(vTraceStart - vDirection * 16.0f, vTraceStart + (vDirection * MAX_TRACE_LENGTH), MASK_SHOT_PORTAL, &traceFilterPortalShot, &tr);
+
+				return PORTAL_ANALOG_SUCCESS_NEAR;
+			}
+
+			UTIL_TraceLine(vTraceStart - vDirection * 16.0f, vTraceStart + (vDirection * MAX_TRACE_LENGTH), MASK_SHOT_PORTAL, &traceFilterPortalShot, &tr);
+
+			return PORTAL_ANALOG_SUCCESS_OVERLAP_LINKED;
+		}
+	}
+
+	// Trace to see where the portal hit
+	UTIL_TraceLine(vTraceStart, vTraceStart + (vDirection * MAX_TRACE_LENGTH), MASK_SHOT_PORTAL, &traceFilterPortalShot, &tr);
+
+	if (!tr.DidHit() || tr.startsolid)
+	{
+		// If it didn't hit anything, fizzle
+		if (!bTest)
+		{
+			CProp_Portal* pPortal = CProp_Portal::FindPortal(0 /*FIXME: Linkage group*/, bPortal2, true);
+
+			pPortal->m_iDelayedFailure = PORTAL_FIZZLE_NONE;
+			VectorAngles(-vDirection, pPortal->m_qDelayedAngles);
+			pPortal->m_vDelayedPosition = tr.endpos;
+
+			vFinalPosition = pPortal->m_vDelayedPosition;
+			qFinalAngles = pPortal->m_qDelayedAngles;
+		}
+
+		return PORTAL_ANALOG_SUCCESS_PASSTHROUGH_SURFACE;
+	}
+
+	// Trace to the surface to see if there's a rotating door in the way
+	CBaseEntity* list[1024];
+
+	Ray_t ray;
+	ray.Init(vTraceStart, tr.endpos);
+
+	int nCount = UTIL_EntitiesAlongRay(list, 1024, ray, 0);
+
+	// Loop through all entities along the ray between the gun and the surface
+	for (int i = 0; i < nCount; i++)
+	{
+		// If the entity is a rotating door
+		if (FClassnameIs(list[i], "prop_door_rotating"))
+		{
+			// Check more precise door collision
+			CBasePropDoor* pRotatingDoor = static_cast<CBasePropDoor*>(list[i]);
+
+			Ray_t rayDoor;
+			rayDoor.Init(vTraceStart, vTraceStart + (vDirection * MAX_TRACE_LENGTH));
+
+			trace_t trDoor;
+			pRotatingDoor->TestCollision(rayDoor, 0, trDoor);
+
+			if (trDoor.DidHit())
+			{
+				// There's a door in the way
+				tr = trDoor;
+
+				if (sv_portal_placement_debug.GetBool())
+				{
+					Vector vMin;
+					Vector vMax;
+					Vector vZero = Vector(0.0f, 0.0f, 0.0f);
+					list[i]->GetCollideable()->WorldSpaceSurroundingBounds(&vMin, &vMax);
+					NDebugOverlay::Box(vZero, vMin, vMax, 0, 255, 0, 128, 0.5f);
+				}
+
+				if (!bTest)
+				{
+					CProp_Portal* pPortal = CProp_Portal::FindPortal(0 /*FIXME: Linkage group*/, bPortal2, true);
+
+					pPortal->m_iDelayedFailure = PORTAL_FIZZLE_CANT_FIT;
+					VectorAngles(tr.plane.normal, pPortal->m_qDelayedAngles);
+					pPortal->m_vDelayedPosition = trDoor.endpos;
+
+					vFinalPosition = pPortal->m_vDelayedPosition;
+					qFinalAngles = pPortal->m_qDelayedAngles;
+				}
+
+				return PORTAL_ANALOG_SUCCESS_CANT_FIT;
+			}
+		}
+		else if (FClassnameIs(list[i], "trigger_portal_cleanser"))
+		{
+			CBaseTrigger* pTrigger = static_cast<CBaseTrigger*>(list[i]);
+
+			if (pTrigger && !pTrigger->m_bDisabled)
+			{
+				Vector vMin;
+				Vector vMax;
+				pTrigger->GetCollideable()->WorldSpaceSurroundingBounds(&vMin, &vMax);
+
+				IntersectRayWithBox(ray.m_Start, ray.m_Delta, vMin, vMax, 0.0f, &tr);
+
+				tr.plane.normal = -vDirection;
+
+				if (!bTest)
+				{
+					CProp_Portal* pPortal = CProp_Portal::FindPortal(0 /*FIXME:Linkage group*/, bPortal2, true);
+
+					pPortal->m_iDelayedFailure = PORTAL_FIZZLE_CLEANSER;
+					VectorAngles(tr.plane.normal, pPortal->m_qDelayedAngles);
+					pPortal->m_vDelayedPosition = tr.endpos;
+
+					vFinalPosition = pPortal->m_vDelayedPosition;
+					qFinalAngles = pPortal->m_qDelayedAngles;
+				}
+
+				return PORTAL_ANALOG_SUCCESS_CLEANSER;
+			}
+		}
+	}
+
+	Vector vUp(0.0f, 0.0f, 1.0f);
+	if ((tr.plane.normal.x > -0.001f && tr.plane.normal.x < 0.001f) && (tr.plane.normal.y > -0.001f && tr.plane.normal.y < 0.001f))
+	{
+		//plane is a level floor/ceiling
+		vUp = vDirection;
+	}
+
+	// Check that the placement succeed
+	VectorAngles(tr.plane.normal, vUp, qFinalAngles);
+
+	vFinalPosition = tr.endpos;
+	CProp_Portal* pPlacePortal = CProp_Portal::FindPortal(0 /*FIXME: Linkage group*/, bPortal2);
+	float fHalfWidth, fHalfHeight;
+	CProp_Portal::GetPortalSize(fHalfWidth, fHalfHeight, pPlacePortal);
+
+	return VerifyPortalPlacement(pPlacePortal, vFinalPosition, qFinalAngles, fHalfWidth, fHalfHeight, iPlacedBy, bTest);
+}

@@ -447,7 +447,7 @@ void CAndroidMissile::StickTo( CBaseEntity *pOther, trace_t &tr )
 	UTIL_ImpactTrace( &tr, DMG_BULLET );
 	
 	// Shoot some sparks
-	if ( UTIL_PointContents( GetAbsOrigin() ) != CONTENTS_WATER)
+	if ( UTIL_PointContents( GetAbsOrigin(), CONTENTS_SOLID) != CONTENTS_WATER)
 	{
 		g_pEffects->Sparks( GetAbsOrigin() );
 	}

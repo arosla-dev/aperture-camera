@@ -104,7 +104,23 @@ END_SEND_TABLE()
 LINK_ENTITY_TO_CLASS( prop_portal, CProp_Portal );
 
 
+float CProp_Portal::s_DefaultPortalHalfWidth = 32.0f;
+float CProp_Portal::s_DefaultPortalHalfHeight = 54.0f;
 
+//NULL portal will return default width/height
+void CProp_Portal::GetPortalSize(float& fHalfWidth, float& fHalfHeight, CProp_Portal* pPortal)
+{
+	if (pPortal)
+	{
+		fHalfWidth = pPortal->GetHalfWidth();
+		fHalfHeight = pPortal->GetHalfHeight();
+	}
+	else
+	{
+		fHalfWidth = s_DefaultPortalHalfWidth;
+		fHalfHeight = s_DefaultPortalHalfHeight;
+	}
+}
 
 
 
@@ -328,11 +344,11 @@ void CProp_Portal::DelayedPlacementThink( void )
 	// Bad surface and near fizzle effects take priority
 	if ( m_iDelayedFailure != PORTAL_FIZZLE_BAD_SURFACE && m_iDelayedFailure != PORTAL_FIZZLE_NEAR_BLUE && m_iDelayedFailure != PORTAL_FIZZLE_NEAR_RED )
 	{
-		if ( IsPortalOverlappingOtherPortals( this, m_vDelayedPosition, m_qDelayedAngles ) )
+		if ( IsPortalOverlappingOtherPortals( this, m_vDelayedPosition, m_qDelayedAngles, GetHalfWidth(), GetHalfHeight()) )
 		{
 			m_iDelayedFailure = PORTAL_FIZZLE_OVERLAPPED_LINKED;
 		}
-		else if ( IsPortalIntersectingNoPortalVolume( m_vDelayedPosition, m_qDelayedAngles, vForward ) )
+		else if ( IsPortalIntersectingNoPortalVolume( m_vDelayedPosition, m_qDelayedAngles, vForward, GetHalfWidth(), GetHalfHeight()) )
 		{
 			m_iDelayedFailure = PORTAL_FIZZLE_BAD_VOLUME;
 		}
@@ -1917,6 +1933,58 @@ void CProp_Portal::UpdatePortalDetectorsOnPortalActivated( void )
 	}
 }
 #endif
+
+void CProp_Portal::UpdateCollisionShape(void)
+{
+	if (m_pCollisionShape)
+	{
+		physcollision->DestroyCollide(m_pCollisionShape);
+		m_pCollisionShape = NULL;
+	}
+
+	Vector vLocalMins = GetLocalMins();
+	Vector vLocalMaxs = GetLocalMaxs();
+
+	//create the collision shape.... TODO: consider having one shared collideable between all portals
+	float fPlanes[6 * 4];
+	fPlanes[(0 * 4) + 0] = 1.0f;
+	fPlanes[(0 * 4) + 1] = 0.0f;
+	fPlanes[(0 * 4) + 2] = 0.0f;
+	fPlanes[(0 * 4) + 3] = vLocalMaxs.x;
+
+	fPlanes[(1 * 4) + 0] = -1.0f;
+	fPlanes[(1 * 4) + 1] = 0.0f;
+	fPlanes[(1 * 4) + 2] = 0.0f;
+	fPlanes[(1 * 4) + 3] = -vLocalMins.x;
+
+	fPlanes[(2 * 4) + 0] = 0.0f;
+	fPlanes[(2 * 4) + 1] = 1.0f;
+	fPlanes[(2 * 4) + 2] = 0.0f;
+	fPlanes[(2 * 4) + 3] = vLocalMaxs.y;
+
+	fPlanes[(3 * 4) + 0] = 0.0f;
+	fPlanes[(3 * 4) + 1] = -1.0f;
+	fPlanes[(3 * 4) + 2] = 0.0f;
+	fPlanes[(3 * 4) + 3] = -vLocalMins.y;
+
+	fPlanes[(4 * 4) + 0] = 0.0f;
+	fPlanes[(4 * 4) + 1] = 0.0f;
+	fPlanes[(4 * 4) + 2] = 1.0f;
+	fPlanes[(4 * 4) + 3] = vLocalMaxs.z;
+
+	fPlanes[(5 * 4) + 0] = 0.0f;
+	fPlanes[(5 * 4) + 1] = 0.0f;
+	fPlanes[(5 * 4) + 2] = -1.0f;
+	fPlanes[(5 * 4) + 3] = -vLocalMins.z;
+
+	CPolyhedron* pPolyhedron = GeneratePolyhedronFromPlanes(fPlanes, 6, 0.00001f, true);
+	Assert(pPolyhedron != NULL);
+	CPhysConvex* pConvex = physcollision->ConvexFromConvexPolyhedron(*pPolyhedron);
+	pPolyhedron->Release();
+	Assert(pConvex != NULL);
+	m_pCollisionShape = physcollision->ConvertConvexToCollide(&pConvex, 1);
+}
+
 void CProp_Portal::UpdatePortalLinkage( void )
 {
 	if( m_bActivated )
@@ -2249,6 +2317,45 @@ void CProp_Portal::NewLocation( const Vector &vOrigin, const QAngle &qAngles )
 	}
 }
 
+void CProp_Portal::Resize(float fHalfWidth, float fHalfHeight)
+{
+	if ((fHalfWidth == m_fNetworkHalfWidth) && (fHalfHeight == m_fNetworkHalfHeight))
+		return;
+
+	m_fNetworkHalfWidth = fHalfWidth;
+	m_fNetworkHalfHeight = fHalfHeight;
+
+	CProp_Portal* pLinked = m_hLinkedPortal;
+	if (pLinked)
+	{
+		if ((m_fNetworkHalfWidth != pLinked->m_fNetworkHalfWidth) || (m_fNetworkHalfHeight != pLinked->m_fNetworkHalfHeight))
+		{
+			//different portal sizes, unsupported, unlink. Scaling is a whole different ball of wax.
+			//if you're resizing both portals. They'll find eachother in UpdatePortalLinkage() once they're both resized.
+			m_hLinkedPortal = NULL;
+			m_PortalSimulator.DetachFromLinked();
+			pLinked->m_hLinkedPortal = NULL;
+			pLinked->m_PortalSimulator.DetachFromLinked();
+		}
+	}
+
+	UpdateCollisionShape();
+	ResetModel();
+	Vector vOrigin = GetAbsOrigin();
+	QAngle qAngles = GetAbsAngles();
+	if (VerifyPortalPlacement(this, vOrigin, qAngles, m_fNetworkHalfWidth, m_fNetworkHalfHeight, PORTAL_PLACED_BY_PEDESTAL) < 1.0f)
+	{
+		m_bActivated = false; //we can't support the current placement. Disable the portal
+		m_PortalSimulator.DetachFromLinked();
+		Fizzle();
+	}
+
+	if (pLinked)
+		pLinked->UpdatePortalLinkage();
+
+	UpdatePortalLinkage();
+}
+
 void CProp_Portal::InputSetActivatedState( inputdata_t &inputdata )
 {
 	m_bActivated = inputdata.value.Bool();
@@ -2272,13 +2379,13 @@ void CProp_Portal::InputSetActivatedState( inputdata_t &inputdata )
 		QAngle qAngles;
 		VectorAngles( tr.plane.normal, vUp, qAngles );
 
-		float fPlacementSuccess = VerifyPortalPlacement( this, tr.endpos, qAngles, PORTAL_PLACED_BY_FIXED );
+		float fPlacementSuccess = VerifyPortalPlacement( this, tr.endpos, qAngles, PORTAL_PLACED_BY_FIXED, GetHalfWidth(), GetHalfHeight());
 		PlacePortal( tr.endpos, qAngles, fPlacementSuccess );
 
 		// If the fixed portal is overlapping a portal that was placed before it... kill it!
 		if ( fPlacementSuccess )
 		{
-			IsPortalOverlappingOtherPortals( this, vOrigin, GetAbsAngles(), true );
+			IsPortalOverlappingOtherPortals( this, vOrigin, GetAbsAngles(), GetHalfWidth(), GetHalfHeight(), true );
 
 			CreateSounds();
 
@@ -2476,4 +2583,83 @@ const CUtlVector<CProp_Portal *> *CProp_Portal::GetPortalLinkageGroup( unsigned 
 }
 
 
+
+
+// Adds the PVS of the cluster where the portal's partner is placed to the parameter PVS.
+// NOTE: adds the *LINKED* portal's cluster, not the parameter portal.
+void AddPortalVisibilityToPVS(CProp_Portal* pPortal, int outputpvslength, unsigned char* outputpvs)
+{
+	Assert(pPortal);
+	if (pPortal && pPortal->IsActivedAndLinked())
+	{
+		CProp_Portal* pLinked = pPortal->m_hLinkedPortal.Get();
+		int iCluster = engine->GetClusterForOrigin(pLinked->GetAbsOrigin());
+
+		// get the pvs for the linked portal's cluster
+		byte	pvs[MAX_MAP_LEAFS / 8];
+		engine->GetPVSForCluster(iCluster, sizeof(pvs), pvs);
+
+		// include what the portal can see in the parameter pvs
+		for (int i = 0; i < outputpvslength; i++)
+		{
+			outputpvs[i] |= pvs[i];
+		}
+	}
+}
+
+// Hands out linkage IDs in order. If somebody has taken the slot, it walks to a free one and picks that as the new starting location.
+static unsigned char s_iBestGuessUnusedLinkageID = 0;
+unsigned char UTIL_GetUnusedLinkageID(void)
+{
+	if (s_PortalLinkageGroups[s_iBestGuessUnusedLinkageID].Count() == 0)
+	{
+		// early out for best guess 
+		return s_iBestGuessUnusedLinkageID++;
+	}
+	else
+	{
+		// walk all linkage groups for a free one
+		for (int i = 0; i < 256; ++i)
+		{
+			if (s_PortalLinkageGroups[i].Count() == 0)
+			{
+				s_iBestGuessUnusedLinkageID = i + 1;
+				return i;
+			}
+		}
+	}
+
+	Warning("*** All portal linkage IDs in use! ***\nThere may be >254 portal pairs, or some bug causing the linkage IDs not to be freed up.\n");
+	Assert(0);
+	return PORTAL_LINKAGE_GROUP_INVALID;
+}
+
+
+
+
+//------------------------------------------------------------------------------
+// Purpose: Create an NPC of the given type
+//------------------------------------------------------------------------------
+void CC_Resize_Portals(const CCommand& args)
+{
+	if (args.ArgC() < 3)
+	{
+		Warning("syntax: Portals_ResizeAll [half width] [half height]\n");
+		return;
+	}
+
+	float fHalfWidth = atof(args[1]);
+	float fHalfHeight = atof(args[2]);
+
+	int iPortalCount = CProp_Portal_Shared::AllPortals.Count();
+
+	for (int i = 0; i != iPortalCount; ++i)
+	{
+		CProp_Portal_Shared::AllPortals[i]->Resize(fHalfWidth, fHalfHeight);
+	}
+
+	CProp_Portal::s_DefaultPortalHalfWidth = fHalfWidth;
+	CProp_Portal::s_DefaultPortalHalfHeight = fHalfHeight;
+}
+static ConCommand Portals_ResizeAll("Portals_ResizeAll", CC_Resize_Portals, "Resizes all portals (for testing), Portals_ResizeAll [half width] [half height]", FCVAR_CHEAT);
 

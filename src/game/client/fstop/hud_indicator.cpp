@@ -449,7 +449,7 @@ const float HELPER_FADE_OUT_DURATION = 0.1f;
 //-----------------------------------------------------------------------------
 void CHudControlHelper::MsgFunc_ControlHelperAnimate( bf_read &msg )
 {
-	bool bClear = msg.ReadByte();
+	bool bClear = (msg.ReadByte() != 0);
 	if ( bClear )
 	{
 		m_flDisplayTime = gpGlobals->curtime + HELPER_FADE_OUT_DURATION;
