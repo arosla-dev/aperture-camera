@@ -258,7 +258,26 @@ CON_COMMAND(r_cheapwaterend, "")
 }
 
 
+struct AperturePhotoViewQueue_t
+{
+	EHANDLE hEnt;
+	ITexture* pTexture;
+	int iFailedTries;
+};
+CUtlVector<AperturePhotoViewQueue_t> g_AperturePhotoQueue;
 
+void Aperture_QueuePhotoView(EHANDLE hPhotoEntity, ITexture* pRenderTarget)
+{
+	if (pRenderTarget == NULL)
+		return;
+
+	AperturePhotoViewQueue_t temp;
+	temp.hEnt = hPhotoEntity;
+	temp.pTexture = pRenderTarget;
+	temp.iFailedTries = 0;
+
+	g_AperturePhotoQueue.AddToTail(temp);
+}
 
 
 
