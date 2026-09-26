@@ -468,7 +468,7 @@ void CWeaponPlacement::CancelPlacement(void)
 		return;
 
 	pPlayer->ControlHelperAnimate(CONTROL_STATE_NEUTRAL);
-	pPlayer->SwitchToNextBestWeapon(this);
+	pPlayer->SelectItem("weapon_placement");
 }
 
 //-----------------------------------------------------------------------------

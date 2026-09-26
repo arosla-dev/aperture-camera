@@ -459,6 +459,10 @@ bool UTIL_ObjectMayBeCaptured( CBaseEntity *pObject )
 	// Ragdolls cannot currently be picked up
 	if ( FClassnameIs( pObject, "prop_ragdoll" ) )
 		return false;
+	
+	//p1llowguy - dont photo this
+	if (FClassnameIs(pObject, "npc_android"))
+		return false;
 
 	return true;
 }
@@ -852,7 +856,7 @@ void CWeaponCamera::PrimaryAttack( void )
 
 	// Once we've captured, switch to another weapon
 	pPlayer->ControlHelperAnimate( CONTROL_STATE_NEUTRAL );
-	pPlayer->SwitchToNextBestWeapon( this );
+	pPlayer->SelectItem("weapon_placement");
 }
 
 //-----------------------------------------------------------------------------
