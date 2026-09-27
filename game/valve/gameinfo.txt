@@ -1,7 +1,7 @@
 "GameInfo"
 {
-	"game"		"Valve"
-	"title"		"Valve"
+	"game"		"Aperture Sandbox"
+	"title"		"Aperture Sandbox"
 	"type"		"singleplayer_only"
 	GameData	"portalretract_part2.fgd"
 	InstancePath "tilegen/instances/"
