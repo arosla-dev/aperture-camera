@@ -8,7 +8,7 @@
 #include "monstermaker.h"
 #include "ai_basenpc.h"
 
-#if 0 //TODO - make it works?
+#if 1 //TODO - make it works?
 class CPropTombstone : public CBaseAnimating
 {
 public:
@@ -19,7 +19,6 @@ public:
 	virtual void Spawn( void );
 	virtual bool CreateVPhysics( void );
 	virtual void Precache( void );
-	virtual ICapturedObjectPlacementQuery *GetPlacementQuery( void );
 	virtual void OnReleased( void );
 	virtual void DeathNotice( CBaseEntity *pVictim );
 
@@ -280,9 +279,4 @@ CPropTombstone_PlacementQuery g_PropTombstone_PlacementQuery;
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-
-ICapturedObjectPlacementQuery *CPropTombstone::GetPlacementQuery( void ) 
-{ 
-	return &g_PropTombstone_PlacementQuery; 
-}
 #endif
