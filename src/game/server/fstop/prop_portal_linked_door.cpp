@@ -17,7 +17,7 @@
 #define PORTAL_LINKED_DOOR_MODEL_NAME "models/props/portaldoor.mdl"
 #define PORTAL_LINKED_DOOR_RESTING_SURFACE_TRACE_DIST 1.5f
 
-
+#if 0
 class CPropPortalLinkedDoor : public CBaseAnimating
 {
 public:
@@ -496,3 +496,4 @@ void CPropPortalLinkedDoor::DisableLinkageThink( void )
 {
 	DisableLinkage();
 }
+#endif

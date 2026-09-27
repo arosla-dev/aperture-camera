@@ -126,7 +126,7 @@ protected:
 //============================================================================================================
 LINK_ENTITY_TO_CLASS( prop_monopole, CMonopole );
 
-const char MAGNET_MODEL_NAME[] = "models/props_farm/magnet.mdl";
+const char MAGNET_MODEL_NAME[] = "models/props_c17/canister01a.mdl";
 
 // BUGBUG: This won't work!  Right now you can't save physics pointers inside an embedded type!
 BEGIN_SIMPLE_DATADESC( attached_objects_t )

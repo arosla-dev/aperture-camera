@@ -1,4 +1,4 @@
-﻿//========= Copyright � 1996-2005, Valve Corporation, All rights reserved. ============//
+﻿//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Portal mod render targets are specified by and accessable through this singleton
 //
@@ -13,6 +13,7 @@ extern CApertureRenderTargets* aperturerendertargets;
 
 void CApertureRenderTargets::InitLargePhotoTextures(IMaterialSystem* pMaterialSystem)
 {
+	Msg("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
 	for (int i = 0; i != ARRAYSIZE(m_LargePhotoTextures); ++i)
 	{
 		char szName[256];

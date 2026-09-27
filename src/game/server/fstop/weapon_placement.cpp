@@ -603,9 +603,6 @@ bool CWeaponPlacement::Holster(CBaseCombatWeapon *pSwitchingTo)
 	return BaseClass::Holster(pSwitchingTo);
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Display and update the photo placement preview item (move to the client!)
-//-----------------------------------------------------------------------------
 void CWeaponPlacement::ItemPostFrame(void)
 {
 	// FIXME: Break out the bits we need so that we can override the button handling, but allow the base class
@@ -613,22 +610,9 @@ void CWeaponPlacement::ItemPostFrame(void)
 
 	// BaseClass::ItemPostFrame();
 
-	CPortal_Player *pOwner = (CPortal_Player *)ToBasePlayer(GetOwner());
+	CPortal_Player* pOwner = (CPortal_Player*)ToBasePlayer(GetOwner());
 	if (pOwner == NULL)
 		return;
-
-	Assert(pOwner);
-	if (pOwner)
-	{
-		CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (pOwner->Weapon_OwnsThisType("weapon_camera"));
-
-		// if they have a weapon camera, it may restrict their ability to scale objects.
-		if (pCamera)
-		{
-			if (!pCamera->CanScaleCapturedObjects())
-				return;
-		}
-	}
 
 	bool bWeaponActed = false;
 	if (m_flNextPrimaryAttack < gpGlobals->curtime)
@@ -650,13 +634,20 @@ void CWeaponPlacement::ItemPostFrame(void)
 		}
 	}
 
-	if (pOwner)
-	{
-		pOwner->SetPlacingPhoto(m_bInPlacementMode);
-	}
-
 	if (pOwner->m_nButtons & IN_GRENADE1)
 	{
+		if (pOwner)
+		{
+			CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (pOwner->Weapon_OwnsThisType("weapon_camera"));
+
+			// if they have a weapon camera, it may restrict their ability to scale objects.
+			if (pCamera)
+			{
+				if (!pCamera->CanScaleCapturedObjects())
+					return;
+			}
+		}
+
 		// Ignore the message if we're not placing
 		if (m_bInPlacementMode == false)
 			return;
@@ -685,6 +676,18 @@ void CWeaponPlacement::ItemPostFrame(void)
 
 	if (pOwner->m_nButtons & IN_GRENADE2)
 	{
+		if (pOwner)
+		{
+			CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (pOwner->Weapon_OwnsThisType("weapon_camera"));
+
+			// if they have a weapon camera, it may restrict their ability to scale objects.
+			if (pCamera)
+			{
+				if (!pCamera->CanScaleCapturedObjects())
+					return;
+			}
+		}
+
 		// Ignore the message if we're not placing
 		if (m_bInPlacementMode == false)
 			return;
@@ -717,6 +720,12 @@ void CWeaponPlacement::ItemPostFrame(void)
 		WeaponIdle();
 	}
 
+	CPortal_Player* pPlayer = (CPortal_Player*)ToBasePlayer(GetOwner());
+	if (pPlayer)
+	{
+		pPlayer->SetPlacingPhoto(m_bInPlacementMode);
+	}
+
 	// At this point, the primary attacks may have removed our photo preview
 	if (m_hPhotoPreview == NULL)
 		return;
@@ -741,7 +750,7 @@ void CWeaponPlacement::ItemPostFrame(void)
 	float flScale = RemapValClamped(m_hPhotoPreview->GetModelScale(), flLowScale, flHighScale, 1.0f, 0.0f);
 	flScale = Bias(flScale, 0.05f);
 
-	CBaseViewModel *vm = ToBasePlayer(GetOwner())->GetViewModel();
+	CBaseViewModel* vm = ToBasePlayer(GetOwner())->GetViewModel();
 	if (vm != NULL)
 	{
 		vm->SetPoseParameter("photo_scale", flScale);

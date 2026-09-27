@@ -43,20 +43,20 @@ class CHudPhotoInventory : public EditablePanel, public CHudElement
 	DECLARE_CLASS_SIMPLE(CHudPhotoInventory, EditablePanel);
 
 public:
-	CHudPhotoInventory(const char *pElementName);
+	CHudPhotoInventory(const char* pElementName);
 
-	void MsgFunc_InventoryFlash(bf_read &msg);
-	void MsgFunc_TakePhoto(bf_read &msg);
+	void MsgFunc_InventoryFlash(bf_read& msg);
+	void MsgFunc_TakePhoto(bf_read& msg);
 
 protected:
 	virtual void Reset(void);
 	virtual void Init(void);
-	virtual void ApplySchemeSettings(vgui::IScheme *scheme);
+	virtual void ApplySchemeSettings(vgui::IScheme* scheme);
 	virtual void Paint(void);
 	virtual bool ShouldDraw(void);
 
 	void PaintSlot(int nSlot, bool bExists, bool bSelected);
-	void GetGlobalsStates(float &flScale, float &flAlpha);
+	void GetGlobalsStates(float& flScale, float& flAlpha);
 	void UpdatePlacingTransition(void);
 
 private:
@@ -103,9 +103,9 @@ PRECACHE_REGISTER_END()
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
-CHudPhotoInventory::CHudPhotoInventory(const char *pElementName) : CHudElement(pElementName), BaseClass(NULL, "HudPhotoInventory")
+CHudPhotoInventory::CHudPhotoInventory(const char* pElementName) : CHudElement(pElementName), BaseClass(NULL, "HudPhotoInventory")
 {
-	vgui::Panel *pParent = GetClientMode()->GetViewport();
+	vgui::Panel* pParent = GetClientMode()->GetViewport();
 	SetParent(pParent);
 
 	SetHiddenBits(HIDEHUD_PLAYERDEAD);
@@ -169,7 +169,7 @@ void CHudPhotoInventory::Reset(void)
 //-----------------------------------------------------------------------------
 // Purpose: sets scheme colors
 //-----------------------------------------------------------------------------
-void CHudPhotoInventory::ApplySchemeSettings(vgui::IScheme *scheme)
+void CHudPhotoInventory::ApplySchemeSettings(vgui::IScheme* scheme)
 {
 	LoadControlSettings("Resource/PhotoInventory.res");
 	BaseClass::ApplySchemeSettings(scheme);
@@ -202,7 +202,7 @@ bool CHudPhotoInventory::ShouldDraw(void)
 	if (!cl_force_draw_photo_inventory.GetBool())
 		return false; // FIXME: This hud element is redundant to the photo being carried 
 
-	C_BaseHLPlayer *pPlayer = dynamic_cast<C_BaseHLPlayer *>(C_BasePlayer::GetLocalPlayer());
+	C_BaseHLPlayer* pPlayer = dynamic_cast<C_BaseHLPlayer*>(C_BasePlayer::GetLocalPlayer());
 	if (pPlayer == NULL)
 		return false;
 
@@ -235,7 +235,7 @@ bool CHudPhotoInventory::ShouldDraw(void)
 //-----------------------------------------------------------------------------
 // Purpose: Setup our long fades above all other animations
 //-----------------------------------------------------------------------------
-void CHudPhotoInventory::GetGlobalsStates(float &flScale, float &flAlpha)
+void CHudPhotoInventory::GetGlobalsStates(float& flScale, float& flAlpha)
 {
 	flScale = 1.0f;
 	flAlpha = 1.0f;
@@ -476,7 +476,7 @@ void CHudPhotoInventory::Paint(void)
 	int screenWide, screenTall;
 	GetHudSize(screenWide, screenTall);
 
-	C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
+	C_BaseHLPlayer* pPlayer = (C_BaseHLPlayer*)C_BasePlayer::GetLocalPlayer();
 	if (pPlayer == NULL)
 		return;
 
@@ -516,9 +516,9 @@ void CHudPhotoInventory::Paint(void)
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudPhotoInventory::MsgFunc_InventoryFlash(bf_read &msg)
+void CHudPhotoInventory::MsgFunc_InventoryFlash(bf_read& msg)
 {
-	C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
+	C_BaseHLPlayer* pPlayer = (C_BaseHLPlayer*)C_BasePlayer::GetLocalPlayer();
 	if (pPlayer == NULL)
 		return;
 
@@ -567,11 +567,11 @@ void CHudPhotoInventory::MsgFunc_InventoryFlash(bf_read &msg)
 	}
 }
 
-void Aperture_QueuePhotoView(EHANDLE hPhotoEntity, ITexture *pRenderTarget); //lives in viewrender.cpp
+void Aperture_QueuePhotoView(EHANDLE hPhotoEntity, ITexture* pRenderTarget); //lives in viewrender.cpp
 
-void CHudPhotoInventory::MsgFunc_TakePhoto(bf_read &msg)
+void CHudPhotoInventory::MsgFunc_TakePhoto(bf_read& msg)
 {
-	C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
+	C_BaseHLPlayer* pPlayer = (C_BaseHLPlayer*)C_BasePlayer::GetLocalPlayer();
 	if (pPlayer == NULL)
 		return;
 
@@ -592,7 +592,7 @@ void CHudPhotoInventory::MsgFunc_TakePhoto(bf_read &msg)
 
 	//copy to texture
 	//CMatRenderContextPtr pRenderContext( materials );
-	ITexture *pPhotoTexture = aperturerendertargets->GetLargePhotoRenderTarget(iSlot);
+	ITexture* pPhotoTexture = aperturerendertargets->GetLargePhotoRenderTarget(iSlot);
 	Assert(pPhotoTexture);
 	if (pPhotoTexture)
 	{

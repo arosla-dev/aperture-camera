@@ -17,9 +17,6 @@
 // FIX ME
 #include "portal_shareddefs.h"
 
-// This is for portals not yet linked.
-#define PORTAL_LINKAGE_GROUP_INVALID 255
-
 static const char *s_pDelayedPlacementContext = "DelayedPlacementContext";
 static const char *s_pTestRestingSurfaceContext = "TestRestingSurfaceContext";
 static const char *s_pFizzleThink = "FizzleThink";
@@ -133,8 +130,6 @@ public:
 
 	virtual void			PortalSimulator_TookOwnershipOfEntity( CBaseEntity *pEntity );
 	virtual void			PortalSimulator_ReleasedOwnershipOfEntity( CBaseEntity *pEntity );
-
-
 	
 	// Add or remove listeners
 	void					AddPortalEventListener( EHANDLE hListener );
@@ -148,12 +143,8 @@ private:
 	CPhysCollide			*m_pCollisionShape;
 	void					RemovePortalMicAndSpeaker();	// Cleans up the portal's internal audio members
 	void					UpdateCorners( void );			// Updates the four corners of this portal on spawn and placement
-	void					UpdateCollisionShape(void);
 
 	QAngle					m_qLastPortalAngles;
-
-	CNetworkVar(float, m_fNetworkHalfWidth);
-	CNetworkVar(float, m_fNetworkHalfHeight);
 
 public:
 	inline unsigned char	GetLinkageGroup( void ) const { return m_iLinkageGroupID; };
@@ -162,26 +153,8 @@ public:
 	//find a portal with the designated attributes, or creates one with them, favors active portals over inactive
 	static CProp_Portal		*FindPortal( unsigned char iLinkageGroupID, bool bPortal2, bool bCreateIfNothingFound = false );
 	static const CUtlVector<CProp_Portal *> *GetPortalLinkageGroup( unsigned char iLinkageGroupID );
-
-	inline float			GetHalfWidth(void) const { return m_fNetworkHalfWidth; }
-	inline float			GetHalfHeight(void) const { return m_fNetworkHalfHeight; }
-	inline Vector			GetLocalMins(void) const { return Vector(0.0f, -m_fNetworkHalfWidth, -m_fNetworkHalfHeight); }
-	inline Vector			GetLocalMaxs(void) const { return Vector(64.0f, m_fNetworkHalfWidth, m_fNetworkHalfHeight); }
-	//inline void				SetHalfSizes( float fHalfWidth, float fHalfHeight ) { m_fHalfWidth = fHalfWidth; m_fHalfHeight = fHalfHeight; }
-
-	void					Resize(float fHalfWidth, float fHalfHeight);
-
-	friend class CPropPortalTunnel;
-
-	static float			s_DefaultPortalHalfWidth;
-	static float			s_DefaultPortalHalfHeight;
-
-	//NULL portal will return default width/height
-	static void				GetPortalSize(float& fHalfWidth, float& fHalfHeight, CProp_Portal* pPortal = NULL);
 };
 
-// Finds a free linkage id for a portal.
-unsigned char UTIL_GetUnusedLinkageID(void);
 
 //-----------------------------------------------------------------------------
 // inline state querying methods

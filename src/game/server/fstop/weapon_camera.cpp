@@ -1064,6 +1064,34 @@ void CWeaponCamera::ItemPostFrame( void )
 		}
 	}
 
+	float flTargetFOV = pOwner->GetFOV();
+	if (pOwner->m_nButtons & IN_GRENADE1)
+	{
+		if (!m_bCanZoom)
+			return;
+
+		// We can only do this if we're in the viewfinder
+		if (m_bInViewfinder == false)
+			return;
+
+		flTargetFOV -= CAMERA_FOV_INCR;
+		flTargetFOV = clamp(flTargetFOV, CAMERA_FOV_MIN, CAMERA_FOV_MAX);
+		pOwner->SetFOV(this, flTargetFOV, CAMERA_FOV_RATE);
+	}
+	else if (pOwner->m_nButtons & IN_GRENADE2)
+	{
+		if (!m_bCanZoom)
+			return;
+
+		// We can only do this if we're in the viewfinder
+		if (m_bInViewfinder == false)
+			return;
+
+		flTargetFOV += CAMERA_FOV_INCR;
+		flTargetFOV = clamp(flTargetFOV, CAMERA_FOV_MIN, CAMERA_FOV_MAX);
+		pOwner->SetFOV(this, flTargetFOV, CAMERA_FOV_RATE);
+	}
+
 	// Do nothing
 	if ( bWeaponActed == false )
 	{
@@ -1075,6 +1103,36 @@ void CWeaponCamera::ItemPostFrame( void )
 
 	// Update our depth-of-field effect
 	UpdateDOF( false );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: Mouse wheelin'
+//-----------------------------------------------------------------------------
+void CWeaponCamera::OnMouseWheel(int nDirection)
+{
+	if (!m_bCanZoom)
+		return;
+
+	// We can only do this if we're in the viewfinder
+	if (m_bInViewfinder == false)
+		return;
+
+	CBasePlayer* pPlayer = ToBasePlayer(GetOwner());
+	if (pPlayer == NULL)
+		return;
+
+	float flTargetFOV = pPlayer->GetFOV();
+	if (pPlayer->m_nButtons & IN_GRENADE1)
+	{
+		flTargetFOV -= CAMERA_FOV_INCR;
+	}
+	else if (pPlayer->m_nButtons & IN_GRENADE2)
+	{
+		flTargetFOV += CAMERA_FOV_INCR;
+	}
+
+	flTargetFOV = clamp(flTargetFOV, CAMERA_FOV_MIN, CAMERA_FOV_MAX);
+	pPlayer->SetFOV(this, flTargetFOV, CAMERA_FOV_RATE);
 }
 
 void CWeaponCamera::InputSetNumCaptureSlots( inputdata_t& input )

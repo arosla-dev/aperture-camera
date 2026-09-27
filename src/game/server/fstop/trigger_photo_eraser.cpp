@@ -71,7 +71,7 @@ public:
 		{
 			// We want to hit camera traces!
 			SetCollisionGroup(COLLISION_GROUP_WEAPON);
-			RemoveSolidFlags( FSOLID_NOT_SOLID ); // HACK: We want camera traces to hit this!
+			RemoveSolidFlags( SOLID_VPHYSICS ); // HACK: We want camera traces to hit this!
 		}
 	}
 
@@ -97,13 +97,13 @@ public:
 	virtual void Enable( void )
 	{
 		SetCollisionGroup(COLLISION_GROUP_WEAPON);
-		RemoveSolidFlags( FSOLID_NOT_SOLID ); // HACK: We want camera traces to hit this!
+		RemoveSolidFlags( SOLID_VPHYSICS ); // HACK: We want camera traces to hit this!
 	}
 
 	virtual void Disable( void )
 	{
 		SetCollisionGroup( COLLISION_GROUP_NONE );
-		AddSolidFlags( FSOLID_NOT_SOLID );
+		AddSolidFlags( SOLID_VPHYSICS );
 	}
 
 	DECLARE_DATADESC();

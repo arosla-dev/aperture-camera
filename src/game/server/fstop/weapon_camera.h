@@ -50,6 +50,7 @@ public:
 	virtual void	InputSetScaleAbility( inputdata_t& input );
 	virtual void	SetScaleAbility( bool bCanScale );
 	virtual void	SetViewModel(void);
+	virtual	void	OnMouseWheel(int nDirection);
 	
 	// Our first time picking up the camera causes an "admire" animation to kick off
 	virtual Activity GetDrawActivity( void ) 
