@@ -512,8 +512,6 @@ protected:
 	void			Draw3dSkyboxworld_Portal(const CViewSetup& view, int& nClearFlags, bool& bDrew3dSkybox, SkyboxVisibility_t& nSkyboxVisible, ITexture* pRenderTarget = NULL);
 #endif // PORTAL
 
-	void			ViewDrawPhoto(ITexture* pRenderTarget, C_BaseEntity* pEnt); //need a photo of an entity
-
 	// Determines what kind of water we're going to use
 	void			DetermineWaterRenderInfo(const VisibleFogVolumeInfo_t& fogVolumeInfo, WaterRenderInfo_t& info);
 

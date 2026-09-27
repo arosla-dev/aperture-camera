@@ -1,0 +1,12 @@
+UnlitGeneric
+{
+	// default photo texture, appears for errors
+	$basetexture "black"
+	
+	Proxies
+	{
+		PhotoMaterial
+		{
+		}
+	}
+}
