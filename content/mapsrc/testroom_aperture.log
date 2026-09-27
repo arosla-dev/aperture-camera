@@ -142,3 +142,143 @@ Level flags = 0
 Total triangle count: 2530
 Writing c:\sourcecode\aperture-camera\content\mapsrc\testroom_aperture.bsp
 3 seconds elapsed
+
+
+
+materialPath: C:\SourceCode\aperture-camera\game\valve\materials
+Loading c:\sourcecode\aperture-camera\content\mapsrc\testroom_aperture.vmf
+Could not locate GameData file portalretract_part2.fgd
+fixing up env_cubemap materials on brush sides...
+0...1...2...3...4...5...6...7...8...9...100...1...2...3...4...5...6...7...8...9...10Processing areas...done (0)
+Building Faces...done (0)
+Chop Details...done (0)
+Find Visible Detail Sides...
+Merged 160 detail faces...done (0)
+Merging details...done (0)
+FixTjuncs...
+PruneNodes...
+WriteBSP...
+done (0)
+writing c:\sourcecode\aperture-camera\content\mapsrc\testroom_aperture.prt...Building visibility clusters...
+done (0)
+Finding displacement neighbors...
+Finding lightmap sample positions...
+Displacement Alpha : 0...1...2...3...4...5...6...7...8...9...10
+Building Physics collision data...
+done (0) (118768 bytes)
+Error loading studio model "models/props_farm/chicken_nest.mdl"!
+Error! prop_static using model "models/props_c17/furnituretable002a.mdl", which must be used on a dynamic entity (i.e. prop_physics). Deleted.
+Error loading studio model "models/props_c17/furnituretable002a.mdl"!
+Placing detail props : 0...1...2...3...4...5...6...7...8...9...10
+Compacting texture/material tables...
+Reduced 490 texinfos to 213
+Reduced 20 texdatas to 19 (426 bytes to 401)
+Writing c:\sourcecode\aperture-camera\content\mapsrc\testroom_aperture.bsp
+0 seconds elapsed
+
+
+
+8 threads
+reading c:\sourcecode\aperture-camera\content\mapsrc\testroom_aperture.bsp
+reading c:\sourcecode\aperture-camera\content\mapsrc\testroom_aperture.prt
+  31 portalclusters
+  64 numportals
+0...1...2...3...4...5...6...7...8...9...100...1...2...3...4...5...6...7...8...9...10Optimized: 2 visible clusters (0.00%)
+Total clusters visible: 773
+Average clusters visible: 24
+Building PAS...
+Average clusters audible: 29
+visdatasize:498  compressed from 496
+writing c:\sourcecode\aperture-camera\content\mapsrc\testroom_aperture.bsp
+0 seconds elapsed
+
+
+
+[Reading texlights from 'lights.rad']
+[53 texlights parsed from 'lights.rad']
+
+Loading c:\sourcecode\aperture-camera\content\mapsrc\testroom_aperture.bsp
+928 faces
+263635 square feet [37963576.00 square inches]
+0 Displacements
+0 Square Feet [0.00 Square Inches]
+928 patches before subdivision
+30716 patches after subdivision
+5 direct lights
+0...1...2...3...4...5...6...7...8...9...100...1...2...3...4...5...6...7...8...9...10transfers 3445521, max 440
+transfer lists:  26.3 megs
+0...1...2...3...4...5...6...7...8...9...10	Bounce #1 added RGB(468381, 458694, 385397)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #2 added RGB(87987, 85450, 71279)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #3 added RGB(16198, 15663, 13065)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #4 added RGB(3244, 3123, 2599)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #5 added RGB(644, 617, 514)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #6 added RGB(133, 128, 106)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #7 added RGB(27, 26, 22)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #8 added RGB(6, 5, 5)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #9 added RGB(1, 1, 1)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #10 added RGB(0, 0, 0)
+Build Patch/Sample Hash Table(s).....Done<0.0069 sec>
+0...1...2...3...4...5...6...7...8...9...10FinalLightFace Done
+0 of 0 (0% of) surface lights went in leaf ambient cubes.
+0...1...2...3...4...5...6...7...8...9...10Writing leaf ambient...done
+Ready to Finish
+
+Object names       Objects/Maxobjs  Memory / Maxmem  Fullness 
+------------       ---------------  ---------------  -------- 
+models                  34/1024         1632/49152    ( 3.3%) 
+brushes                310/8192         3720/98304    ( 3.8%) 
+brushsides            2239/65536       17912/524288   ( 3.4%) 
+planes                1202/65536       24040/1310720  ( 1.8%) 
+vertexes              1599/65536       19188/786432   ( 2.4%) 
+nodes                  387/65536       12384/2097152  ( 0.6%) 
+texinfos               213/12288       15336/884736   ( 1.7%) 
+texdata                 19/2048          608/65536    ( 0.9%) 
+dispinfos                0/0               0/0        ( 0.0%) 
+disp_verts               0/0               0/0        ( 0.0%) 
+disp_tris                0/0               0/0        ( 0.0%) 
+disp_multiblend          0/0               0/0        ( 0.0%) 
+disp_lmsamples           0/0               0/0        ( 0.0%) 
+faces                  928/65536       51968/3670016  ( 1.4%) 
+hdr faces              928/65536       51968/3670016  ( 1.4%) 
+origfaces              754/65536       42224/3670016  ( 1.2%) 
+leaves                 422/65536       13504/2097152  ( 0.6%) 
+leaffaces             1116/65536        2232/131072   ( 1.7%) 
+leafbrushes            510/65536        1020/131072   ( 0.8%) 
+areas                    3/256            24/2048     ( 1.2%) 
+surfedges             7403/512000      29612/2048000  ( 1.4%) 
+edges                 4431/256000      17724/1024000  ( 1.7%) 
+LDR worldlights          0/8192            0/819200   ( 0.0%) 
+HDR worldlights          5/8192          500/819200   ( 0.1%) 
+leafwaterdata            0/32768           0/393216   ( 0.0%) 
+waterstrips             94/32768         940/327680   ( 0.3%) 
+waterverts               0/65536           0/786432   ( 0.0%) 
+waterindices          1605/65536        3210/131072   ( 2.4%) 
+cubemapsamples           3/1024           48/16384    ( 0.3%) 
+overlays                 6/512          2112/180224   ( 1.2%) 
+LDR lightdata         [variable]           0/0        ( 0.0%) 
+HDR lightdata         [variable]      502648/0        ( 0.0%) 
+visdata               [variable]         498/16777216 ( 0.0%) 
+entdata               [variable]       57119/393216   (14.5%) 
+LDR ambient table      422/65536        1688/262144   ( 0.6%) 
+HDR ambient table      422/65536        1688/262144   ( 0.6%) 
+LDR leaf ambient       422/65536       11816/1835008  ( 0.6%) 
+HDR leaf ambient      2043/65536       57204/1835008  ( 3.1%) 
+occluders                0/0               0/0        ( 0.0%) 
+occluder polygons        0/0               0/0        ( 0.0%) 
+occluder vert ind        0/0               0/0        ( 0.0%) 
+Prop Hull Verts          0/0               0/0        ( 0.0%) 
+Prop Hull Blob           0/0               0/0        ( 0.0%) 
+Prop Hull Lists          0/0               0/0        ( 0.0%) 
+Prop Hulls               0/0               0/0        ( 0.0%) 
+Prop Hull trilist        0/0               0/0        ( 0.0%) 
+detail props          [variable]           1/12       ( 8.3%) 
+static props          [variable]           1/1056     ( 0.1%) 
+pakfile               [variable]      297654/0        ( 0.0%) 
+physics               [variable]      118768/4194304  ( 2.8%) 
+physics terrain       [variable]           2/1048576  ( 0.0%) 
+
+Level flags = 0
+
+Total triangle count: 2532
+Writing c:\sourcecode\aperture-camera\content\mapsrc\testroom_aperture.bsp
+5 seconds elapsed

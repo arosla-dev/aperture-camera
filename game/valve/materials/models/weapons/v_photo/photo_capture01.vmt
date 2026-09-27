@@ -2,10 +2,13 @@
 {
 	"$model" "1"
 
+	"$refracttinttexture" "models/weapons/v_cam/photo_capture01"
+	
+	"$detail"  "models/weapons/v_cam/photograph_sheet"
 	"$detailscale" 1
 	"$detailblendfactor" 1
 	"$detailblendmode" 7
-	"$basetexture" "_rt_LargePhoto1"
+	"$basetexture" "models/weapons/v_cam/_rt_LargePhoto1"
 
 	"Proxies"
 	{

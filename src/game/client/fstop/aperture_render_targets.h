@@ -30,15 +30,14 @@ public:
 	virtual void InitClientRenderTargets(IMaterialSystem* pMaterialSystem, IMaterialSystemHardwareConfig* pHardwareConfig);
 	virtual void ShutdownClientRenderTargets();
 
-	ITexture* GetLargePhotoRenderTarget(int iIndex);
-	//ITexture *GetSmallPhotoRenderTarget( int iIndex );
+	ITexture *GetLargePhotoRenderTarget(int iIndex);
+	ITexture *GetSmallPhotoRenderTarget( int iIndex );
 
 private:
 	void InitLargePhotoTextures(IMaterialSystem* pMaterialSystem);
-	//void InitSmallPhotoTextures( IMaterialSystem* pMaterialSystem );
+	void InitSmallPhotoTextures( IMaterialSystem* pMaterialSystem );
 
 	CTextureReference m_LargePhotoTextures[3];
-	//CTextureReference m_SmallPhotoTextures[8];
+	CTextureReference m_SmallPhotoTextures[8];
 };
-
 extern CApertureRenderTargets* aperturerendertargets;

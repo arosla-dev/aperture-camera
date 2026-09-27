@@ -310,7 +310,6 @@ void CPropAirVent::Precache( void )
 	PrecacheModel( gFanModel );
 	PrecacheParticleSystem( "airvent_small" );
 	PrecacheScriptSound("Airboat_fan_idle");
-	PrecacheScriptSound("Airboat_fan_fullthrottle");
 }
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -502,7 +501,7 @@ void CPropAirVent::CreateParticles( int nScale )
 
 	case 4:
 		nSystemSize = 2;
-		EmitSound("Airboat_fan_fullthrottle");
+		EmitSound("Airboat_fan_idle");
 		break;
 	}
 
@@ -530,7 +529,6 @@ void CPropAirVent::OnCaptured( void )
 		m_hPushTrigger = NULL;
 
 		StopSound("Airboat_fan_idle");
-		StopSound("Airboat_fan_fullthrottle");
 	}
 
 	DestroyPhysicsHelpers();

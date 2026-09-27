@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "7397"
-	"mapversion" "345"
+	"mapversion" "347"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -32,13 +32,13 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "345"
+	"mapversion" "347"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
+	"maxblobcount" "250"
 	"maxpropscreenwidth" "-1"
 	"skyname" "sky_hydro_01"
-	"maxblobcount" "250"
 	solid
 	{
 		"id" "8299"
@@ -10477,8 +10477,8 @@ entity
 		{
 			"id" "4152"
 			"plane" "(-219 3846 32) (-595 3647 32) (-595 3647 464)"
-			"material" "SKYBOX/CLOUD001A"
-			"uaxis" "[0.883845 0.467779 0 -574.7] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0.883845 0.467779 0 -186] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -10553,8 +10553,8 @@ entity
 		{
 			"id" "4158"
 			"plane" "(-595 3647 32) (-782 3398 32) (-782 3398 464)"
-			"material" "SKYBOX/CLOUD001A"
-			"uaxis" "[0.600514 0.799614 0 -929.49] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0.600514 0.799614 0 -186] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -10629,8 +10629,8 @@ entity
 		{
 			"id" "4164"
 			"plane" "(-782 3398 32) (-848 3104 32) (-848 3104 464)"
-			"material" "SKYBOX/CLOUD001A"
-			"uaxis" "[0 1 0 -32] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0 1 0 -186] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -10705,8 +10705,8 @@ entity
 		{
 			"id" "4170"
 			"plane" "(561.837 3720.35 32) (270.87 3867.41 32) (270.872 3867.41 464)"
-			"material" "SKYBOX/CLOUD001C"
-			"uaxis" "[0.892483 -0.45108 0 -545.24] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0.892483 -0.45108 0 -33] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -10781,8 +10781,8 @@ entity
 		{
 			"id" "4176"
 			"plane" "(765.761 3485 32) (561.84 3720.34 32) (561.839 3720.35 464)"
-			"material" "SKYBOX/CLOUD001C"
-			"uaxis" "[0.654828 -0.755777 0 -302.14] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0.654828 -0.755777 0 -33] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -10857,8 +10857,8 @@ entity
 		{
 			"id" "4182"
 			"plane" "(830.23 3050.43 32) (765.76 3485 32) (765.76 3485 464)"
-			"material" "SKYBOX/CLOUD001C"
-			"uaxis" "[0.146751 -0.989173 0 900.31] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0.146751 -0.989173 0 -33] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -10959,8 +10959,8 @@ entity
 		{
 			"id" "4116"
 			"plane" "(-595 2405 32) (-219 2206 32) (-219 2206 464)"
-			"material" "SKYBOX/CLOUD001D"
-			"uaxis" "[0.883845 -0.467779 0 -815.7] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0.883845 -0.467779 0 -303.7] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -11035,7 +11035,7 @@ entity
 		{
 			"id" "4122"
 			"plane" "(-782 2654 32) (-595 2405 32) (-595 2405 464)"
-			"material" "SKYBOX/CLOUD001D"
+			"material" "NATURE/CLOUD001C"
 			"uaxis" "[0.600513 -0.799614 0 -186.22] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
@@ -11111,8 +11111,8 @@ entity
 		{
 			"id" "4128"
 			"plane" "(-848 2948 32) (-782 2654 32) (-782 2654 464)"
-			"material" "SKYBOX/CLOUD001D"
-			"uaxis" "[0.219038 -0.975716 0 1006.84] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0.219038 -0.975716 0 494.84] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -11187,8 +11187,8 @@ entity
 		{
 			"id" "4134"
 			"plane" "(124.128 2212.77 32) (437.812 2301.61 32) (437.812 2301.61 464)"
-			"material" "SKYBOX/CLOUD001B"
-			"uaxis" "[0.962155 0.272499 0 -722.41] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0.962155 0.272499 0 -210.41] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -11263,8 +11263,8 @@ entity
 		{
 			"id" "4140"
 			"plane" "(437.808 2301.61 32) (682.89 2493.73 32) (682.89 2493.73 464)"
-			"material" "SKYBOX/CLOUD001B"
-			"uaxis" "[0.787007 0.616943 0 -414.5] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0.787007 0.616943 0 -33] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -11339,8 +11339,8 @@ entity
 		{
 			"id" "4146"
 			"plane" "(682.889 2493.72 32) (829.092 2908 32) (829.092 2908 464)"
-			"material" "SKYBOX/CLOUD001B"
-			"uaxis" "[0.332798 0.942997 0 -917.42] 1"
+			"material" "NATURE/CLOUD001C"
+			"uaxis" "[0.332798 0.942997 0 -33] 1"
 			"vaxis" "[0 0 -1 -48] 1"
 			"rotation" "0"
 			"lightmapscale" "64"
@@ -31104,7 +31104,12 @@ entity
 }
 cameras
 {
-	"activecamera" "-1"
+	"activecamera" "0"
+	camera
+	{
+		"position" "[72.0107 2960.15 294.451]"
+		"look" "[-736.797 2678.42 61.7535]"
+	}
 }
 cordons
 {

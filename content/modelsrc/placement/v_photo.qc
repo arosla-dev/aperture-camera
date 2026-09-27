@@ -16,6 +16,7 @@ $illumposition -2.543 -20.788 -20.539
 
 $cdmaterials "models\weapons\"
 $cdmaterials "models\weapons\v_photo\"
+$cdmaterials "models\weapons\v_photo\"
 
 $attachment "controlpanel0_ur" "ValveBiped.Camera" -3 1.2 1.2 rotate 0 180 90
 $attachment "controlpanel0_ll" "ValveBiped.Camera" 2.8 1.2 -2.2 rotate 0 180 90
