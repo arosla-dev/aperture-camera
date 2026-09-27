@@ -10,18 +10,18 @@
 #pragma once
 #endif
 
-#include "basecombatweapon_shared.h"
+#include "basehlcombatweapon.h"
 #include "env_dof_controller.h"
 //-----------------------------------------------------------------------------
 // CWeaponCamera
 //-----------------------------------------------------------------------------
 
-class CWeaponCamera : public CBaseCombatWeapon
+class CWeaponCamera : public CBaseHLCombatWeapon
 {
 	DECLARE_DATADESC();
 
 public:
-	DECLARE_CLASS( CWeaponCamera, CBaseCombatWeapon );
+	DECLARE_CLASS( CWeaponCamera, CBaseHLCombatWeapon);
 
 	CWeaponCamera( void );
 	~CWeaponCamera( void );
@@ -40,7 +40,7 @@ public:
 	virtual float	GetFireRate( void ) { return 3.0f; }
 	virtual bool	HasAnyAmmo( void ) { return true; }
 	virtual void	ItemPostFrame( void );
-	virtual bool	Holster( CBaseCombatWeapon *pNextWeapon );
+	virtual bool	Holster(CBaseHLCombatWeapon*pNextWeapon );
 	virtual bool	CanScaleCapturedObjects( void ) const { return m_bCanScaleCapturedObjects; }
 
 	virtual void	InputSetNumCaptureSlots( inputdata_t& input );
@@ -49,18 +49,19 @@ public:
 	virtual void	SetZoomAbility( bool bCanZoom );
 	virtual void	InputSetScaleAbility( inputdata_t& input );
 	virtual void	SetScaleAbility( bool bCanScale );
+	virtual void	SetViewModel(void);
 	
 	// Our first time picking up the camera causes an "admire" animation to kick off
 	virtual Activity GetDrawActivity( void ) 
 	{ 
-		/*
+		
 		// FIXME: Ultimatley we'll want to do something like this for the player, but it's annoying for development for now
 		if ( m_bFirstPresentation ) 
 		{ 
 			m_bFirstPresentation = false; 
-			return ACT_VM_DEPLOY;
+			return ACT_VM_DRAW;
 		}
-		*/
+
 		
 		return BaseClass::GetDrawActivity();
 	}

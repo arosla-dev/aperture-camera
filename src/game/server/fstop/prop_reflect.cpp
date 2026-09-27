@@ -56,6 +56,8 @@ void CPropReflect::Spawn( void )
 
 	BaseClass::Spawn();
 
+	SetRenderColor(103, 104, 178);
+
 	// make this big enough to prevent us getting stuck
 	UTIL_CreateScaledPhysObject( this, 1.0f );
 	SetModelScale(1.0f);

@@ -6,7 +6,6 @@
 
 #include "cbase.h"
 #include "weapon_camera.h"
-#include "basehlcombatweapon.h"
 #include "basecombatcharacter.h"
 #include "ai_basenpc.h"
 #include "player.h"
@@ -37,10 +36,13 @@
 
 IPhysicsCollision *s_pPhysCollision = NULL;
 
-ConVar camera_capture_distance( "camera_capture_distance", "10000.0", FCVAR_CHEAT );
-ConVar camera_allow_zoom( "camera_allow_zoom", "1", FCVAR_CHEAT );
+ConVar sv_camera_capture_distance( "camera_capture_distance", "10000.0", FCVAR_CHEAT );
 ConVar sv_camera_debug_capture( "sv_camera_debug_capture", "0", FCVAR_CHEAT, "Highlights the camera's capture bounds and the potential capturable entities." );
 ConVar sv_camera_capture_box_size( "sv_camera_capture_box_size", "15", FCVAR_CHEAT );
+ConVar cl_camera_use_exposure_model("cl_camera_use_exposure_model", "0", FCVAR_ARCHIVE | FCVAR_CLIENTDLL, "use exposure models instead of SS one");
+
+#define CAMERA_DEFAULT "models/weapons/v_cam_ss.mdl"
+#define CAMERA_EXPOSURE "models/weapons/v_cam_expo.mdl"
 
 bool g_bAllOnCapturedChainedToBase;	// For catching errors in leaf classes
 
@@ -133,6 +135,9 @@ void CWeaponCamera::Precache( void )
 	PrecacheParticleSystem( "portal_dematerialize" );
 	PrecacheParticleSystem( "portal_rematerialize" );
 
+	PrecacheModel(CAMERA_DEFAULT);
+	PrecacheModel(CAMERA_EXPOSURE);
+
 	BaseClass::Precache();
 }
 
@@ -160,7 +165,7 @@ void CWeaponCamera::OnPickedUp( CBaseCombatCharacter *pNewOwner )
 //-----------------------------------------------------------------------------
 // Purpose: Stop any effects we're doing
 //-----------------------------------------------------------------------------
-bool CWeaponCamera::Holster( CBaseCombatWeapon *pNextWeapon )
+bool CWeaponCamera::Holster( CBaseHLCombatWeapon *pNextWeapon )
 {
 	if ( BaseClass::Holster( pNextWeapon ) == false )
 		return false;
@@ -286,7 +291,9 @@ CBaseEntity * CWeaponCamera::FindFirstCapturableObject( const Vector &vecOrigin,
 	}
 	else
 	{
+		//p1llowguy - obsolete
 		// Try capturing through portals
+		/*
 		CProp_Portal* pHitPortal = NULL;
 		Ray_t rayThroughPortals;
 		rayThroughPortals.Init( vecOrigin, vecEnd );
@@ -309,6 +316,7 @@ CBaseEntity * CWeaponCamera::FindFirstCapturableObject( const Vector &vecOrigin,
 			}
 
 		}
+		*/
 	}
 
 	// If we got something valid out of the direct point traces, take it.
@@ -462,6 +470,15 @@ bool UTIL_ObjectMayBeCaptured( CBaseEntity *pObject )
 	
 	//p1llowguy - dont photo this
 	if (FClassnameIs(pObject, "prop_portal"))
+		return false;
+
+	if (FClassnameIs(pObject, "prop_button"))
+		return false;
+
+	if (FClassnameIs(pObject, "prop_floor_button"))
+		return false;
+
+	if (FClassnameIs(pObject, "prop_portal_linked_door"))
 		return false;
 
 	//p1llowguy - just in case
@@ -1103,4 +1120,24 @@ void CWeaponCamera::InputSetScaleAbility( inputdata_t& input )
 void CWeaponCamera::SetScaleAbility( bool bCanScale )
 {
 	m_bCanScaleCapturedObjects = bCanScale;
+}
+
+void CWeaponCamera::SetViewModel(void)
+{
+	CBasePlayer* pOwner = ToBasePlayer(GetOwner());
+	if (pOwner == NULL)
+		return;
+
+	CBaseViewModel* vm = pOwner->GetViewModel(m_nViewModelIndex);
+	if (vm == NULL)
+		return;
+
+	if (cl_camera_use_exposure_model.GetBool())
+	{
+		vm->SetWeaponModel(CAMERA_EXPOSURE, this);
+	}
+	else
+	{
+		vm->SetWeaponModel(CAMERA_DEFAULT, this);
+	}
 }

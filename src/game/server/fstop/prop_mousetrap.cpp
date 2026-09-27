@@ -91,7 +91,7 @@ LINK_ENTITY_TO_CLASS( prop_mousetrap, CPropMousetrap );
 //-----------------------------------------------------------------------------
 void CPropMousetrap::Precache( void )
 {
-	PrecacheModel( "models/props_farm/mousetrap.mdl" );
+	PrecacheModel( "models/props_gameplay/mousetrap.mdl" );
 	PrecacheScriptSound( "Mousetrap.Snap" );
 }
 
@@ -221,7 +221,7 @@ void CPropMousetrap::Init_FullSized( void )
 void CPropMousetrap::Spawn( void )
 {
 	Precache();
-	SetModel( "models/props_farm/mousetrap.mdl" );
+	SetModel( "models/props_gameplay/mousetrap.mdl" );
 
 	BaseClass::Spawn();
 

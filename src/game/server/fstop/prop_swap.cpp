@@ -50,10 +50,12 @@ void CPropSwap::Precache( void )
 //-----------------------------------------------------------------------------
 void CPropSwap::Spawn( void )
 {
-//	m_bDoReflection = true;
-
 	Precache();
+
+	//p1llowguy - add model pls!
 	SetModel( "models/props/metal_box.mdl" );
+
+	SetRenderColor(7, 195, 198);
 
 	BaseClass::Spawn();
 

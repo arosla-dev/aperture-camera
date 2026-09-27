@@ -6,7 +6,7 @@
 
 #include "cbase.h"
 #include "player.h"
-#include "basecombatweapon.h"
+#include "basehlcombatweapon.h"
 #include "ai_basenpc.h"
 #include "portal_player.h"
 #include "in_buttons.h"
@@ -161,12 +161,12 @@ END_DATADESC()
 // CWeaponPlacement
 //-----------------------------------------------------------------------------
 
-class CWeaponPlacement : public CBaseCombatWeapon
+class CWeaponPlacement : public CBaseHLCombatWeapon
 {
 	DECLARE_DATADESC();
 
 public:
-	DECLARE_CLASS(CWeaponPlacement, CBaseCombatWeapon);
+	DECLARE_CLASS(CWeaponPlacement, CBaseHLCombatWeapon);
 
 	CWeaponPlacement(void);
 	~CWeaponPlacement(void);

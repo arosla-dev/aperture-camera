@@ -8,7 +8,7 @@
 #include "monstermaker.h"
 #include "ai_basenpc.h"
 
-#if 1 //TODO - make it works?
+#if 0 //TODO - make it works?
 class CPropTombstone : public CBaseAnimating
 {
 public:

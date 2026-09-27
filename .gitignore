@@ -6,3 +6,6 @@
 *.cache
 game/valve/cfg/config.cfg
 gave/bin/GameConfig.txt
+content/mapsrc/my_name_is_soli.vmx
+content/mapsrc/my_name_is_soli.log
+game/bin/hammer.vdf

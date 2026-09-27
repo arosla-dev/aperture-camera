@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+	$phong 1
+	$phongboost 5
+	$phongexponent 50
+	$phongfresnelranges "[.6 1 2]"
+	
+	$BASETEXTURE "models\weapons\v_cam\camera_albedo"
+	$BUMPMAP "models\weapons\v_cam\camera_bumpmap"
+}

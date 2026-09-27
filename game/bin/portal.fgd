@@ -1450,11 +1450,11 @@
 //f-stop 
 
 
-@PointClass base(Targetname, Parentname, Angles, BaseCapturable, PortalBase) studio("models/props/portaldoor.mdl") line(255 255 0, targetname, partnername) = prop_linked_portal_door :
-"A door which is linked by a portal to another 'prop_linked_portal_door' entity."
+@PointClass base(Targetname, Parentname, Angles, BaseCapturable, PortalBase) studio("models/props/portaldoor.mdl") line(255 255 0, targetname, partnername) = prop_portal_linked_door :
+"A door which is linked by a portal to another 'prop_portal_linked_door' entity."
 [
 	lightingorigin(target_destination) : "Lighting Origin" : "" : "Select an info_lighting to specify a location to sample lighting from for all gibs spawned by this shooter, instead of their own origins."
-	partnername(target_destination) : "Linked Partner" : : "Another 'prop_linked_portal_door' entity which will link to this one."
+	partnername(target_destination) : "Linked Partner" : : "Another 'prop_portal_linked_door' entity which will link to this one."
 
 	input SetPartner(string) : "Set a new partner door."
 	input Open(void) : "Open the door and cause the portal to activate."
