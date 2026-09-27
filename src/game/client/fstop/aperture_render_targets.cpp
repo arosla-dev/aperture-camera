@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+ï»¿//========= Copyright ï¿½ 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Portal mod render targets are specified by and accessable through this singleton
 //
@@ -16,7 +16,12 @@ void CApertureRenderTargets::InitLargePhotoTextures(IMaterialSystem* pMaterialSy
 	for (int i = 0; i != ARRAYSIZE(m_LargePhotoTextures); ++i)
 	{
 		char szName[256];
-		Q_snprintf(szName, sizeof(szName), "photo_rt");
+		if (i == 1)
+			Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto%1");
+		if (i == 2)
+			Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto%2");
+		if (i == 3)
+			Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto%3");
 
 		m_LargePhotoTextures[i].Init(pMaterialSystem->CreateNamedRenderTargetTextureEx2(
 			szName,
@@ -46,7 +51,7 @@ void CApertureRenderTargets::InitLargePhotoTextures(IMaterialSystem* pMaterialSy
 	}
 }*/
 
-ITexture *CApertureRenderTargets::GetLargePhotoRenderTarget(int iIndex)
+ITexture* CApertureRenderTargets::GetLargePhotoRenderTarget(int iIndex)
 {
 	if ((iIndex < 0) || (iIndex >= ARRAYSIZE(m_LargePhotoTextures)))
 		return NULL;

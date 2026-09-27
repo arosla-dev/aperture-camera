@@ -20,6 +20,7 @@
 #include "envmicrophone.h"
 #include "sceneentity.h"
 #include "closedcaptions.h"
+#include "fstop/photo.h"
 #else
 #include <vgui_controls/Controls.h>
 #include <vgui/IVgui.h>
@@ -29,8 +30,6 @@
 #endif
 #define CRecipientFilter C_RecipientFilter
 #endif
-
-
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -568,6 +567,42 @@ public:
 		{
 			params.pitch = ep.m_nPitch;
 		}
+
+#if !defined ( CLIENT_DLL )
+		// For portal2, effect the pitch of sounds emitted by scaled entities
+		if (UTIL_GetEntityScaleLevel(ent) != 0)
+		{
+			int iMinScaleLevel, iMaxScaleLevel;
+			int iScaleLevel = UTIL_GetEntityScaleLevel(ent, &iMinScaleLevel, &iMaxScaleLevel);
+
+			int iNewPitch = params.pitch;
+
+			// The biggest scale will halve original pitch, smallest will double it 
+			if (iScaleLevel < 0)
+			{
+				// if scale level is less than zero, this shouldn't happen, but it'll cause a div
+				// by zero so explicitly check and bail.
+				Assert(iMinScaleLevel > 0);
+				if (iMinScaleLevel > 0)
+				{
+					iNewPitch = RemapVal(abs(iScaleLevel), iMinScaleLevel, 0, params.pitch * 2, params.pitch);
+				}
+			}
+			else // iScaleLevel > 0 
+			{
+				// if scale level is greater than zero, this shouldn't happen, but it'll cause a div
+				// by zero so explicitly check and bail.
+				Assert(iMaxScaleLevel > 0);
+				if (iMaxScaleLevel > 0)
+				{
+					iNewPitch = RemapVal(iScaleLevel, 0, iMaxScaleLevel, params.pitch, params.pitch / 2);
+				}
+			}
+
+			params.pitch = iNewPitch;
+
+		}
+#endif // !CLIENT_DLL
 
 		if( ep.m_nFlags & SND_CHANGE_VOL )
 		{
