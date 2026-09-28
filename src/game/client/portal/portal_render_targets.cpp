@@ -224,7 +224,5 @@ void CPortalRenderTargets::ShutdownClientRenderTargets()
 }
 
 static CPortalRenderTargets g_PortalRenderTargets;
-#if 0
 EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CPortalRenderTargets, IClientRenderTargets, CLIENTRENDERTARGETS_INTERFACE_VERSION, g_PortalRenderTargets);
-#endif
 CPortalRenderTargets* portalrendertargets = &g_PortalRenderTargets;

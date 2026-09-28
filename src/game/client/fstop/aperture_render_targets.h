@@ -1,35 +1,43 @@
-//==== Copyright Â© 2017-2018, Lever Softworks, All rights reserved. ====//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
-// Purpose: F-STOP Render Targets
+// Purpose: Portal mod render targets are specified by and accessable through this singleton
 //
-//======================================================================//
-
-#ifndef FSTOP_RENDER_TARGETS_H
-#define FSTOP_RENDER_TARGETS_H
+//
+// $Workfile:     $
+// $Date:         $
+// $NoKeywords: $
+//=============================================================================//
+#define APERTURERENDERTARGETS_H_
 #ifdef _WIN32
 #pragma once
 #endif
 
 #include "portal_render_targets.h"
 
-class CFSTOPRenderTargets : public CPortalRenderTargets
+#ifndef APERTURERENDERTARGETS_H_ 
+#pragma message ( "This file should only be built with aperture builds" )
+#endif
+
+// externs
+class IMaterialSystem;
+class IMaterialSystemHardwareConfig;
+
+class CApertureRenderTargets : public CPortalRenderTargets
 {
 	// no networked vars
-	DECLARE_CLASS_GAMEROOT( CFSTOPRenderTargets, CPortalRenderTargets );
+	DECLARE_CLASS_GAMEROOT(CApertureRenderTargets, CPortalRenderTargets);
 public:
-	virtual void InitClientRenderTargets( IMaterialSystem* pMaterialSystem, IMaterialSystemHardwareConfig* pHardwareConfig );
+	virtual void InitClientRenderTargets(IMaterialSystem* pMaterialSystem, IMaterialSystemHardwareConfig* pHardwareConfig);
 	virtual void ShutdownClientRenderTargets();
 
-	ITexture* GetPhotoTexture( int n );
-
-	ITexture* GetLargePhotoRenderTarget(int iIndex);
+	ITexture *GetLargePhotoRenderTarget(int iIndex);
+	ITexture *GetSmallPhotoRenderTarget( int iIndex );
 
 private:
-	ITexture* CreateLargePhotoRT( IMaterialSystem* pMaterialSystem, int n );
+	void InitLargePhotoTextures(IMaterialSystem* pMaterialSystem);
+	void InitSmallPhotoTextures( IMaterialSystem* pMaterialSystem );
 
-	ITexture* m_PhotoTextures[3];
+	CTextureReference m_LargePhotoTextures[3];
+	CTextureReference m_SmallPhotoTextures[8];
 };
-
-extern CFSTOPRenderTargets* g_pFSTOPRenderTargets;
-
-#endif // FSTOP_RENDER_TARGETS_H
+extern CApertureRenderTargets* aperturerendertargets;

@@ -1,72 +1,101 @@
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//
+// Purpose: Portal mod render targets are specified by and accessable through this singleton
+//
+// $NoKeywords: $
+//=============================================================================//
 #include "cbase.h"
-
 #include "aperture_render_targets.h"
+#include "materialsystem\imaterialsystem.h"
+#include "rendertexture.h"
 
-// memdbgon must be the last include file in a .cpp file!!!
-#include "tier0/memdbgon.h"
+extern CApertureRenderTargets* aperturerendertargets;
 
-#define PHOTO_RT_NAME "_rt_LargePhoto%d"
-
-// create a photo render target
-ITexture* CFSTOPRenderTargets::CreateLargePhotoRT( IMaterialSystem* pMaterialSystem, int n )
+void CApertureRenderTargets::InitLargePhotoTextures(IMaterialSystem* pMaterialSystem)
 {
-	char name[128];
-	V_snprintf( name, 128, PHOTO_RT_NAME, n );
-	Msg("Created Photo RT: %s\n", name );
-	return pMaterialSystem->CreateNamedRenderTargetTextureEx2(
-		&name[0],
-		512, 512, RT_SIZE_OFFSCREEN,
-		pMaterialSystem->GetBackBufferFormat(),
-		MATERIAL_RT_DEPTH_SEPARATE,
-		TEXTUREFLAGS_CLAMPS | TEXTUREFLAGS_CLAMPT,
-		CREATERENDERTARGETFLAGS_HDR );
+	for (int i = 0; i != ARRAYSIZE(m_LargePhotoTextures); ++i)
+	{
+		char szName[256];
+		Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto%d", i + 1);
+
+		m_LargePhotoTextures[i].Init(pMaterialSystem->CreateNamedRenderTargetTextureEx2(
+			szName,
+			256, 256, RT_SIZE_DEFAULT,
+			IMAGE_FORMAT_RGB888,
+			//pMaterialSystem->GetBackBufferFormat(),
+			MATERIAL_RT_DEPTH_SHARED,
+			0,
+			CREATERENDERTARGETFLAGS_HDR));
+	}
 }
 
-ITexture* CFSTOPRenderTargets::GetLargePhotoRenderTarget(int iIndex)
+void CApertureRenderTargets::InitSmallPhotoTextures( IMaterialSystem* pMaterialSystem )
 {
-	if ((iIndex < 0) || (iIndex >= ARRAYSIZE(m_PhotoTextures)))
+	for( int i = 0; i != ARRAYSIZE( m_SmallPhotoTextures ); ++i )
+	{
+		char szName[256];
+		sprintf( szName, "_rt_SmallPhoto%d", i + 1 );
+
+		m_SmallPhotoTextures[i].Init( pMaterialSystem->CreateNamedRenderTargetTextureEx2(
+												szName,
+												32, 32, RT_SIZE_DEFAULT,
+												IMAGE_FORMAT_RGB888, //pMaterialSystem->GetBackBufferFormat(),
+												MATERIAL_RT_DEPTH_SHARED,
+												0,
+												CREATERENDERTARGETFLAGS_HDR ) );
+	}
+}
+
+ITexture* CApertureRenderTargets::GetLargePhotoRenderTarget(int iIndex)
+{
+	if ((iIndex < 0) || (iIndex >= ARRAYSIZE(m_LargePhotoTextures)))
 		return NULL;
 
-	return m_PhotoTextures[iIndex];
+	return m_LargePhotoTextures[iIndex];
 }
 
-void CFSTOPRenderTargets::InitClientRenderTargets( IMaterialSystem* pMaterialSystem, IMaterialSystemHardwareConfig* pHardwareConfig )
+ITexture *CApertureRenderTargets::GetSmallPhotoRenderTarget( int iIndex )
 {
-	for ( int i = 0; i < 3; i++ )
+	if( (iIndex < 0) || (iIndex >= ARRAYSIZE( m_SmallPhotoTextures )) )
+		return NULL;
+
+	return m_SmallPhotoTextures[iIndex];
+}
+
+
+//-----------------------------------------------------------------------------
+// Purpose: InitClientRenderTargets, interface called by the engine at material system init in the engine
+// Input  : pMaterialSystem - the interface to the material system from the engine (our singleton hasn't been set up yet)
+//			pHardwareConfig - the user's hardware config, useful for conditional render targets setup
+//-----------------------------------------------------------------------------
+void CApertureRenderTargets::InitClientRenderTargets(IMaterialSystem* pMaterialSystem, IMaterialSystemHardwareConfig* pHardwareConfig)
+{
+	Msg("We're happy and aperture_render_targets!");
+	InitLargePhotoTextures(pMaterialSystem);
+	//InitSmallPhotoTextures( pMaterialSystem );
+
+	BaseClass::InitClientRenderTargets(pMaterialSystem, pHardwareConfig);
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: Shutdown client render targets. This gets called during shutdown in the engine
+// Input  :  - 
+//-----------------------------------------------------------------------------
+void CApertureRenderTargets::ShutdownClientRenderTargets()
+{
+	for (int i = 0; i != ARRAYSIZE(m_LargePhotoTextures); ++i)
 	{
-		m_PhotoTextures[i] = CreateLargePhotoRT( pMaterialSystem, i+1 );
-		m_PhotoTextures[i]->IncrementReferenceCount();
+		m_LargePhotoTextures[i].Shutdown();
 	}
 
-	BaseClass::InitClientRenderTargets( pMaterialSystem, pHardwareConfig );
-}
-
-void CFSTOPRenderTargets::ShutdownClientRenderTargets()
-{
-	for ( int i = 0; i < 3; i++ )
+	for( int i = 0; i != ARRAYSIZE( m_SmallPhotoTextures ); ++i )
 	{
-		m_PhotoTextures[i]->Release();
+		m_SmallPhotoTextures[i].Shutdown();
 	}
 
 	BaseClass::ShutdownClientRenderTargets();
 }
 
-ITexture* CFSTOPRenderTargets::GetPhotoTexture(int n)
-{
-	if (n < 3) {
-		return m_PhotoTextures[n];
-	} else {
-		char name[128];
-		V_snprintf( name, 128, PHOTO_RT_NAME, n+1 );
-		return g_pMaterialSystem->FindTexture( name, TEXTURE_GROUP_RENDER_TARGET );
-	}
-	
-}
-
-// expose IClientRenderTargets interface
-static CFSTOPRenderTargets s_FSTOPRenderTargets;
-EXPOSE_SINGLE_INTERFACE_GLOBALVAR( CFSTOPRenderTargets, IClientRenderTargets, CLIENTRENDERTARGETS_INTERFACE_VERSION, s_FSTOPRenderTargets );
-
-// expose the global pointer
-CFSTOPRenderTargets* g_pFSTOPRenderTargets = &s_FSTOPRenderTargets;
-
+static CApertureRenderTargets g_ApertureRenderTargets;
+EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CApertureRenderTargets, IClientRenderTargets, CLIENTRENDERTARGETS_INTERFACE_VERSION, g_ApertureRenderTargets);
+CApertureRenderTargets* aperturerendertargets = &g_ApertureRenderTargets;

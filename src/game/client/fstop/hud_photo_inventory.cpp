@@ -25,8 +25,6 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-#if 0
-
 using namespace vgui;
 
 // FIXME: Needs to be shared or great disaster will befall us!
@@ -601,4 +599,3 @@ void CHudPhotoInventory::MsgFunc_TakePhoto(bf_read& msg)
 		Aperture_QueuePhotoView(hPhotoEntity, pPhotoTexture);
 	}
 }
-#endif
