@@ -151,7 +151,7 @@ void CPlacementPhotoMaterialProxy::OnBind( C_BaseEntity *pC_BaseEntity )
 		}
 		else
 		{
-			m_flTargetAlpha = 0.0f;
+			m_flTargetAlpha = 0.4f;
 		}
 
 		m_bLastState = pPlayer->m_HL2Local.m_bPlacingPhoto;

@@ -1,6 +1,6 @@
 VertexLitGeneric
 {
-$basetexture "models/weapons/v_photo/photograph_sheet"
+$basetexture "models/weapons/photograph_sheet"
 $surfaceprop default
 $phong 1
 $phongexponent 20

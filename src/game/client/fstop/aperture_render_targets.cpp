@@ -16,13 +16,12 @@ void CApertureRenderTargets::InitLargePhotoTextures(IMaterialSystem* pMaterialSy
 	for (int i = 0; i != ARRAYSIZE(m_LargePhotoTextures); ++i)
 	{
 		char szName[256];
-		Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto%d", i + 1);
-
+		Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto");
+		Msg("Created Photo RT: %s\n", szName);
 		m_LargePhotoTextures[i].Init(pMaterialSystem->CreateNamedRenderTargetTextureEx2(
 			szName,
-			256, 256, RT_SIZE_DEFAULT,
-			IMAGE_FORMAT_RGB888,
-			//pMaterialSystem->GetBackBufferFormat(),
+			512, 512, RT_SIZE_DEFAULT,
+			pMaterialSystem->GetBackBufferFormat(),
 			MATERIAL_RT_DEPTH_SHARED,
 			0,
 			CREATERENDERTARGETFLAGS_HDR));
