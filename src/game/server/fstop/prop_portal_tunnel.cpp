@@ -304,7 +304,7 @@ void CPropPortalTunnel::Spawn( void )
 
 	SetMoveType( MOVETYPE_NONE );
 	SetSolid( SOLID_OBB_YAW );
-	SetCollisionGroup( COLLISION_GROUP_WEAPON );
+	SetCollisionGroup(COLLISION_GROUP_CAMERA_SOLID);
 
 	SetModel( PORTAL_TUNNEL_MODEL_NAME );
 

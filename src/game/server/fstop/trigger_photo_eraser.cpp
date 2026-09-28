@@ -1,4 +1,4 @@
-//===== Copyright © 1996-2005, Valve Corporation, All rights reserved. ======//
+ï»¿//===== Copyright ï¿½ 1996-2005, Valve Corporation, All rights reserved. ======//
 //
 // Purpose: Spawn and use functions for editor-placed triggers.
 //
@@ -70,8 +70,8 @@ public:
 		if ( m_bDisabled == false )
 		{
 			// We want to hit camera traces!
-			SetCollisionGroup(COLLISION_GROUP_WEAPON);
-			RemoveSolidFlags( SOLID_VPHYSICS ); // HACK: We want camera traces to hit this!
+			SetCollisionGroup( COLLISION_GROUP_CAMERA_SOLID );
+			RemoveSolidFlags( FSOLID_NOT_SOLID ); // HACK: We want camera traces to hit this!
 		}
 	}
 
@@ -96,14 +96,14 @@ public:
 	
 	virtual void Enable( void )
 	{
-		SetCollisionGroup(COLLISION_GROUP_WEAPON);
-		RemoveSolidFlags( SOLID_VPHYSICS ); // HACK: We want camera traces to hit this!
+		SetCollisionGroup( COLLISION_GROUP_CAMERA_SOLID );
+		RemoveSolidFlags( FSOLID_NOT_SOLID ); // HACK: We want camera traces to hit this!
 	}
 
 	virtual void Disable( void )
 	{
 		SetCollisionGroup( COLLISION_GROUP_NONE );
-		AddSolidFlags( SOLID_VPHYSICS );
+		AddSolidFlags( FSOLID_NOT_SOLID );
 	}
 
 	DECLARE_DATADESC();

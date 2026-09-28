@@ -16,7 +16,6 @@
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
-
 extern ConVar sv_gravity;
 
 //-----------------------------------------------------------------------------
@@ -83,6 +82,7 @@ public:
 	virtual void Spawn( void );
 	virtual bool CreateVPhysics( void );
 	virtual void OnRestore( void );
+	virtual int	 OnTakeDamage(const CTakeDamageInfo& info);
 
 	void CreateTriggers();
 
@@ -184,11 +184,16 @@ void CPropLevitator::Spawn( void )
 {
 	Precache();
 	SetModel( LEVITATOR_MODEL_NAME );
-	m_nSkin = 1;
-
+	SetRenderColor(random->RandomInt(0, 255), random->RandomInt(0, 255), random->RandomInt(0, 255));
+	m_takedamage = DAMAGE_YES;
 	BaseClass::Spawn();
 
 	CreateVPhysics();
+}
+
+int CPropLevitator::OnTakeDamage(const CTakeDamageInfo& info)
+{
+	return BaseClass::OnTakeDamage(info);
 }
 
 //-----------------------------------------------------------------------------

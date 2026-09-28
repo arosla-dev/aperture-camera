@@ -71,8 +71,8 @@ DECLARE_HUD_MESSAGE( CHudPhotoFlash, Flash );
 const float FADE_IN_DURATION = 0.5f;
 const float FADE_OUT_DURATION = 0.25f;
 
-// const char szFlashMaterial[] = "sprites/light_glow02_add_noz";
-const char szFlashMaterial[] = "HUD/light_glow03";
+const char szFlashMaterial[] = "sprites/light_glow02_add_noz";
+
 
 PRECACHE_REGISTER_BEGIN( GLOBAL, PrecacheHudPhotoFlashMaterials )
 PRECACHE( MATERIAL, szFlashMaterial )

@@ -39,5 +39,7 @@ particles_manifest
 	"file"		"particles/hunter_projectile.pcf"
 	"file"		"particles/hunter_flechette.pcf"
 	"file"		"particles/hunter_shield_impact.pcf"
-	"file		"particles/grub_blood.pcf"
+	"file"		"particles/grub_blood.pcf"
+	"file"		"particles/zombie.pcf"
+	"file"		"particles/fizzler.pcf"
 }

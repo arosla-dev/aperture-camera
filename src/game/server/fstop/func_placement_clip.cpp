@@ -43,7 +43,7 @@ void CFuncPlacementClip::Spawn( void )
 
 	AddEffects( EF_NODRAW );		// make entity invisible
 
-	SetCollisionGroup( COLLISION_GROUP_WEAPON );
+	SetCollisionGroup(COLLISION_GROUP_PLACEMENT_SOLID);
 }
 
 bool CFuncPlacementClip::CreateVPhysics( void )
