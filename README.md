@@ -1,9 +1,13 @@
 ## Info
 
-This is sandbox (no, not really sandbox mod, just mess with this) project
+# Aperture Sandbox!
+Have you ever wanted to have the F-Stop, the paint gun, and portals all at once? Then this is for you.
+A mod that combines F-Stop, portal retraction, and standard portals.
+
+Keep in mind that the mod is still a work in progress and will evolve over time; expect bugs, crashes, and blah blah blah.
 
 ## Features
-
++ Mostly working f-stop code
 + Source 2013 GameUI
 + A paint save restore system.
 + A fix for the paint disappearing when graphics settings are changed or when the game is minimized.
