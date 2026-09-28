@@ -291,6 +291,7 @@ void CWeaponPlacement::Precache(void)
 	PrecacheScriptSound("Weapon_Camera.Release");
 	PrecacheScriptSound("Weapon_Camera.scaleup");
 	PrecacheScriptSound("Weapon_Camera.scaledown");
+	PrecacheScriptSound("Weapon_Camera.nextphoto");
 
 	BaseClass::Precache();
 }
@@ -440,22 +441,25 @@ void CWeaponPlacement::PlacePhoto(void)
 	// Alert our companions that we just replaced an object
 	NotifyCompanions();
 
-	// Switch weapons if we can
-	if (pPlayer->SwitchToNextBestWeapon(this) == false)
+	if (Photo_Count() == 0)
 	{
-		if (Photo_Count() == 0)
+		// Put the weapon away
+		if (pPlayer->HasNamedPlayerItem("weapon_camera"))
 		{
-			// Put the weapon away
-			Holster(NULL);
-
-			// Clear capture info
-			Q_memset(&(m_CaptureInfo), NULL, sizeof(CaptureInfo_t));
+			pPlayer->SelectItem("weapon_camera");
 		}
 		else
 		{
-			// Display something different now
-			UpdateActiveItem();
+			Holster(NULL);
 		}
+
+		// Clear capture info
+		Q_memset(&(m_CaptureInfo), NULL, sizeof(CaptureInfo_t));
+	}
+	else
+	{
+		// Display something different now
+		UpdateActiveItem();
 	}
 
 	pPlayer->ControlHelperAnimate(CONTROL_STATE_NEUTRAL, true);
@@ -499,9 +503,23 @@ void CWeaponPlacement::PrimaryAttack(void)
 //-----------------------------------------------------------------------------
 void CWeaponPlacement::SecondaryAttack(void)
 {
+	CPortal_Player* pPlayer = (CPortal_Player*)ToBasePlayer(GetOwner());
+	if (pPlayer == NULL)
+		return;
+
 	// Cancel the placement and return to the neutral mode
 	DestroyPhotoPreview();
-	m_bInPlacementMode = false;
+	
+	//if player isn't in placement mode, he will switch back to camera
+	if (!m_bInPlacementMode)
+	{
+		pPlayer->SelectItem("weapon_camera");
+	}
+	else
+	{
+		//cancel placement mode
+		m_bInPlacementMode = false;
+	}
 }
 
 //like CTraceFilterSimple, but without the collision group check
@@ -656,9 +674,10 @@ void CWeaponPlacement::ItemPostFrame(void)
 			return;
 
 		if (m_nObjectScaleLevel + 1 <= m_CaptureInfo.pPlacementQuery->GetNumScaleUpSteps(&m_CaptureInfo))
+		{
+			EmitSound("Weapon_Camera.scaleup");
 			m_nObjectScaleLevel++;
-
-		EmitSound("Weapon_Camera.scaleup");
+		}
 
 		m_fNextScaleDelay = gpGlobals->curtime + 0.55f;
 
@@ -696,9 +715,10 @@ void CWeaponPlacement::ItemPostFrame(void)
 			return;
 
 		if (m_nObjectScaleLevel - 1 >= -(m_CaptureInfo.pPlacementQuery->GetNumScaleDownSteps(&m_CaptureInfo)))
+		{
+			EmitSound("Weapon_Camera.scaledown");
 			m_nObjectScaleLevel--;
-
-		EmitSound("Weapon_Camera.scaledown");
+		}
 
 		m_fNextScaleDelay = gpGlobals->curtime + 0.55f;
 
@@ -711,6 +731,37 @@ void CWeaponPlacement::ItemPostFrame(void)
 		if (m_hPhotoPreview)
 		{
 			m_hPhotoPreview->SetObjectScale(GetObjectScale(m_CaptureInfo));
+		}
+	}
+
+	// switching photos by pressing reload
+	if (pOwner->m_afButtonPressed & IN_RELOAD)
+	{
+		if (Photo_Count() == 0)
+			return;
+
+		CBasePlayer* pPlayer = UTIL_GetLocalPlayer();
+		if (pPlayer == NULL)
+			return;
+
+		CBaseCombatWeapon* pWeapon = pPlayer->GetActiveWeapon();
+		if (pWeapon == NULL)
+			return;
+
+		// If we're cycling but not in placement mode, then swap over to it but don't cycle
+		if (FClassnameIs(pWeapon, "weapon_camera"))
+		{
+			pPlayer->SwitchToNextBestWeapon(pWeapon);
+			return;
+		}
+
+		// Otherwise cycle and change
+		if (Photo_Count() > 1)
+		{
+			// Cycle our photos
+			Photo_Cycle(true);
+			EmitSound("Weapon_Camera.nextphoto");
+			pWeapon->Reload();
 		}
 	}
 
@@ -762,11 +813,9 @@ void CWeaponPlacement::ItemPostFrame(void)
 //-----------------------------------------------------------------------------
 Activity CWeaponPlacement::GetDrawActivity(void)
 {
-	/*
 	CBasePlayer *pPlayer = ToBasePlayer( GetOwner() );
 	if ( pPlayer->HasNamedPlayerItem( "weapon_camera" ) == false )
-		return ACT_VM_DEPLOY;
-	*/
+		return ACT_VM_DRAW;
 
 	return BaseClass::GetDrawActivity();
 }

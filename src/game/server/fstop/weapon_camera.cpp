@@ -787,15 +787,15 @@ void CWeaponCamera::PrimaryAttack( void )
 	if ( pPlayer == NULL )
 		return;
 
+	/*
 	// If we've taken a picture, go back to NULL
 	if ( Photo_Count() )
 	{
-		// Switch away to the photo placement mode
-		pPlayer->SwitchToNextBestWeapon( this );
+		// Switch away to the photo placement mod
 		pPlayer->ControlHelperAnimate( CONTROL_STATE_PICTURE );
 		return;
 	}
-
+	*/
 	if ( m_bInViewfinder == false )
 	{
 		pPlayer->ControlHelperAnimate( CONTROL_STATE_CAMERA );
@@ -847,7 +847,7 @@ void CWeaponCamera::PrimaryAttack( void )
 
 	// Once we've captured, switch to another weapon
 	pPlayer->ControlHelperAnimate( CONTROL_STATE_NEUTRAL );
-	pPlayer->SelectItem("weapon_placement");
+	//pPlayer->SelectItem("weapon_placement");
 }
 
 //-----------------------------------------------------------------------------
@@ -870,7 +870,7 @@ void CWeaponCamera::SecondaryAttack( void )
 			return;
 		}
 
-		pPlayer->SwitchToNextBestWeapon( this );
+		pPlayer->SelectItem("weapon_placement");
 		pPlayer->ControlHelperAnimate( CONTROL_STATE_PICTURE );
 	}
 	else

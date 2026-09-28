@@ -2505,7 +2505,7 @@ void CPortal_Player::OnPhotoAdded(int nIndex)
 	if (nIndex < 0 || nIndex > 2)
 		return;
 
-	// m_HL2Local.m_bHasPhotoInInventory.GetForModify( nIndex ) = true;
+	m_HL2Local.m_bHasPhotoInInventory.GetForModify( nIndex ) = true;
 }
 
 void CPortal_Player::OnPhotoRemoved(int nIndex)
@@ -2513,7 +2513,7 @@ void CPortal_Player::OnPhotoRemoved(int nIndex)
 	if (nIndex < 0 || nIndex > 2)
 		return;
 
-	// m_HL2Local.m_bHasPhotoInInventory.GetForModify( nIndex ) = false;
+	m_HL2Local.m_bHasPhotoInInventory.GetForModify( nIndex ) = false;
 }
 
 void CPortal_Player::SetSelectedPhoto(int nIndex)
@@ -2522,23 +2522,20 @@ void CPortal_Player::SetSelectedPhoto(int nIndex)
 	if (nIndex < 0 || nIndex >= 3)
 		return;
 
-	// m_HL2Local.m_nSelectedPhoto = nIndex;
+	m_HL2Local.m_nSelectedPhoto = nIndex;
 }
 
 int CPortal_Player::GetSelectedPhoto(void)
 {
-	return 0;
-	// return m_HL2Local.m_nSelectedPhoto;
+	return m_HL2Local.m_nSelectedPhoto;
 }
 
 void CPortal_Player::ClearPhotos(void)
 {
-	/*
 	m_HL2Local.m_nSelectedPhoto = -1;
 	m_HL2Local.m_bHasPhotoInInventory.GetForModify(0) = false;
 	m_HL2Local.m_bHasPhotoInInventory.GetForModify(1) = false;
 	m_HL2Local.m_bHasPhotoInInventory.GetForModify(2) = false;
-	*/
 }
 
 void CPortal_Player::StripPhotos(bool bNotifyPlayer /*= true*/)
@@ -2607,9 +2604,9 @@ void CPortal_Player::FlashInventory(float flDuration, unsigned char nType)
 	UserMessageBegin(user, "InventoryFlash");
 	WRITE_FLOAT(flDuration);
 	WRITE_BYTE(nType);
-	// WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[0] );
-	// WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[1] );
-	// WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[2] );
+	WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[0] );
+	WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[1] );
+	WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[2] );
 	MessageEnd();
 
 	if (nType == FLASH_INVENTORY_FULL)
@@ -2663,48 +2660,10 @@ void CPortal_Player::UpdateLocatorEntityIndices(int* pIndices, int nNumIndices)
 	}
 }
 
-//------------------------------------------------------------------------------
-// Purpose: 
-//------------------------------------------------------------------------------
-void CC_Next_Photo(void)
-{
-	// FIXME: This code is now obsolete
-	return;
-
-	if (Photo_Count() == 0)
-		return;
-
-	CBasePlayer* pPlayer = UTIL_GetLocalPlayer();
-	if (pPlayer == NULL)
-		return;
-
-	CBaseCombatWeapon* pWeapon = pPlayer->GetActiveWeapon();
-	if (pWeapon == NULL)
-		return;
-
-	// If we're cycling but not in placement mode, then swap over to it but don't cycle
-	if (FClassnameIs(pWeapon, "weapon_camera"))
-	{
-		pPlayer->SwitchToNextBestWeapon(pWeapon);
-		return;
-	}
-
-	// Otherwise cycle and change
-	if (Photo_Count() > 1)
-	{
-		// Cycle our photos
-		Photo_Cycle(true);
-
-		pWeapon->Reload();
-	}
-}
-
-static ConCommand next_photos("next_photo", CC_Next_Photo, "Next photo in our inventory (if any)", 0);
-
 void SwitchToPhoto(int nIndex)
 {
 	// FIXME: This code is now obsolete
-	return;
+	//return;
 
 	if (Photo_Count() == 0)
 		return;
@@ -2746,7 +2705,7 @@ void SwitchToPhoto(int nIndex)
 //------------------------------------------------------------------------------
 void CC_Select_Photo1(void)
 {
-	// SwitchToPhoto( 0 );
+	SwitchToPhoto( 0 );
 }
 
 static ConCommand select_photo1("select_photo1", CC_Select_Photo1, "Select photograph in slot 1", 0);
@@ -2756,7 +2715,7 @@ static ConCommand select_photo1("select_photo1", CC_Select_Photo1, "Select photo
 //------------------------------------------------------------------------------
 void CC_Select_Photo2(void)
 {
-	// SwitchToPhoto( 1 );
+	SwitchToPhoto( 1 );
 }
 
 static ConCommand select_photo2("select_photo2", CC_Select_Photo2, "Select photograph in slot 2", 0);
@@ -2766,7 +2725,7 @@ static ConCommand select_photo2("select_photo2", CC_Select_Photo2, "Select photo
 //------------------------------------------------------------------------------
 void CC_Select_Photo3(void)
 {
-	// SwitchToPhoto( 2 );
+	SwitchToPhoto( 2 );
 }
 
 static ConCommand select_photo3("select_photo3", CC_Select_Photo3, "Select photograph in slot 3", 0);

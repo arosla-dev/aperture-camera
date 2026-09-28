@@ -33,10 +33,13 @@ BEGIN_SEND_TABLE_NOBASE( CHL2PlayerLocalData, DT_HL2Local )
 	SendPropVector( SENDINFO(m_vecLocatorOrigin) ),
 #endif
 
-	// SendPropArray3( SENDINFO_ARRAY3(m_bHasPhotoInInventory), SendPropBool( SENDINFO_ARRAY(m_bHasPhotoInInventory) ) ),
+	//f-stop
+	SendPropArray3( SENDINFO_ARRAY3(m_bHasPhotoInInventory), SendPropBool( SENDINFO_ARRAY(m_bHasPhotoInInventory) ) ),
 	SendPropArray3(SENDINFO_ARRAY3(m_nLocatorEntityIndices), SendPropInt(SENDINFO_ARRAY(m_nLocatorEntityIndices))),
-	// SendPropInt( SENDINFO(m_nSelectedPhoto) ),
+	SendPropInt( SENDINFO(m_nSelectedPhoto) ),
 	SendPropBool(SENDINFO(m_bPlacingPhoto)),
+
+
 END_SEND_TABLE()
 
 BEGIN_SIMPLE_DATADESC( CHL2PlayerLocalData )
@@ -56,10 +59,14 @@ BEGIN_SIMPLE_DATADESC( CHL2PlayerLocalData )
 	// Ladder related stuff
 	DEFINE_FIELD( m_hLadder, FIELD_EHANDLE ),
 	DEFINE_EMBEDDED( m_LadderMove ),
-	// DEFINE_ARRAY( m_bHasPhotoInInventory, FIELD_BOOLEAN, 3 ),
+
+	//f-stop
+	DEFINE_ARRAY( m_bHasPhotoInInventory, FIELD_BOOLEAN, 3 ),
 	DEFINE_ARRAY(m_nLocatorEntityIndices, FIELD_INTEGER, 16),
-	// DEFINE_FIELD( m_nSelectedPhoto, FIELD_INTEGER ),
+	DEFINE_FIELD( m_nSelectedPhoto, FIELD_INTEGER ),
 	DEFINE_FIELD(m_bPlacingPhoto, FIELD_BOOLEAN),
+
+
 END_DATADESC()
 
 CHL2PlayerLocalData::CHL2PlayerLocalData()
@@ -76,18 +83,18 @@ CHL2PlayerLocalData::CHL2PlayerLocalData()
 #endif
 
 	// Clear this out!
-	/*
+	
 	m_bHasPhotoInInventory.GetForModify(0) = false;
 	m_bHasPhotoInInventory.GetForModify(1) = false;
 	m_bHasPhotoInInventory.GetForModify(2) = false;
-	*/
+	
 
 	for (int i = 0; i < 16; i++)
 	{
 		m_nLocatorEntityIndices.GetForModify(i) = -1;
 	}
 
-	// m_nSelectedPhoto = -1;
+	m_nSelectedPhoto = -1;
 	m_bPlacingPhoto = false;
 }
 

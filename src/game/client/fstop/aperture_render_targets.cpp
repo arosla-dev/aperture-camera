@@ -16,19 +16,20 @@ void CApertureRenderTargets::InitLargePhotoTextures(IMaterialSystem* pMaterialSy
 	for (int i = 0; i != ARRAYSIZE(m_LargePhotoTextures); ++i)
 	{
 		char szName[256];
-		Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto");
-		Msg("Created Photo RT: %s\n", szName);
+		Q_snprintf(szName, sizeof(szName), "_rt_LargePhoto%d", i + 1);
+
 		m_LargePhotoTextures[i].Init(pMaterialSystem->CreateNamedRenderTargetTextureEx2(
 			szName,
-			512, 512, RT_SIZE_DEFAULT,
-			pMaterialSystem->GetBackBufferFormat(),
+			256, 256, RT_SIZE_DEFAULT,
+			IMAGE_FORMAT_RGB888,
+			//pMaterialSystem->GetBackBufferFormat(),
 			MATERIAL_RT_DEPTH_SHARED,
 			0,
 			CREATERENDERTARGETFLAGS_HDR));
 	}
 }
 
-void CApertureRenderTargets::InitSmallPhotoTextures( IMaterialSystem* pMaterialSystem )
+/*void CApertureRenderTargets::InitSmallPhotoTextures( IMaterialSystem* pMaterialSystem )
 {
 	for( int i = 0; i != ARRAYSIZE( m_SmallPhotoTextures ); ++i )
 	{
@@ -43,7 +44,7 @@ void CApertureRenderTargets::InitSmallPhotoTextures( IMaterialSystem* pMaterialS
 												0,
 												CREATERENDERTARGETFLAGS_HDR ) );
 	}
-}
+}*/
 
 ITexture* CApertureRenderTargets::GetLargePhotoRenderTarget(int iIndex)
 {
@@ -53,13 +54,13 @@ ITexture* CApertureRenderTargets::GetLargePhotoRenderTarget(int iIndex)
 	return m_LargePhotoTextures[iIndex];
 }
 
-ITexture *CApertureRenderTargets::GetSmallPhotoRenderTarget( int iIndex )
+/*ITexture *CApertureRenderTargets::GetSmallPhotoRenderTarget( int iIndex )
 {
 	if( (iIndex < 0) || (iIndex >= ARRAYSIZE( m_SmallPhotoTextures )) )
 		return NULL;
 
 	return m_SmallPhotoTextures[iIndex];
-}
+}*/
 
 
 //-----------------------------------------------------------------------------
@@ -87,14 +88,17 @@ void CApertureRenderTargets::ShutdownClientRenderTargets()
 		m_LargePhotoTextures[i].Shutdown();
 	}
 
-	for( int i = 0; i != ARRAYSIZE( m_SmallPhotoTextures ); ++i )
+	/*for( int i = 0; i != ARRAYSIZE( m_SmallPhotoTextures ); ++i )
 	{
 		m_SmallPhotoTextures[i].Shutdown();
-	}
+	}*/
 
 	BaseClass::ShutdownClientRenderTargets();
 }
 
+
 static CApertureRenderTargets g_ApertureRenderTargets;
 EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CApertureRenderTargets, IClientRenderTargets, CLIENTRENDERTARGETS_INTERFACE_VERSION, g_ApertureRenderTargets);
 CApertureRenderTargets* aperturerendertargets = &g_ApertureRenderTargets;
+
+CPortalRenderTargets* portalrendertargets = &g_ApertureRenderTargets;

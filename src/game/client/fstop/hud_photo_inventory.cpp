@@ -33,7 +33,7 @@ using namespace vgui;
 #define FLASH_INVENTORY_ADDED		2
 #define FLASH_INVENTORY_STRIPPED	3
 
-ConVar cl_force_draw_photo_inventory("cl_force_draw_photo_inventory", "0", FCVAR_CHEAT);
+ConVar cl_force_draw_photo_inventory("cl_force_draw_photo_inventory", "1", FCVAR_CHEAT);
 
 //-----------------------------------------------------------------------------
 // Purpose: Draws the zoom screen
@@ -207,14 +207,14 @@ bool CHudPhotoInventory::ShouldDraw(void)
 		return false;
 
 	// Must have something in our inventory!
-	if (m_flDisplayTime < gpGlobals->curtime /*&&
+	if (m_flDisplayTime < gpGlobals->curtime &&
 		 pPlayer->m_HL2Local.m_bHasPhotoInInventory[0] == false &&
 		 pPlayer->m_HL2Local.m_bHasPhotoInInventory[1] == false &&
-		 pPlayer->m_HL2Local.m_bHasPhotoInInventory[2] == false*/)
+		 pPlayer->m_HL2Local.m_bHasPhotoInInventory[2] == false)
 		return false;
 
 	// We're being told to display
-#if 0
+#if 1
 	if (m_flDisplayTime > (gpGlobals->curtime + 0.1f)) // FIXME: Huh?
 	{
 		return true;
@@ -491,9 +491,9 @@ void CHudPhotoInventory::Paint(void)
 	// If the inventory isn't up, display all the slots equally
 	if ((m_flDisplayTime > gpGlobals->curtime) && m_nFlashType == FLASH_INVENTORY_FULL && pPlayer->m_HL2Local.m_bPlacingPhoto == false)
 	{
-		// PaintSlot( 0, pPlayer->m_HL2Local.m_bHasPhotoInInventory[0], false );
-		// PaintSlot( 1, pPlayer->m_HL2Local.m_bHasPhotoInInventory[1], false );
-		// PaintSlot( 2, pPlayer->m_HL2Local.m_bHasPhotoInInventory[2], false );
+		PaintSlot( 0, pPlayer->m_HL2Local.m_bHasPhotoInInventory[0], false );
+		PaintSlot( 1, pPlayer->m_HL2Local.m_bHasPhotoInInventory[1], false );
+		PaintSlot( 2, pPlayer->m_HL2Local.m_bHasPhotoInInventory[2], false );
 	}
 	else if ((m_flDisplayTime > gpGlobals->curtime) && m_nFlashType == FLASH_INVENTORY_STRIPPED)
 	{
@@ -505,9 +505,9 @@ void CHudPhotoInventory::Paint(void)
 	else
 	{
 		// Draw all the slots
-		// PaintSlot( 0, pPlayer->m_HL2Local.m_bHasPhotoInInventory[0], (pPlayer->m_HL2Local.m_nSelectedPhoto == 0) );
-		// PaintSlot( 1, pPlayer->m_HL2Local.m_bHasPhotoInInventory[1], (pPlayer->m_HL2Local.m_nSelectedPhoto == 1) );
-		// PaintSlot( 2, pPlayer->m_HL2Local.m_bHasPhotoInInventory[2], (pPlayer->m_HL2Local.m_nSelectedPhoto == 2) );
+		PaintSlot( 0, pPlayer->m_HL2Local.m_bHasPhotoInInventory[0], (pPlayer->m_HL2Local.m_nSelectedPhoto == 0) );
+		PaintSlot( 1, pPlayer->m_HL2Local.m_bHasPhotoInInventory[1], (pPlayer->m_HL2Local.m_nSelectedPhoto == 1) );
+		PaintSlot( 2, pPlayer->m_HL2Local.m_bHasPhotoInInventory[2], (pPlayer->m_HL2Local.m_nSelectedPhoto == 2) );
 	}
 
 	BaseClass::Paint();

@@ -223,8 +223,8 @@ void CPortalRenderTargets::ShutdownClientRenderTargets()
 	BaseClass::ShutdownClientRenderTargets();
 }
 
+#if 0 //aperture uses these render targets as a basis
 static CPortalRenderTargets g_PortalRenderTargets;
-#if 0
-EXPOSE_SINGLE_INTERFACE_GLOBALVAR( CPortalRenderTargets, IClientRenderTargets, CLIENTRENDERTARGETS_INTERFACE_VERSION, g_PortalRenderTargets );
-#endif
+EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CPortalRenderTargets, IClientRenderTargets, CLIENTRENDERTARGETS_INTERFACE_VERSION, g_PortalRenderTargets);
 CPortalRenderTargets* portalrendertargets = &g_PortalRenderTargets;
+#endif
