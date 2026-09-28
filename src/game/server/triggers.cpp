@@ -1009,6 +1009,9 @@ void CTriggerOnce::Spawn( void )
 	m_flWait = -1;
 }
 
+BEGIN_DATADESC(CTriggerCallback)
+END_DATADESC()
+LINK_ENTITY_TO_CLASS(trigger_callback, CTriggerCallback);
 
 // ##################################################################################
 //	>> TriggerLook
