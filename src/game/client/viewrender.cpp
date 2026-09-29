@@ -5659,7 +5659,7 @@ void CAperturePhotoView::Draw()
 
 	m_DrawFlags = m_pMainView->GetBaseDrawFlags() | DF_RENDER_UNDERWATER | DF_RENDER_ABOVEWATER;	// Don't draw water surface...
 
-	IMaterial* pPhotoBackground = materials->FindMaterial("photos/photo_background", TEXTURE_GROUP_CLIENT_EFFECTS, false);
+	IMaterial* pPhotoBackground = materials->FindMaterial("hud/photo_background", TEXTURE_GROUP_CLIENT_EFFECTS, false);
 	pRenderContext->DrawScreenSpaceQuad(pPhotoBackground);
 
 	if (cl_photo_disable_model_alpha_writes.GetBool())
@@ -5681,7 +5681,7 @@ void CAperturePhotoView::Draw()
 	if (cl_photo_disable_model_alpha_writes.GetBool())
 		pRenderContext->OverrideAlphaWriteEnable(false, false);
 
-	IMaterial* pPhotoForeground = materials->FindMaterial("photos/photo_foreground", TEXTURE_GROUP_CLIENT_EFFECTS, false);
+	IMaterial* pPhotoForeground = materials->FindMaterial("hud/photo_foreground", TEXTURE_GROUP_CLIENT_EFFECTS, false);
 	pRenderContext->DrawScreenSpaceQuad(pPhotoForeground);
 
 	m_DrawFlags = 0;

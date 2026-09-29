@@ -1,0 +1,9 @@
+"UnlitGeneric"
+{
+	"$baseTexture" "hud\photo_foreground"
+	"$ignorez" 1
+	"$writez" 0
+	"$alpha" 1
+	"$translucent" 1
+}
+

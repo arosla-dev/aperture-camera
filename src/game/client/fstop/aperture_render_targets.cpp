@@ -21,8 +21,7 @@ void CApertureRenderTargets::InitLargePhotoTextures(IMaterialSystem* pMaterialSy
 		m_LargePhotoTextures[i].Init(pMaterialSystem->CreateNamedRenderTargetTextureEx2(
 			szName,
 			256, 256, RT_SIZE_DEFAULT,
-			IMAGE_FORMAT_RGB888,
-			//pMaterialSystem->GetBackBufferFormat(),
+			pMaterialSystem->GetBackBufferFormat(),
 			MATERIAL_RT_DEPTH_SHARED,
 			0,
 			CREATERENDERTARGETFLAGS_HDR));

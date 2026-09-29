@@ -90,8 +90,8 @@ const float FADE_OUT_DURATION = 0.25f;
 
 
 PRECACHE_REGISTER_BEGIN(GLOBAL, PrecacheHudPhotoMaterials)
-PRECACHE(MATERIAL, "photos/photo_background")
-PRECACHE(MATERIAL, "photos/photo_foreground")
+PRECACHE(MATERIAL, "HUD/photo_background")
+PRECACHE(MATERIAL, "HUD/photo_foreground")
 PRECACHE(MATERIAL, "HUD/inv_photo_numbers1")
 PRECACHE(MATERIAL, "HUD/inv_photo_numbers2")
 PRECACHE(MATERIAL, "HUD/inv_photo_numbers3")

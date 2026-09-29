@@ -1,12 +1,12 @@
 UnlitGeneric
 {
 	// default photo texture, appears for errors
-	"$basetexture" "_rt_LargePhoto1"
-	
-	Proxies
-	{
-		PlacementMaterial
-		{
-		}
-	}
+  	 "$basetexture" "_rt_LargePhoto1"
+
+    	"Proxies"
+    	{
+        		"PlacementMaterial"
+        		{
+        		}
+    	}
 }
