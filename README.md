@@ -2,7 +2,7 @@
 
 # Aperture Sandbox!
 Have you ever wanted to have the F-Stop, the paint gun, and portals all at once? Then this is for you.
-A mod that combines F-Stop, portal retraction, and standard portals.
+A mod that combines F-Stop, portal refract, and standard portals.
 
 Keep in mind that the mod is still a work in progress and will evolve over time; expect bugs, crashes, and blah blah blah.
 
