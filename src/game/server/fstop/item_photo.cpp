@@ -72,7 +72,7 @@ END_SEND_TABLE()
 void CPhotograph::Spawn( void )
 {
 	Precache();
-	SetModel( "models/items/photograph.mdl" );
+	SetModel( "models/weapons/w_photo.mdl" );
 
 	Q_strncpy( m_szTextureName.GetForModify(), STRING( m_strMaterialName ), MAX_PATH );
 	BaseClass::Spawn();
@@ -137,7 +137,7 @@ void CPhotograph::CaptureThink( void )
 //-----------------------------------------------------------------------------
 void CPhotograph::Precache( void )
 {
-	PrecacheModel("models/items/photograph.mdl");
+	PrecacheModel("models/weapons/w_photo.mdl");
 }
 
 //-----------------------------------------------------------------------------

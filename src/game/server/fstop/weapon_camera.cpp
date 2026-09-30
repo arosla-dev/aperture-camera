@@ -20,7 +20,7 @@
 #include "portal_player.h"
 #include "portal_player.h"
 #include "particle_parse.h"
-
+#include "hl2_player.h"
 #include "vphysics_interface.h"
 #include "studio.h"
 #include "props.h"
@@ -39,10 +39,6 @@ IPhysicsCollision *s_pPhysCollision = NULL;
 ConVar sv_camera_capture_distance( "camera_capture_distance", "10000.0", FCVAR_CHEAT );
 ConVar sv_camera_debug_capture( "sv_camera_debug_capture", "0", FCVAR_CHEAT, "Highlights the camera's capture bounds and the potential capturable entities." );
 ConVar sv_camera_capture_box_size( "sv_camera_capture_box_size", "15", FCVAR_CHEAT );
-ConVar cl_camera_use_exposure_model("cl_camera_use_exposure_model", "0", FCVAR_ARCHIVE | FCVAR_CLIENTDLL, "use exposure models instead of SS one");
-
-#define CAMERA_DEFAULT "models/weapons/v_cam_ss.mdl"
-#define CAMERA_EXPOSURE "models/weapons/v_cam_expo.mdl"
 
 bool g_bAllOnCapturedChainedToBase;	// For catching errors in leaf classes
 
@@ -69,10 +65,12 @@ BEGIN_DATADESC( CWeaponCamera )
 	DEFINE_KEYFIELD( m_bCanZoom, FIELD_BOOLEAN, "canzoom" ),
 	DEFINE_KEYFIELD( m_bCanScaleCapturedObjects, FIELD_BOOLEAN, "canscale" ),
 	DEFINE_KEYFIELD( m_nNumCaptureSlots, FIELD_INTEGER, "captureslots" ),
+	DEFINE_KEYFIELD( m_bCanHaveInventory, FIELD_BOOLEAN, "caninventory" ),
 
 	DEFINE_INPUTFUNC( FIELD_INTEGER, "SetNumCaptureSlots", InputSetNumCaptureSlots ),
 	DEFINE_INPUTFUNC( FIELD_BOOLEAN, "SetZoomAbility", InputSetZoomAbility ),
 	DEFINE_INPUTFUNC( FIELD_BOOLEAN, "SetScaleAbility", InputSetScaleAbility ),
+	DEFINE_INPUTFUNC( FIELD_BOOLEAN, "SetInventoryAbility", InputSetInventoryAbility),
 
 END_DATADESC()
 
@@ -112,6 +110,7 @@ CWeaponCamera::CWeaponCamera( void ) : m_CurIndex( -1 ), m_bInViewfinder( false 
 	m_nNumCaptureSlots			= g_CurMaxInvPhotos;
 	m_bCanZoom					= false;
 	m_bCanScaleCapturedObjects	= false;
+	m_bCanHaveInventory			= false;
 }
 
 //-----------------------------------------------------------------------------
@@ -134,9 +133,6 @@ void CWeaponCamera::Precache( void )
 
 	PrecacheParticleSystem( "portal_dematerialize" );
 	PrecacheParticleSystem( "portal_rematerialize" );
-
-	PrecacheModel(CAMERA_DEFAULT);
-	PrecacheModel(CAMERA_EXPOSURE);
 
 	BaseClass::Precache();
 }
@@ -787,15 +783,21 @@ void CWeaponCamera::PrimaryAttack( void )
 	if ( pPlayer == NULL )
 		return;
 
-	/*
-	// If we've taken a picture, go back to NULL
-	if ( Photo_Count() )
+	CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (pPlayer->Weapon_OwnsThisType("weapon_camera"));
+	
+	if (pCamera->CanHaveInventory() != true)
 	{
-		// Switch away to the photo placement mod
-		pPlayer->ControlHelperAnimate( CONTROL_STATE_PICTURE );
-		return;
+		// If we've taken a picture, go back to NULL
+		if (Photo_Count())
+		{
+			// Switch away to the photo placement mod
+			pPlayer->ControlHelperAnimate(CONTROL_STATE_PICTURE);
+			pPlayer->SelectItem("weapon_placement");
+			return;
+		}
 	}
-	*/
+
+
 	if ( m_bInViewfinder == false )
 	{
 		pPlayer->ControlHelperAnimate( CONTROL_STATE_CAMERA );
@@ -847,7 +849,10 @@ void CWeaponCamera::PrimaryAttack( void )
 
 	// Once we've captured, switch to another weapon
 	pPlayer->ControlHelperAnimate( CONTROL_STATE_NEUTRAL );
-	//pPlayer->SelectItem("weapon_placement");
+
+	
+	if (pCamera->CanHaveInventory() != true)
+		pPlayer->SelectItem("weapon_placement");
 }
 
 //-----------------------------------------------------------------------------
@@ -1105,36 +1110,6 @@ void CWeaponCamera::ItemPostFrame( void )
 	UpdateDOF( false );
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Mouse wheelin'
-//-----------------------------------------------------------------------------
-void CWeaponCamera::OnMouseWheel(int nDirection)
-{
-	if (!m_bCanZoom)
-		return;
-
-	// We can only do this if we're in the viewfinder
-	if (m_bInViewfinder == false)
-		return;
-
-	CBasePlayer* pPlayer = ToBasePlayer(GetOwner());
-	if (pPlayer == NULL)
-		return;
-
-	float flTargetFOV = pPlayer->GetFOV();
-	if (pPlayer->m_nButtons & IN_GRENADE1)
-	{
-		flTargetFOV -= CAMERA_FOV_INCR;
-	}
-	else if (pPlayer->m_nButtons & IN_GRENADE2)
-	{
-		flTargetFOV += CAMERA_FOV_INCR;
-	}
-
-	flTargetFOV = clamp(flTargetFOV, CAMERA_FOV_MIN, CAMERA_FOV_MAX);
-	pPlayer->SetFOV(this, flTargetFOV, CAMERA_FOV_RATE);
-}
-
 void CWeaponCamera::InputSetNumCaptureSlots( inputdata_t& input )
 {
 	SetNumCaptureSlots( input.value.Int() );
@@ -1180,22 +1155,12 @@ void CWeaponCamera::SetScaleAbility( bool bCanScale )
 	m_bCanScaleCapturedObjects = bCanScale;
 }
 
-void CWeaponCamera::SetViewModel(void)
+void CWeaponCamera::InputSetInventoryAbility(inputdata_t& input)
 {
-	CBasePlayer* pOwner = ToBasePlayer(GetOwner());
-	if (pOwner == NULL)
-		return;
+	SetInventoryAbility(input.value.Bool());
+}
 
-	CBaseViewModel* vm = pOwner->GetViewModel(m_nViewModelIndex);
-	if (vm == NULL)
-		return;
-
-	if (cl_camera_use_exposure_model.GetBool())
-	{
-		vm->SetWeaponModel(CAMERA_EXPOSURE, this);
-	}
-	else
-	{
-		vm->SetWeaponModel(CAMERA_DEFAULT, this);
-	}
+void CWeaponCamera::SetInventoryAbility( bool bCanHaveInv )
+{
+	m_bCanHaveInventory = bCanHaveInv;
 }

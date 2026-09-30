@@ -47,6 +47,7 @@ public:
 	int		m_nLocatorEntityIndices[16];
 	int		m_nSelectedPhoto;
 	bool	m_bHasPhotoInInventory[3];
+	bool	m_bHasInventoryAbility;
 
 #ifdef HL2_EPISODIC
 	float	m_flFlashBattery;

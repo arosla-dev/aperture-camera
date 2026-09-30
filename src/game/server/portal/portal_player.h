@@ -267,7 +267,7 @@ public:
 	CNetworkVector( m_vPreUpdateVelocity );
 	CNetworkVar( bool, m_bJumpedThisFrame );
 	CNetworkVar( bool, m_bBouncedThisFrame );
-	CNetworkVar( float, m_fBouncedTime );
+	CNetworkVar( float, m_fBouncedTime )
 	CountdownTimer m_PaintedPowerTimer;
 	CachedPaintPowerChoiceResult m_CachedPaintPowerChoiceResults[PAINT_POWER_TYPE_COUNT];
 
@@ -348,6 +348,7 @@ public: // Paint
 
 	const Vector& GetInputVector() const;
 	void SetInputVector( const Vector& vInput );
+	
 };
 
 inline CPortal_Player *ToPortalPlayer( CBaseEntity *pEntity )

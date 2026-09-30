@@ -2,5 +2,29 @@
 {
 	"resource"
 	{
+		"mdlpicker.res"
+		{
+			"FileBrowserSplitter"
+			{
+				"child0"
+				{
+					"AssetSplitter"
+					{
+					}
+				}
+				"child1"
+				{
+					"PreviewSplitter"
+					{
+						"child1"
+						{
+							"ViewsSheet"
+							{
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

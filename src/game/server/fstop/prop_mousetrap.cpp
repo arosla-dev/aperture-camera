@@ -1,4 +1,4 @@
-﻿﻿//===== Copyright � 1996-2005, Valve Corporation, All rights reserved. ======//
+﻿//===== Copyright � 1996-2005, Valve Corporation, All rights reserved. ======//
 //
 //  Purpose: Mousetrap
 //
@@ -26,8 +26,6 @@ public:
 	DECLARE_CLASS(CPropMousetrap, CBaseAnimating);
 	DECLARE_DATADESC();
 
-	CPropMousetrap() : m_bArmed(false) {}
-
 	virtual void Precache(void);
 	virtual void Spawn(void);
 	virtual bool CreateVPhysics(void);
@@ -49,7 +47,6 @@ public:
 	END_BRANCHING_SINGLETON_DEFINITION(CPhotoPlacementQuery);
 
 protected:
-	bool ShouldTrigger(CBaseEntity* pOther, CTriggerCallback* pTrigger = NULL);
 	void CheeseTouch(CBaseEntity* pOther);
 	void ArmTouch(CBaseEntity* pOther);
 	void DestroyTriggers(void);
@@ -70,7 +67,6 @@ protected:
 
 	void InputSnap(inputdata_t& inputData);
 
-	bool m_bArmed;
 	CHandle<CTriggerCallback>	m_hCheeseTrigger;
 	CHandle<CTriggerCallback>	m_hArmTrigger;
 	CHandle<CBaseEntity>		m_hHelper;
@@ -81,7 +77,6 @@ DEFINE_ENTITYFUNC(CheeseTouch),
 DEFINE_ENTITYFUNC(ArmTouch),
 DEFINE_THINKFUNC(AnimateThink),
 
-DEFINE_FIELD(m_bArmed, FIELD_BOOLEAN),
 DEFINE_FIELD(m_hCheeseTrigger, FIELD_EHANDLE),
 DEFINE_FIELD(m_hArmTrigger, FIELD_EHANDLE),
 DEFINE_FIELD(m_hHelper, FIELD_EHANDLE),
@@ -105,8 +100,6 @@ void CPropMousetrap::Precache(void)
 //-----------------------------------------------------------------------------
 void CPropMousetrap::DestroyTriggers(void)
 {
-	// Removed triggers can still have queued contacts during this frame.
-	m_bArmed = false;
 	if (m_hCheeseTrigger)
 	{
 		UTIL_Remove(m_hCheeseTrigger);
@@ -412,9 +405,6 @@ void CPropMousetrap::CrushVictim(CBaseEntity* pOther)
 //-----------------------------------------------------------------------------
 void CPropMousetrap::DoSnapPresentation(CBaseEntity* pTarget)
 {
-	if (!m_bArmed)
-		return;
-	m_bArmed = false;
 	// Play our animation
 	int nSequence = LookupSequence("snap");
 	ResetSequence(nSequence);
@@ -449,47 +439,8 @@ void CPropMousetrap::DoSnapPresentation(CBaseEntity* pTarget)
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-bool CPropMousetrap::ShouldTrigger(CBaseEntity* pOther, CTriggerCallback* pTrigger)
-{
-	if (!m_bArmed || !pOther || pOther == this || pOther->IsWorld())
-		return false;
-
-	// The trap's attached helpers and non-solid triggers are not victims.
-	if (pOther->GetRootMoveParent() == this ||
-		pOther->IsSolidFlagSet(FSOLID_NOT_SOLID) ||
-		(pOther->GetEffects() & EF_NODRAW))
-		return false;
-
-	IPhysicsObject* pPhysics = pOther->VPhysicsGetObject();
-	if (pPhysics && !pPhysics->IsCollisionEnabled())
-		return false;
-
-	// Teleporting and resizing can leave old broadphase touch callbacks queued.
-	// Only accept a contact that overlaps the current trigger position.
-	if (pTrigger)
-	{
-		Vector triggerMins, triggerMaxs, otherMins, otherMaxs;
-		pTrigger->CollisionProp()->WorldSpaceAABB(&triggerMins, &triggerMaxs);
-		pOther->CollisionProp()->WorldSpaceAABB(&otherMins, &otherMaxs);
-		for (int axis = 0; axis < 3; ++axis)
-		{
-			if (otherMaxs[axis] < triggerMins[axis] || otherMins[axis] > triggerMaxs[axis])
-				return false;
-		}
-	}
-
-	if (pOther->MyCombatCharacterPointer())
-		return true;
-
-	// Static geometry must not spring a trap as it settles onto the floor.
-	return pOther->GetMoveType() == MOVETYPE_VPHYSICS &&
-		pOther->VPhysicsGetObject() != NULL;
-}
-
 void CPropMousetrap::ArmTouch(CBaseEntity* pOther)
 {
-	if (!ShouldTrigger(pOther, m_hArmTrigger.Get()))
-		return;
 	DoSnapPresentation(pOther);
 
 	if (GetObjectScaleLevel())
@@ -503,8 +454,6 @@ void CPropMousetrap::ArmTouch(CBaseEntity* pOther)
 //-----------------------------------------------------------------------------
 void CPropMousetrap::CheeseTouch(CBaseEntity* pOther)
 {
-	if (!ShouldTrigger(pOther, m_hCheeseTrigger.Get()))
-		return;
 	DoSnapPresentation(pOther);
 
 	if (GetObjectScaleLevel())
@@ -526,7 +475,39 @@ void CPropMousetrap::AnimateThink(void)
 	SetThink(&CPropMousetrap::AnimateThink);
 	SetNextThink(gpGlobals->curtime + 0.1f);
 
+	if (m_debugOverlays & OVERLAY_BBOX_BIT)
+	{
+		if (m_hArmTrigger)
+		{
+			m_hArmTrigger->m_debugOverlays |= OVERLAY_BBOX_BIT;
+		}
 
+		if (m_hCheeseTrigger)
+		{
+			m_hCheeseTrigger->m_debugOverlays |= OVERLAY_BBOX_BIT;
+		}
+	}
+	else
+	{
+		if (m_hArmTrigger)
+		{
+			m_hArmTrigger->m_debugOverlays &= ~OVERLAY_BBOX_BIT;
+		}
+
+		if (m_hCheeseTrigger)
+		{
+			m_hCheeseTrigger->m_debugOverlays &= ~OVERLAY_BBOX_BIT;
+		}
+	}
+}
+
+void VisualizeTestTrace(const trace_t& tr)
+{
+#ifdef DEBUG
+	NDebugOverlay::Box(tr.startpos, -Vector(2, 2, 2), Vector(2, 2, 2), 0, 255, 0, 32, 0.05f);
+	NDebugOverlay::Line(tr.startpos, tr.endpos, 0, 255, 0, true, 0.05f);
+	NDebugOverlay::Box(tr.endpos, -Vector(2, 2, 2), Vector(2, 2, 2), 0, 255, 0, 32, 0.05f);
+#endif // DEBUG
 }
 
 //------------------------------------------------------------------------------
@@ -558,6 +539,7 @@ bool CPropMousetrap::CPhotoPlacementQuery::GetPlacementPosition_NoHelper(Capture
 	{
 		flBestFraction = tr.fraction;
 	}
+	VisualizeTestTrace(tr);
 
 	vecTestPos = placementData.Trace.endpos + (vecUp * 4.0f * placementData.fScale);
 	vecTestPos += (vecForward * 8.0f * placementData.fScale) + (vecRight * 3.5f * placementData.fScale);
@@ -566,6 +548,7 @@ bool CPropMousetrap::CPhotoPlacementQuery::GetPlacementPosition_NoHelper(Capture
 	{
 		flBestFraction = tr.fraction;
 	}
+	VisualizeTestTrace(tr);
 
 	vecTestPos = placementData.Trace.endpos + (vecUp * 4.0f * placementData.fScale);
 	vecTestPos += (vecForward * 8.0f * placementData.fScale) + (vecRight * -3.5f * placementData.fScale);
@@ -574,6 +557,7 @@ bool CPropMousetrap::CPhotoPlacementQuery::GetPlacementPosition_NoHelper(Capture
 	{
 		flBestFraction = tr.fraction;
 	}
+	VisualizeTestTrace(tr);
 
 	vecTestPos = placementData.Trace.endpos + (vecUp * 4.0f * placementData.fScale);
 	vecTestPos += (vecForward * -8.0f * placementData.fScale) + (vecRight * 3.5f * placementData.fScale);
@@ -582,6 +566,7 @@ bool CPropMousetrap::CPhotoPlacementQuery::GetPlacementPosition_NoHelper(Capture
 	{
 		flBestFraction = tr.fraction;
 	}
+	VisualizeTestTrace(tr);
 
 	vecTestPos = placementData.Trace.endpos + (vecUp * 4.0f * placementData.fScale);
 	vecTestPos += (vecForward * -8.0f * placementData.fScale) + (vecRight * -3.5f * placementData.fScale);
@@ -590,6 +575,7 @@ bool CPropMousetrap::CPhotoPlacementQuery::GetPlacementPosition_NoHelper(Capture
 	{
 		flBestFraction = tr.fraction;
 	}
+	VisualizeTestTrace(tr);
 
 
 	anglesOut = vec3_angle;
@@ -665,8 +651,6 @@ void CPropMousetrap::CreateTriggers()
 {
 	// Don't stomp handles
 	Assert(!m_hArmTrigger.Get() && !m_hCheeseTrigger.Get());
-
-	m_bArmed = true;
 
 	switch (GetObjectScaleLevel())
 	{

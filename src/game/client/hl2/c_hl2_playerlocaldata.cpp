@@ -35,6 +35,7 @@ BEGIN_RECV_TABLE_NOBASE( C_HL2PlayerLocalData, DT_HL2Local )
 	RecvPropBool(RECVINFO(m_bPlacingPhoto)),
 	RecvPropArray3(RECVINFO_ARRAY(m_bHasPhotoInInventory), RecvPropInt(RECVINFO(m_bHasPhotoInInventory[0]))),
 	RecvPropInt(RECVINFO(m_nSelectedPhoto)),
+	RecvPropInt(RECVINFO(m_bHasInventoryAbility)),
 
 END_RECV_TABLE()
 

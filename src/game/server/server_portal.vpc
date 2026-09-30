@@ -270,9 +270,7 @@ $Project "Server (Portal)"
 
 		}
 
-		$Folder	"Portal"
-		{
-			$Folder "F-stop"
+		$Folder "F-stop"
 			{
 				$File "fstop\func_monopole_field.cpp"
 				$File "fstop\func_placement_clip.cpp"
@@ -309,6 +307,8 @@ $Project "Server (Portal)"
 				$File "fstop\weapon_placement.cpp"
 			}
 
+		$Folder	"Portal"
+		{
 			$File	"$SRCDIR\game\shared\portal\achievements_portal.cpp"
 			$File	"portal\cbaseanimatingprojectile.cpp"
 			$File	"portal\cbaseanimatingprojectile.h"
@@ -382,9 +382,10 @@ $Project "Server (Portal)"
 			$File	"portal\point_laser_target.cpp"
 
 			$File	"portal\prop_floorbutton.cpp"
-			$File	"portal\prop_floorbutton.h"
 			$File	"portal\prop_button.cpp"
 			$File	"portal\prop_button.h"
+			$File	"portal\prop_testchamber_door.cpp"
+			$File	"portal\prop_testchamber_door.h"
 			
 			$File "portal\baseprojector.h"
 			$File "portal\baseprojector.cpp"

@@ -41,7 +41,9 @@ public:
 	virtual bool	HasAnyAmmo( void ) { return true; }
 	virtual void	ItemPostFrame( void );
 	virtual bool	Holster(CBaseHLCombatWeapon*pNextWeapon );
+
 	virtual bool	CanScaleCapturedObjects( void ) const { return m_bCanScaleCapturedObjects; }
+	virtual bool	CanHaveInventory( void ) const { return m_bCanHaveInventory; }
 
 	virtual void	InputSetNumCaptureSlots( inputdata_t& input );
 	virtual void	SetNumCaptureSlots( int iNumCaptureSlots );
@@ -49,8 +51,8 @@ public:
 	virtual void	SetZoomAbility( bool bCanZoom );
 	virtual void	InputSetScaleAbility( inputdata_t& input );
 	virtual void	SetScaleAbility( bool bCanScale );
-	virtual void	SetViewModel(void);
-	virtual	void	OnMouseWheel(int nDirection);
+	virtual void	InputSetInventoryAbility(inputdata_t& input);
+	virtual void	SetInventoryAbility( bool bCanHaveInv );
 	
 	// Our first time picking up the camera causes an "admire" animation to kick off
 	virtual Activity GetDrawActivity( void ) 
@@ -97,6 +99,7 @@ private:
 	bool						m_bInViewfinder;
 	bool						m_bCanZoom;
 	bool						m_bCanScaleCapturedObjects;
+	bool						m_bCanHaveInventory;
 	int							m_nNumCaptureSlots;
 
 	bool						m_bFirstPresentation;	// Whether this is the first time we've been presented to the player

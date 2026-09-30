@@ -816,4 +816,11 @@
 		"wide"					"100"
 		"tall"					"100"
 	}
+
+	CHudControlHelper
+	{
+		"fieldName"				"CHudControlHelper"
+		"visible"				"1"
+		"enabled"				"1"
+	}
 }

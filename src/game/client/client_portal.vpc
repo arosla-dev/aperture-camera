@@ -112,6 +112,18 @@ $Project "Client (Portal)"
 			$File	"hl2\vgui_rootpanel_hl2.cpp"
 		}
 
+		$Folder	"F-stop"
+		{
+			$File    "fstop\aperture_render_targets.cpp"
+			$File    "fstop\aperture_render_targets.h"
+			$File    "fstop\c_item_photo.cpp"
+			$File    "fstop\c_npc_hover_turret.cpp"
+			$File    "fstop\hud_flash.cpp"
+			$File    "fstop\hud_indicator.cpp"
+			$File    "fstop\hud_photo_inventory.cpp"
+			$File    "fstop\hud_viewfinder.cpp"
+		}
+
 		$Folder	"Portal"
 		{
 			
@@ -378,18 +390,6 @@ $Project "Client (Portal)"
 			$File "portal/c_point_paint_detector.cpp"
 			
 			$File	"$SRCDIR\game\shared\portal\trigger_tractorbeam_shared.cpp" // NOTE: Portal 2's Server VPC doesn't have this.
-
-			$Folder    "F-stop"
-			{
-				$File    "fstop\aperture_render_targets.cpp"
-				$File    "fstop\aperture_render_targets.h"
-				$File    "fstop\c_item_photo.cpp"
-				$File    "fstop\c_npc_hover_turret.cpp"
-				$File    "fstop\hud_flash.cpp"
-				$File    "fstop\hud_indicator.cpp"
-				$File    "fstop\hud_photo_inventory.cpp"
-				$File    "fstop\hud_viewfinder.cpp"
-			}
 			
 			$Folder "Paint"
 			{

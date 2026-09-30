@@ -373,7 +373,9 @@ void CPortal_Player::Precache( void )
 
 	PrecacheScriptSound( "NPC_Citizen.die" );
 	PrecacheScriptSound( "Player.JumpPowerUse" );
-	PrecacheScriptSound("PhotoInventory.Erased");
+	PrecacheScriptSound( "PhotoInventory.Erased" );
+	PrecacheScriptSound( "Weapon_Camera.deny" );
+	PrecacheScriptSound( "Weapon_Camera.full" );
 }
 
 void CPortal_Player::CreateSounds()
@@ -460,6 +462,7 @@ void CPortal_Player::GiveAllItems( void )
 	{
 		pCamera->SetZoomAbility(true);
 		pCamera->SetScaleAbility(true);
+		pCamera->SetInventoryAbility(true);
 	}
 }
 
@@ -2580,7 +2583,8 @@ void CPortal_Player::FlashDenyIndicator(float flDuration, unsigned char nType)
 	MessageEnd();
 
 	// Play the denial noise
-	PlayUseDenySound();
+	//PlayUseDenySound();
+	EmitSound("Weapon_Camera.deny");
 }
 
 void CPortal_Player::ControlHelperAnimate(unsigned char nActiveIcon, bool bClear /*= false*/)
@@ -2604,15 +2608,13 @@ void CPortal_Player::FlashInventory(float flDuration, unsigned char nType)
 	UserMessageBegin(user, "InventoryFlash");
 	WRITE_FLOAT(flDuration);
 	WRITE_BYTE(nType);
-	WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[0] );
-	WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[1] );
-	WRITE_BYTE( m_HL2Local.m_bHasPhotoInInventory[2] );
 	MessageEnd();
 
 	if (nType == FLASH_INVENTORY_FULL)
 	{
 		// Play the denial noise
-		PlayUseDenySound();
+		//PlayUseDenySound();
+		EmitSound("Weapon_Camera.full");
 	}
 }
 
@@ -2699,33 +2701,3 @@ void SwitchToPhoto(int nIndex)
 		}
 	}
 }
-
-//------------------------------------------------------------------------------
-// Purpose: 
-//------------------------------------------------------------------------------
-void CC_Select_Photo1(void)
-{
-	SwitchToPhoto( 0 );
-}
-
-static ConCommand select_photo1("select_photo1", CC_Select_Photo1, "Select photograph in slot 1", 0);
-
-//------------------------------------------------------------------------------
-// Purpose: 
-//------------------------------------------------------------------------------
-void CC_Select_Photo2(void)
-{
-	SwitchToPhoto( 1 );
-}
-
-static ConCommand select_photo2("select_photo2", CC_Select_Photo2, "Select photograph in slot 2", 0);
-
-//------------------------------------------------------------------------------
-// Purpose: 
-//------------------------------------------------------------------------------
-void CC_Select_Photo3(void)
-{
-	SwitchToPhoto( 2 );
-}
-
-static ConCommand select_photo3("select_photo3", CC_Select_Photo3, "Select photograph in slot 3", 0);

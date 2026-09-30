@@ -33,7 +33,7 @@ using namespace vgui;
 #define FLASH_INVENTORY_ADDED		2
 #define FLASH_INVENTORY_STRIPPED	3
 
-ConVar cl_force_draw_photo_inventory("cl_force_draw_photo_inventory", "1", FCVAR_CHEAT);
+ConVar cl_force_draw_photo_inventory("cl_force_draw_photo_inventory", "0", FCVAR_CHEAT);
 
 //-----------------------------------------------------------------------------
 // Purpose: Draws the zoom screen
@@ -82,7 +82,8 @@ DECLARE_HUDELEMENT_DEPTH(CHudPhotoInventory, 100);
 DECLARE_HUD_MESSAGE(CHudPhotoInventory, InventoryFlash);
 DECLARE_HUD_MESSAGE(CHudPhotoInventory, TakePhoto);
 
-ConVar cl_camera_use_photos("cl_camera_use_photos", "1", 0, "Use snapshots of objects for spirit camera inventory views");
+// obsolete
+//ConVar cl_camera_use_photos("cl_camera_use_photos", "", 0, "Use snapshots of objects for spirit camera inventory views");
 
 
 const float FADE_IN_DURATION = 0.5f;
@@ -214,7 +215,6 @@ bool CHudPhotoInventory::ShouldDraw(void)
 		return false;
 
 	// We're being told to display
-#if 1
 	if (m_flDisplayTime > (gpGlobals->curtime + 0.1f)) // FIXME: Huh?
 	{
 		return true;
@@ -227,7 +227,6 @@ bool CHudPhotoInventory::ShouldDraw(void)
 	// FIXME: We don't need to be out if the placement mode isn't active at this point
 	if (pPlayer->m_HL2Local.m_bPlacingPhoto)
 		return true;
-#endif // 0
 
 	return true;
 }
@@ -265,6 +264,8 @@ void CHudPhotoInventory::PaintSlot(int nSlot, bool bExists, bool bSelected)
 	float flAnimScale = 0.0f;
 	float flAnimOffsetX = 0.0f;
 	float flAnimOffsetY = 0.0f;
+
+	C_BaseHLPlayer* pPlayer = dynamic_cast<C_BaseHLPlayer*>(C_BasePlayer::GetLocalPlayer());
 
 	switch (m_nFlashType)
 	{
@@ -365,7 +366,8 @@ void CHudPhotoInventory::PaintSlot(int nSlot, bool bExists, bool bSelected)
 
 		surface()->DrawFilledRect(xLeft + nDropHeight, yTop + nDropHeight, xRight + nDropHeight, yBottom + nDropHeight);
 
-		bool bUseCameraPhotos = cl_camera_use_photos.GetBool();
+		//bool bUseCameraPhotos = cl_camera_use_photos.GetBool();
+		bool bUseCameraPhotos = pPlayer->m_HL2Local.m_bHasInventoryAbility;
 
 		if (bSelected)
 		{

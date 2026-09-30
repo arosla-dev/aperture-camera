@@ -147,6 +147,9 @@ public:
 
 bool CBaseEntity::CPhotoPlacementQuery::CheckPlacement( CaptureInfo_t &captureInfo, int iScaleStep, const Vector &vPlacementOrigin, const Vector &vPlacementDirection, const QAngle &qPlacementAngles, Vector &positionOut, QAngle &anglesOut, CInfoPlacementHelper **pHelperOut, ITraceFilter *pTraceFilter )
 {
+	extern CBaseEntity* g_placedEntity;
+	extern Vector g_placedPosition;
+
 	Assert( captureInfo.pPlacementQuery != NULL );
 
 	CTraceFilterHitAll traceFilterHitEverything;
@@ -226,6 +229,12 @@ bool CBaseEntity::CPhotoPlacementQuery::CheckPlacement( CaptureInfo_t &captureIn
 
 	if( pHelperOut )
 		*pHelperOut = placementData.hPlacementHelper.Get();
+
+	if (bSucceeded)
+	{
+		g_placedEntity = placementData.pPlacedEntity;
+		g_placedPosition = placementData.vPlacedPosition;
+	}
 
 	return bSucceeded;
 }

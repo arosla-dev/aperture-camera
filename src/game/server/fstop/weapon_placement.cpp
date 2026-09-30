@@ -632,6 +632,8 @@ void CWeaponPlacement::ItemPostFrame(void)
 	if (pOwner == NULL)
 		return;
 
+	CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (pOwner->Weapon_OwnsThisType("weapon_camera"));
+
 	bool bWeaponActed = false;
 	if (m_flNextPrimaryAttack < gpGlobals->curtime)
 	{
@@ -656,8 +658,6 @@ void CWeaponPlacement::ItemPostFrame(void)
 	{
 		if (pOwner)
 		{
-			CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (pOwner->Weapon_OwnsThisType("weapon_camera"));
-
 			// if they have a weapon camera, it may restrict their ability to scale objects.
 			if (pCamera)
 			{
@@ -697,8 +697,6 @@ void CWeaponPlacement::ItemPostFrame(void)
 	{
 		if (pOwner)
 		{
-			CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (pOwner->Weapon_OwnsThisType("weapon_camera"));
-
 			// if they have a weapon camera, it may restrict their ability to scale objects.
 			if (pCamera)
 			{
@@ -739,6 +737,18 @@ void CWeaponPlacement::ItemPostFrame(void)
 	{
 		if (Photo_Count() == 0)
 			return;
+
+		if (pOwner)
+		{
+			CWeaponCamera* pCamera = dynamic_cast<CWeaponCamera*> (pOwner->Weapon_OwnsThisType("weapon_camera"));
+
+			// if they have a weapon camera, it may restrict their ability to have inventory.
+			if (pCamera)
+			{
+				if (!pCamera->CanHaveInventory())
+					return;
+			}
+		}
 
 		CBasePlayer* pPlayer = UTIL_GetLocalPlayer();
 		if (pPlayer == NULL)

@@ -45,9 +45,11 @@ public:
 	CNetworkVar( Vector, m_vecLocatorOrigin );
 #endif
 
-	CNetworkArray( bool, m_bHasPhotoInInventory, 3 );
-	CNetworkArray(int, m_nLocatorEntityIndices, 16);
+
 	CNetworkVar( int, m_nSelectedPhoto );
+	CNetworkArray( bool, m_bHasPhotoInInventory, 3 );
+	CNetworkVar(bool, m_bHasInventoryAbility);
+	CNetworkArray(int, m_nLocatorEntityIndices, 16);
 	CNetworkVar(bool, m_bPlacingPhoto);
 
 	// Ladder related data

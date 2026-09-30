@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"models/weapons/v_photo/photo_backside01"
+	"$basetexture"	"models/photo_backside01"
 	"$surfaceprop"	"default"
 }

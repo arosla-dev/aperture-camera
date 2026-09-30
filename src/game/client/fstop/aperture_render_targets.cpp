@@ -28,7 +28,7 @@ void CApertureRenderTargets::InitLargePhotoTextures(IMaterialSystem* pMaterialSy
 	}
 }
 
-/*void CApertureRenderTargets::InitSmallPhotoTextures( IMaterialSystem* pMaterialSystem )
+void CApertureRenderTargets::InitSmallPhotoTextures( IMaterialSystem* pMaterialSystem )
 {
 	for( int i = 0; i != ARRAYSIZE( m_SmallPhotoTextures ); ++i )
 	{
@@ -43,7 +43,7 @@ void CApertureRenderTargets::InitLargePhotoTextures(IMaterialSystem* pMaterialSy
 												0,
 												CREATERENDERTARGETFLAGS_HDR ) );
 	}
-}*/
+}
 
 ITexture* CApertureRenderTargets::GetLargePhotoRenderTarget(int iIndex)
 {
@@ -53,13 +53,13 @@ ITexture* CApertureRenderTargets::GetLargePhotoRenderTarget(int iIndex)
 	return m_LargePhotoTextures[iIndex];
 }
 
-/*ITexture *CApertureRenderTargets::GetSmallPhotoRenderTarget( int iIndex )
+ITexture *CApertureRenderTargets::GetSmallPhotoRenderTarget( int iIndex )
 {
 	if( (iIndex < 0) || (iIndex >= ARRAYSIZE( m_SmallPhotoTextures )) )
 		return NULL;
 
 	return m_SmallPhotoTextures[iIndex];
-}*/
+}
 
 
 //-----------------------------------------------------------------------------
@@ -69,9 +69,8 @@ ITexture* CApertureRenderTargets::GetLargePhotoRenderTarget(int iIndex)
 //-----------------------------------------------------------------------------
 void CApertureRenderTargets::InitClientRenderTargets(IMaterialSystem* pMaterialSystem, IMaterialSystemHardwareConfig* pHardwareConfig)
 {
-	Msg("We're happy and aperture_render_targets!");
-	InitLargePhotoTextures(pMaterialSystem);
-	//InitSmallPhotoTextures( pMaterialSystem );
+	InitLargePhotoTextures( pMaterialSystem );
+	InitSmallPhotoTextures( pMaterialSystem );
 
 	BaseClass::InitClientRenderTargets(pMaterialSystem, pHardwareConfig);
 }
@@ -87,10 +86,10 @@ void CApertureRenderTargets::ShutdownClientRenderTargets()
 		m_LargePhotoTextures[i].Shutdown();
 	}
 
-	/*for( int i = 0; i != ARRAYSIZE( m_SmallPhotoTextures ); ++i )
+	for( int i = 0; i != ARRAYSIZE( m_SmallPhotoTextures ); ++i )
 	{
 		m_SmallPhotoTextures[i].Shutdown();
-	}*/
+	}
 
 	BaseClass::ShutdownClientRenderTargets();
 }

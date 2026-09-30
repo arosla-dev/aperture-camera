@@ -7,12 +7,14 @@
 #include "cbase.h"
 #include "props.h"
 #include "triggers.h"
-#include "prop_weighted_cube.h"
+#include "portal/prop_weighted_cube.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
 #define PROP_FLOOR_BUTTON_DEFAULT_MODEL_NAME "models/props/portal_button.mdl"
+
+#define BUTTON_SOUND_PRESSED "sound/buttons/button3.wav"
 
 static const char* s_pszPressingBoxHasSetteledThinkContext = "PressingBoxHasSetteledThinkContext";
 
@@ -80,7 +82,6 @@ public:
 	virtual void UpdateOnRemove(void);
 	void PressingBoxHasSetteledThink(void);
 
-	virtual const char* GetButtonModelName();
 	virtual bool ShouldPlayerTouch();
 	virtual bool OnlyAcceptBall(void) { return false; }
 	virtual bool AcceptsBall(void) { return true; }
@@ -150,10 +151,9 @@ END_SEND_TABLE()
 //-----------------------------------------------------------------------------
 // Purpose: constructor
 //-----------------------------------------------------------------------------
-CPropFloorButton::CPropFloorButton() :
-	m_bButtonState(false) // button is not pressed by default
+CPropFloorButton::CPropFloorButton() : m_bButtonState(false) // button is not pressed by default
 {
-	
+
 }
 
 //-----------------------------------------------------------------------------
@@ -161,7 +161,10 @@ CPropFloorButton::CPropFloorButton() :
 //-----------------------------------------------------------------------------
 void CPropFloorButton::Precache(void)
 {
-	PrecacheModel(GetButtonModelName());
+	PrecacheModel("models/props/portal_button.mdl");
+
+	PrecacheScriptSound("Portal.button_down");
+	PrecacheScriptSound("Portal.button_up");
 
 	BaseClass::Precache();
 }
@@ -171,9 +174,9 @@ void CPropFloorButton::Precache(void)
 //-----------------------------------------------------------------------------
 void CPropFloorButton::Spawn(void)
 {
-	KeyValue("model", GetButtonModelName());
-
 	Precache();
+	SetModel("models/props/portal_button.mdl");
+
 	BaseClass::Spawn();
 
 	SetSolid(SOLID_VPHYSICS);
@@ -182,9 +185,6 @@ void CPropFloorButton::Spawn(void)
 
 	// Start in the up state
 	ResetSequence(m_UpSequence);
-
-	// Ensure the 'off' skin is set
-	SetSkin(button_off_skin);
 
 	//Buttons are unpaintable
 	AddFlag(FL_UNPAINTABLE);
@@ -253,13 +253,6 @@ void CPropFloorButton::AnimateThink(void)
 
 void CPropFloorButton::PressingBoxHasSetteledThink(void)
 {
-	/*
-	if ( gpGlobals->maxClients == 1 && (V_strcmp( gpGlobals->mapname.ToCStr(), "sp_a2_bts1" ) != 0)
-									&& (V_strcmp( gpGlobals->mapname.ToCStr(), "mp_coop_catapult_1" ) != 0) )
-	{
-		UTIL_RecordAchievementEvent( "ACH.BOX_HOLE_IN_ONE" );
-	}
-	*/
 	SetContextThink(NULL, gpGlobals->curtime, s_pszPressingBoxHasSetteledThinkContext);
 }
 
@@ -274,18 +267,6 @@ void CPropFloorButton::UpdateOnRemove(void)
 		m_hButtonTrigger = NULL;
 	}
 	BaseClass::UpdateOnRemove();
-}
-
-
-//-----------------------------------------------------------------------------
-// Purpose: return floor button model name
-//-----------------------------------------------------------------------------
-const char* CPropFloorButton::GetButtonModelName()
-{
-	if (m_ModelName == NULL_STRING)
-		return PROP_FLOOR_BUTTON_DEFAULT_MODEL_NAME;
-
-	return STRING(m_ModelName);
 }
 
 //-----------------------------------------------------------------------------
@@ -304,6 +285,7 @@ void CPropFloorButton::Press(CBaseEntity* pActivator)
 
 	// call the function that fires the OnPressed output
 	OnPressed(pActivator);
+	EmitSound("Portal.button_down");
 }
 
 //-----------------------------------------------------------------------------
@@ -322,6 +304,7 @@ void CPropFloorButton::UnPress(CBaseEntity* pActivator)
 
 	// call the function that fires the OnUnPressed output
 	OnUnPressed(pActivator);
+	EmitSound("Portal.button_up");
 }
 
 void CPropFloorButton::InputPressIn(inputdata_t& inputdata)
@@ -350,7 +333,7 @@ void CPropFloorButton::OnPressed(CBaseEntity* pActivator)
 
 			// HACK: this delay is a guess at how long it takes to be sure the box has setteled... 
 			SetContextThink(&CPropFloorButton::PressingBoxHasSetteledThink, gpGlobals->curtime + 2.0f, s_pszPressingBoxHasSetteledThinkContext);
-			
+
 		}
 	}
 
@@ -362,7 +345,6 @@ void CPropFloorButton::OnPressed(CBaseEntity* pActivator)
 //-----------------------------------------------------------------------------
 void CPropFloorButton::OnUnPressed(CBaseEntity* pActivator)
 {
-
 	SetContextThink(NULL, gpGlobals->curtime, s_pszPressingBoxHasSetteledThinkContext);
 
 	// fire the OnUnPressed output
@@ -442,13 +424,11 @@ CPortalButtonTrigger* CPortalButtonTrigger::Create(const Vector& vecOrigin, cons
 
 void CPortalButtonTrigger::StartTouch(CBaseEntity* pOther)
 {
-
 	BaseClass::StartTouch(pOther);
 }
 
 void CPortalButtonTrigger::EndTouch(CBaseEntity* pOther)
 {
-
 	BaseClass::EndTouch(pOther);
 }
 
@@ -473,7 +453,7 @@ bool CPortalButtonTrigger::PassesTriggerFilters(CBaseEntity* pOther)
 	}
 
 	// did a cube touch me?
-	if (FClassnameIs(pOther, "prop_weighted_cube") && FClassnameIs(pOther, "prop_punt_box"))
+	if (FClassnameIs(pOther, "prop_weighted_cube") || FClassnameIs(pOther, "prop_physics"))
 	{
 		CPropWeightedCube* pCube = static_cast<CPropWeightedCube*>(pOther);
 		bool bIsBall = pCube && pCube->GetCubeType() == CUBE_SPHERE;

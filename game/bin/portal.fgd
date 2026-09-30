@@ -1018,7 +1018,6 @@
 	skin(choices) : "Skin" : 0 =
 	[
 		0 : "Clean"
-		1 : "Shutter-Speed"
 	]
 
 	input Press(void) : "Cause the button to be pressed."
@@ -1032,16 +1031,36 @@
 	output OnButtonReset(void) : "Called when the button has reset after being pressed."
 ]
 
-@PointClass base(Targetname, Parentname, Angles ) studio() = prop_floor_button :
+@PointClass base(Targetname, Parentname, Angles ) studio("models/props/portal_button.mdl") = prop_floor_button :
 "A floor button which is activated by a player or objects."
 [
-	model(studio) : "Button model" : "models/props/portal_button.mdl" : "Button model must have the correct sequences and attachments in order to work as a button."
 	input PressIn(void) : "Activate the button as if it was pressed, sending it to the bottom position."
 	input PressOut(void) : "Unpress the button, sending it to the top position."
 	output OnPressed(void) : "Called when the button has been pressed."
 	output OnPressedBlue(void) : "Called in Coop when the button has been pressed by the Blue player."
 	output OnPressedOrange(void) : "Called in Coop when the button has been pressed by the Orange player."
 	output OnUnPressed(void) : "Called when the button has been unpressed."
+]
+
+@PointClass base(Targetname, Parentname, Angles) studio("models/props/portal_door_combined.mdl") = prop_testchamber_door :
+"Test chamber door entity."
+[
+	lightingorigin(target_destination) : "Lighting Origin" : "" : "Select an info_lighting to specify a location to sample lighting from for all gibs spawned by this shooter, instead of their own origins."
+
+	AreaPortalWindow(target_destination) : "Area Portal Window Name" : "" : "The name of an area portal window that is controlled by the door."
+	UseAreaPortalFade(boolean) : "Fade Area Portal?" : 0 : "If the area portal should use the specified fade distances to fade out."
+	AreaPortalFadeStart(float) : "Fade Start Distance" : 0 : "The distance at which the area portal starts fading out."
+	AreaPortalFadeEnd(float) : "Fade End Distance" : 0 : "The distance at which the area portal turns completely opaque."
+
+	input Open(void) : "Open the door and cause the portal to activate."
+	input Close(void) : "Close the door and cause the portal to deactivate."
+	input Lock(void) : "Locking a door will prevent the Open or Close inputs from doing anything."
+	input Unlock(void) : "If locked, unocking a door will allow the Open or Close inputs to function."
+
+	output OnOpen(void) : "Called when the door has started its open animation."
+	output OnClose(void) : "Called when the door has started its close animation."
+	output OnFullyOpen(void) : "Called when the door has finished its open animation."
+	output OnFullyClosed(void) : "Called when the door has finished its close animation."
 ]
 
 @PointClass base(Targetname, Angles, Parentname) studio("models/editor/axis_helper_thick.mdl") = vgui_neurotoxin_countdown : "Neurotoxin Countdown"
@@ -1651,12 +1670,14 @@ PointClass base(Targetname, Parentname, Angles, Global, Studiomodel, BaseCaptura
 [
 	canzoom(Integer)	:		"Can Zoom"			: 1 : "(Boolean)Can this camera zoom?"
 	canscale(Integer)	:		"Can Scale"			: 1 : "(Boolean)Can this camera scale capture objects?"
+	caninventory(integer)	:	"Can Have Inventory" : 1 : "(boolean)Can this camera have inventory?"
 	captureslots(Integer)	:	"Capture Slots"		: 3 : "How man captured object slots does this camera have?"
 	
 	// inputs
 	input SetNumCaptureSlots(Integer)	: "Set the nuber of capture slots for this camera."
 	input SetZoomAbility(Integer)		: "Set this camera's ability to zoom."
 	input SetScaleAbility(Integer)		: "Set this camera's ability to scale captured objects."
+	input SetInventoryAbility(Integer)	: "Set this camera's ability to have inventory."
 ]
 
 @NPCClass base(TalkNPC,Parentname,BaseCapturable) studio() = npc_android : "Aperture Android"
