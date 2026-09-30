@@ -1485,7 +1485,7 @@
 	output OnClose(void) : "Called when the door has started its close animation."
 ]
 
-PointClass base(Targetname, Parentname, Angles, Global, Studiomodel, BaseCapturable) studioprop() = prop_door_portal : 
+@PointClass base(Targetname, Parentname, Angles, Global, Studiomodel, BaseCapturable) studioprop() = prop_door_portal : 
 "A portal door which allows players to tunnel through walls."
 [	
 	slavename(target_destination) : "Slave Name" : : "The name of any doors that should be slaved to this door (i.e. should open when this one opens, and close when this one closes)."
