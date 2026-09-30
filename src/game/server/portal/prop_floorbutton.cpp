@@ -8,6 +8,7 @@
 #include "props.h"
 #include "triggers.h"
 #include "portal/prop_weighted_cube.h"
+#include "fstop/info_placement_helper.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -87,6 +88,8 @@ public:
 	virtual bool AcceptsBall(void) { return true; }
 	void	SetSkin(int skinNum);
 
+	void CreatePlacementHelper(const Vector& vecOrigin, const QAngle& vecAngles);
+
 private:
 	void OnPressed(CBaseEntity* pActivator);
 	void OnUnPressed(CBaseEntity* pActivator);
@@ -118,6 +121,9 @@ protected:
 	int								m_DownSequence;
 
 	friend class CPortalButtonTrigger;
+
+	EHANDLE m_hHelper;
+	CHandle< CBaseEntity >		m_hInfoTarget;
 };
 
 LINK_ENTITY_TO_CLASS(prop_floor_button, CPropFloorButton);
@@ -191,7 +197,21 @@ void CPropFloorButton::Spawn(void)
 
 	CreateVPhysics();
 
+	// Creating placement helper associated with button
 	CreateTriggers();
+	
+	// Create the helper
+
+	Vector vecForward, vecRight, vecUp;
+	Vector vecOrigin = GetAbsOrigin();
+	GetVectors(&vecForward, &vecRight, &vecUp);
+	
+	vecOrigin = GetAbsOrigin();
+	vecOrigin += vecUp * 0.75f;
+
+	QAngle vecAngles;
+	VectorAngles(vecForward, vecAngles);
+	CreatePlacementHelper(vecOrigin + (vecUp * 42.0f), vecAngles);
 
 	// Never let crucial game components fade out!
 	SetFadeDistance(-1.0f, 0.0f);
@@ -266,6 +286,13 @@ void CPropFloorButton::UpdateOnRemove(void)
 		UTIL_Remove(m_hButtonTrigger);
 		m_hButtonTrigger = NULL;
 	}
+
+	if (m_hHelper)
+	{
+		UTIL_Remove(m_hHelper);
+		m_hHelper = NULL;
+	}
+
 	BaseClass::UpdateOnRemove();
 }
 
@@ -301,6 +328,8 @@ void CPropFloorButton::UnPress(CBaseEntity* pActivator)
 
 	// Change the skin
 	SetSkin(button_off_skin);
+
+	//if (!m_hHelper) { CreatePlacementHelper(); }
 
 	// call the function that fires the OnUnPressed output
 	OnUnPressed(pActivator);
@@ -365,6 +394,27 @@ void CPropFloorButton::CreateTriggers(void)
 
 	// Create the button trigger
 	m_hButtonTrigger = CPortalButtonTrigger::Create(vecOrigin, GetAbsAngles(), vecMins, vecMaxs, this);
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: Create a placement helper
+//-----------------------------------------------------------------------------
+void CPropFloorButton::CreatePlacementHelper(const Vector& vecOrigin, const QAngle& vecAngles)
+{
+	if (m_hHelper)
+	{
+		UTIL_Remove(m_hHelper);
+	}
+
+	m_hHelper = CreateEntityByName("info_placement_helper");
+	m_hHelper->SetAbsOrigin(vecOrigin);
+	m_hHelper->SetAbsAngles(vecAngles);
+	m_hHelper->KeyValue("radius", "24");
+	m_hHelper->KeyValue("target_classname", "prop_weighted_cube");
+	m_hHelper->KeyValue("hide_until_placed", "0");
+	DispatchSpawn(m_hHelper);
+	m_hHelper->Activate();
+	m_hHelper->SetParent(this);
 }
 
 //-----------------------------------------------------------------------------

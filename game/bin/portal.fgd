@@ -10,7 +10,7 @@
 [
 	scalevalue(integer)		: "Scale Value" : 0 : "Number of steps this prop starts scaled up/down from its default size (scale value 0 is default size)."
 
-	canbecaptured(boolean) : "Can Be Captured" : 1 : "OBSOLETE"
+	canbecaptured(boolean) : "Can Be Captured" : 1 : "Can be captured with a camera?"
 
 	//outputs
 	output OnCameraCapture(void) : "Fired when weapon_camera takes this entity out of the world."
