@@ -654,7 +654,7 @@ void CWeaponPlacement::ItemPostFrame(void)
 		}
 	}
 
-	if (pOwner->m_nButtons & IN_GRENADE1)
+	if (pOwner->m_nButtons & IN_GRENADE2)
 	{
 		if (pOwner)
 		{
@@ -679,7 +679,7 @@ void CWeaponPlacement::ItemPostFrame(void)
 			m_nObjectScaleLevel++;
 		}
 
-		m_fNextScaleDelay = gpGlobals->curtime + 0.55f;
+		m_fNextScaleDelay = gpGlobals->curtime + 0.35f;
 
 		// Publish this back to the capture info so that we can cycle through objects and make them retain their sizes
 		m_CaptureInfo.nPreviewScaleLevel = m_nObjectScaleLevel;
@@ -693,7 +693,7 @@ void CWeaponPlacement::ItemPostFrame(void)
 		}
 	}
 
-	if (pOwner->m_nButtons & IN_GRENADE2)
+	if (pOwner->m_nButtons & IN_GRENADE1)
 	{
 		if (pOwner)
 		{
@@ -718,7 +718,7 @@ void CWeaponPlacement::ItemPostFrame(void)
 			m_nObjectScaleLevel--;
 		}
 
-		m_fNextScaleDelay = gpGlobals->curtime + 0.55f;
+		m_fNextScaleDelay = gpGlobals->curtime + 0.35f;
 
 		// Publish this back to the capture info so that we can cycle through objects and make them retain their sizes
 		m_CaptureInfo.nPreviewScaleLevel = m_nObjectScaleLevel;
