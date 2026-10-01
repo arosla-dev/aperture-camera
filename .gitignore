@@ -53,3 +53,4 @@ src/.vs/Game_Deferred-2013/v15/Solution.VC.db-shm
 /src/.vs
 *.vmx
 *.log
+*.prt
