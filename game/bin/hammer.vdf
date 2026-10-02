@@ -8,9 +8,6 @@
 			{
 				"child0"
 				{
-					"AssetSplitter"
-					{
-					}
 				}
 				"child1"
 				{
@@ -18,9 +15,6 @@
 					{
 						"child1"
 						{
-							"ViewsSheet"
-							{
-							}
 						}
 					}
 				}
