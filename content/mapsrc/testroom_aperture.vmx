@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "7397"
-	"mapversion" "360"
+	"mapversion" "365"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -32,12 +32,13 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "360"
+	"mapversion" "365"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
-	"maxblobcount" "250"
+	"maxblobcount" "100"
 	"maxpropscreenwidth" "-1"
+	"paintinmap" "1"
 	"skyname" "sky_hydro_01"
 	solid
 	{
@@ -14321,10 +14322,6 @@ entity
 	"scalevalue" "1"
 	"spawnflags" "516"
 	"targetname" "mouse_trap"
-	connections
-	{
-		"OnCameraRelease" "!selfSnap0-1"
-	}
 	"origin" "-320 0 1"
 	editor
 	{
@@ -27028,32 +27025,6 @@ entity
 }
 entity
 {
-	"id" "19229"
-	"classname" "prop_dynamic"
-	"angles" "0 0 0"
-	"disableshadows" "1"
-	"fademindist" "-1"
-	"fadescale" "1"
-	"MaxAnimTime" "10"
-	"MinAnimTime" "5"
-	"model" "models/items/film_roll.mdl"
-	"modelscale" "1.0"
-	"renderamt" "255"
-	"rendercolor" "255 255 255"
-	"skin" "0"
-	"solid" "0"
-	"targetname" "model_upgrade_inventory"
-	"origin" "-870 64 162"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 3500]"
-	}
-}
-entity
-{
 	"id" "19256"
 	"classname" "prop_dynamic"
 	"angles" "0 0 0"
@@ -27080,23 +27051,6 @@ entity
 }
 entity
 {
-	"id" "19305"
-	"classname" "point_message"
-	"message" "Camera Upgrade: Inventory"
-	"parentname" "model_upgrade_inventory"
-	"radius" "128"
-	"spawnflags" "0"
-	"origin" "-870 64 166"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 14500]"
-	}
-}
-entity
-{
 	"id" "19317"
 	"classname" "point_message"
 	"message" "Camera Upgrade: Scale"
@@ -27110,26 +27064,6 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 14500]"
-	}
-}
-entity
-{
-	"id" "19327"
-	"classname" "logic_relay"
-	"spawnflags" "0"
-	"targetname" "lr_upgrade_camera_inventory"
-	connections
-	{
-		"OnTrigger" "weapon_cameraSetInventoryAbility10-1"
-		"OnTrigger" "lr_upgrade_camera_scaleKillHierarchy0-1"
-	}
-	"origin" "-870 64 204"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 4000]"
 	}
 }
 entity
@@ -27150,117 +27084,6 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 4000]"
-	}
-}
-entity
-{
-	"id" "19402"
-	"classname" "func_button"
-	"disablereceiveshadows" "0"
-	"health" "0"
-	"lip" "0"
-	"locked_sentence" "0"
-	"locked_sound" "0"
-	"movedir" "0 0 0"
-	"origin" "-870 64 170"
-	"renderamt" "255"
-	"rendercolor" "255 255 255"
-	"renderfx" "0"
-	"rendermode" "0"
-	"sounds" "3"
-	"spawnflags" "1025"
-	"speed" "5"
-	"targetname" "button_camera_upgrade_inventory"
-	"unlocked_sentence" "0"
-	"unlocked_sound" "0"
-	"wait" "-1"
-	connections
-	{
-		"OnPressed" "lr_upgrade_camera_zoomTrigger0-1"
-		"OnPressed" "!selfKill0.05-1"
-	}
-	solid
-	{
-		"id" "19387"
-		side
-		{
-			"id" "4325"
-			"plane" "(-878 56 178) (-878 72 178) (-862 72 178)"
-			"material" "TOOLS/TOOLSINVISIBLE"
-			"uaxis" "[1 0 0 -8] 0.25"
-			"vaxis" "[0 -1 0 -32] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "4324"
-			"plane" "(-878 72 162) (-878 56 162) (-862 56 162)"
-			"material" "TOOLS/TOOLSINVISIBLE"
-			"uaxis" "[-1 0 0 8] 0.25"
-			"vaxis" "[0 -1 0 -32] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "4323"
-			"plane" "(-878 56 162) (-878 72 162) (-878 72 178)"
-			"material" "TOOLS/TOOLSINVISIBLE"
-			"uaxis" "[0 -1 0 -32] 0.25"
-			"vaxis" "[0 0 -1 8] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "4322"
-			"plane" "(-862 72 162) (-862 56 162) (-862 56 178)"
-			"material" "TOOLS/TOOLSINVISIBLE"
-			"uaxis" "[0 1 0 32] 0.25"
-			"vaxis" "[0 0 -1 8] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "4321"
-			"plane" "(-878 72 162) (-862 72 162) (-862 72 178)"
-			"material" "TOOLS/TOOLSINVISIBLE"
-			"uaxis" "[-1 0 0 8] 0.25"
-			"vaxis" "[0 0 -1 8] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "4320"
-			"plane" "(-862 56 162) (-878 56 162) (-878 56 178)"
-			"material" "TOOLS/TOOLSINVISIBLE"
-			"uaxis" "[1 0 0 -8] 0.25"
-			"vaxis" "[0 0 -1 8] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		editor
-		{
-			"color" "220 30 220"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 5000]"
 	}
 }
 entity
@@ -30765,13 +30588,187 @@ entity
 		"logicalpos" "[0 0]"
 	}
 }
+entity
+{
+	"id" "29995"
+	"classname" "func_button"
+	"disablereceiveshadows" "0"
+	"health" "0"
+	"lip" "0"
+	"locked_sentence" "0"
+	"locked_sound" "0"
+	"movedir" "0 0 0"
+	"origin" "-870 56 170"
+	"renderamt" "255"
+	"rendercolor" "255 255 255"
+	"renderfx" "0"
+	"rendermode" "0"
+	"sounds" "3"
+	"spawnflags" "1025"
+	"speed" "5"
+	"targetname" "button_camera_upgrade_zoom"
+	"unlocked_sentence" "0"
+	"unlocked_sound" "0"
+	"wait" "-1"
+	connections
+	{
+		"OnPressed" "lr_upgrade_camera_zoomTrigger0-1"
+		"OnPressed" "!selfKill0.05-1"
+	}
+	solid
+	{
+		"id" "29996"
+		side
+		{
+			"id" "5457"
+			"plane" "(-878 48 178) (-878 64 178) (-862 64 178)"
+			"material" "TOOLS/TOOLSINVISIBLE"
+			"uaxis" "[1 0 0 -8] 0.25"
+			"vaxis" "[0 -1 0 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "5456"
+			"plane" "(-878 64 162) (-878 48 162) (-862 48 162)"
+			"material" "TOOLS/TOOLSINVISIBLE"
+			"uaxis" "[-1 0 0 8] 0.25"
+			"vaxis" "[0 -1 0 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "5455"
+			"plane" "(-878 48 162) (-878 64 162) (-878 64 178)"
+			"material" "TOOLS/TOOLSINVISIBLE"
+			"uaxis" "[0 -1 0 0] 0.25"
+			"vaxis" "[0 0 -1 8] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "5454"
+			"plane" "(-862 64 162) (-862 48 162) (-862 48 178)"
+			"material" "TOOLS/TOOLSINVISIBLE"
+			"uaxis" "[0 1 0 0] 0.25"
+			"vaxis" "[0 0 -1 8] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "5453"
+			"plane" "(-878 64 162) (-862 64 162) (-862 64 178)"
+			"material" "TOOLS/TOOLSINVISIBLE"
+			"uaxis" "[-1 0 0 8] 0.25"
+			"vaxis" "[0 0 -1 8] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "5452"
+			"plane" "(-862 48 162) (-878 48 162) (-878 48 178)"
+			"material" "TOOLS/TOOLSINVISIBLE"
+			"uaxis" "[1 0 0 -8] 0.25"
+			"vaxis" "[0 0 -1 8] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "220 30 220"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 5000]"
+	}
+}
+entity
+{
+	"id" "29998"
+	"classname" "point_message"
+	"message" "Camera Upgrade: Zoom"
+	"parentname" "model_upgrade_zoom"
+	"radius" "128"
+	"spawnflags" "0"
+	"origin" "-870 56 166"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 14500]"
+	}
+}
+entity
+{
+	"id" "30000"
+	"classname" "logic_relay"
+	"spawnflags" "0"
+	"targetname" "lr_upgrade_camera_zoom"
+	connections
+	{
+		"OnTrigger" "weapon_cameraSetInventoryAbility10-1"
+		"OnTrigger" "model_upgrade_zoomKillHierarchy0-1"
+	}
+	"origin" "-870 56 204"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 4000]"
+	}
+}
+entity
+{
+	"id" "30035"
+	"classname" "prop_dynamic"
+	"angles" "0 0 0"
+	"disableshadows" "1"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"MaxAnimTime" "10"
+	"MinAnimTime" "5"
+	"model" "models/items/film_roll.mdl"
+	"modelscale" "1.0"
+	"renderamt" "255"
+	"rendercolor" "255 255 255"
+	"skin" "0"
+	"solid" "0"
+	"targetname" "model_upgrade_zoom"
+	"origin" "-870 56 166"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 3500]"
+	}
+}
 cameras
 {
 	"activecamera" "0"
 	camera
 	{
-		"position" "[-19.2116 527.422 294.049]"
-		"look" "[531.52 5731.19 -2721.35]"
+		"position" "[-848.32 57.5833 146.81]"
+		"look" "[-5640 -244.592 3810.64]"
 	}
 }
 cordons
