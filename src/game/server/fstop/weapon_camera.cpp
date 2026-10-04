@@ -1069,34 +1069,6 @@ void CWeaponCamera::ItemPostFrame( void )
 		}
 	}
 
-	float flTargetFOV = pOwner->GetFOV();
-	if (pOwner->m_nButtons & IN_GRENADE1)
-	{
-		if (!m_bCanZoom)
-			return;
-
-		// We can only do this if we're in the viewfinder
-		if (m_bInViewfinder == false)
-			return;
-
-		flTargetFOV -= CAMERA_FOV_INCR;
-		flTargetFOV = clamp(flTargetFOV, CAMERA_FOV_MIN, CAMERA_FOV_MAX);
-		pOwner->SetFOV(this, flTargetFOV, CAMERA_FOV_RATE);
-	}
-	else if (pOwner->m_nButtons & IN_GRENADE2)
-	{
-		if (!m_bCanZoom)
-			return;
-
-		// We can only do this if we're in the viewfinder
-		if (m_bInViewfinder == false)
-			return;
-
-		flTargetFOV += CAMERA_FOV_INCR;
-		flTargetFOV = clamp(flTargetFOV, CAMERA_FOV_MIN, CAMERA_FOV_MAX);
-		pOwner->SetFOV(this, flTargetFOV, CAMERA_FOV_RATE);
-	}
-
 	// Do nothing
 	if ( bWeaponActed == false )
 	{

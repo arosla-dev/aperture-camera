@@ -5546,7 +5546,7 @@ bool CAperturePhotoView::Setup(C_BaseEntity* pTargetEntity, const CViewSetup& vi
 	return true;
 }
 
-ConVar cl_camera_minimal_photos("cl_camera_minimal_photos", "0", 0, "Draw just the targetted entity when taking a camera photo");
+ConVar cl_camera_minimal_photos("cl_camera_minimal_photos", "0", FCVAR_ARCHIVE, "Draw just the targetted entity when taking a camera photo");
 
 
 void AddIClientRenderableToRenderList(IClientRenderable* pRenderable, CClientRenderablesList* pRenderablesList)

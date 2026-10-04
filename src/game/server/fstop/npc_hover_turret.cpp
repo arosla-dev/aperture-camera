@@ -41,6 +41,7 @@
 #include "sprite.h"
 #include "spritetrail.h"
 #include "player_pickup.h"
+#include "photo.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -266,6 +267,9 @@ private:
 
 	COutputEvent	m_OnPhysGunPickup;
 	COutputEvent	m_OnPhysGunDrop;
+
+protected:
+	virtual void OnCaptured(void);
 };
 
 //-----------------------------------------------------------------------------
@@ -1159,3 +1163,12 @@ DEFINE_SCHEDULE
  );
 
 AI_END_CUSTOM_NPC()
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CNPC_HoverTurret::OnCaptured(void)
+{
+	
+	BaseClass::OnCaptured();
+}

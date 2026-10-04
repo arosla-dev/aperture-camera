@@ -404,13 +404,16 @@ void CHL2_Player::Precache( void )
 void CHL2_Player::CheckSuitZoom( void )
 {
 	
-	if ( m_afButtonReleased & IN_ZOOM )
+	if (IsSuitEquipped())
 	{
-		StopZooming();
-	}	
-	else if ( m_afButtonPressed & IN_ZOOM )
-	{
-		StartZooming();
+		if (m_afButtonReleased & IN_ZOOM)
+		{
+			StopZooming();
+		}
+		else if (m_afButtonPressed & IN_ZOOM)
+		{
+			StartZooming();
+		}
 	}
 	
 }

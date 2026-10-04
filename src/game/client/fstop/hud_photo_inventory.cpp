@@ -33,7 +33,7 @@ using namespace vgui;
 #define FLASH_INVENTORY_ADDED		2
 #define FLASH_INVENTORY_STRIPPED	3
 
-ConVar cl_force_draw_photo_inventory("cl_force_draw_photo_inventory", "0", FCVAR_CHEAT);
+ConVar cl_camera_draw_photo_inventory("cl_camera_draw_photo_inventory", "1", FCVAR_ARCHIVE);
 
 //-----------------------------------------------------------------------------
 // Purpose: Draws the zoom screen
@@ -82,8 +82,8 @@ DECLARE_HUDELEMENT_DEPTH(CHudPhotoInventory, 100);
 DECLARE_HUD_MESSAGE(CHudPhotoInventory, InventoryFlash);
 DECLARE_HUD_MESSAGE(CHudPhotoInventory, TakePhoto);
 
-// obsolete
-//ConVar cl_camera_use_photos("cl_camera_use_photos", "", 0, "Use snapshots of objects for spirit camera inventory views");
+
+ConVar cl_camera_use_photos("cl_camera_use_photos", "", 0, "Use snapshots of objects for spirit camera inventory views");
 
 
 const float FADE_IN_DURATION = 0.5f;
@@ -200,7 +200,7 @@ void CHudPhotoInventory::ApplySchemeSettings(vgui::IScheme* scheme)
 //-----------------------------------------------------------------------------
 bool CHudPhotoInventory::ShouldDraw(void)
 {
-	if (!cl_force_draw_photo_inventory.GetBool())
+	if (!cl_camera_draw_photo_inventory.GetBool())
 		return false; // FIXME: This hud element is redundant to the photo being carried 
 
 	C_BaseHLPlayer* pPlayer = dynamic_cast<C_BaseHLPlayer*>(C_BasePlayer::GetLocalPlayer());
@@ -264,8 +264,6 @@ void CHudPhotoInventory::PaintSlot(int nSlot, bool bExists, bool bSelected)
 	float flAnimScale = 0.0f;
 	float flAnimOffsetX = 0.0f;
 	float flAnimOffsetY = 0.0f;
-
-	C_BaseHLPlayer* pPlayer = dynamic_cast<C_BaseHLPlayer*>(C_BasePlayer::GetLocalPlayer());
 
 	switch (m_nFlashType)
 	{
@@ -366,8 +364,8 @@ void CHudPhotoInventory::PaintSlot(int nSlot, bool bExists, bool bSelected)
 
 		surface()->DrawFilledRect(xLeft + nDropHeight, yTop + nDropHeight, xRight + nDropHeight, yBottom + nDropHeight);
 
-		//bool bUseCameraPhotos = cl_camera_use_photos.GetBool();
-		bool bUseCameraPhotos = pPlayer->m_HL2Local.m_bHasInventoryAbility;
+		bool bUseCameraPhotos = cl_camera_use_photos.GetBool();
+		//bool bUseCameraPhotos = pPlayer->m_HL2Local.m_bHasInventoryAbility; //p1llowguy - the fuck
 
 		if (bSelected)
 		{

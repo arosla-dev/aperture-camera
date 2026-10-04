@@ -42,7 +42,7 @@ LINK_ENTITY_TO_CLASS( prop_swap, CPropSwap );
 //-----------------------------------------------------------------------------
 void CPropSwap::Precache( void )
 {
-	PrecacheModel( "models/props/metal_box.mdl" );
+	PrecacheModel( "models/props/reflection_cube.mdl" );
 }
 
 //-----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ void CPropSwap::Spawn( void )
 	Precache();
 
 	//p1llowguy - add model pls!
-	SetModel( "models/props/metal_box.mdl" );
+	SetModel( "models/props/reflection_cube.mdl" );
 
 	SetRenderColor(7, 195, 198);
 
