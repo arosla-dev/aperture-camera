@@ -83,7 +83,7 @@ DECLARE_HUD_MESSAGE(CHudPhotoInventory, InventoryFlash);
 DECLARE_HUD_MESSAGE(CHudPhotoInventory, TakePhoto);
 
 
-ConVar cl_camera_use_photos("cl_camera_use_photos", "", 0, "Use snapshots of objects for spirit camera inventory views");
+ConVar cl_camera_use_photos("cl_camera_use_photos", "1", FCVAR_ARCHIVE, "Use snapshots of objects for spirit camera inventory views");
 
 
 const float FADE_IN_DURATION = 0.5f;
