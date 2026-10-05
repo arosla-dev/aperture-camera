@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "7397"
-	"mapversion" "363"
+	"mapversion" "365"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -32,7 +32,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "363"
+	"mapversion" "365"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -14322,10 +14322,6 @@ entity
 	"scalevalue" "1"
 	"spawnflags" "516"
 	"targetname" "mouse_trap"
-	connections
-	{
-		"OnCameraRelease" "!selfSnap0-1"
-	}
 	"origin" "-320 0 1"
 	editor
 	{
@@ -30708,6 +30704,7 @@ entity
 	"id" "29998"
 	"classname" "point_message"
 	"message" "Camera Upgrade: Zoom"
+	"parentname" "model_upgrade_zoom"
 	"radius" "128"
 	"spawnflags" "0"
 	"origin" "-870 56 166"
@@ -30770,8 +30767,8 @@ cameras
 	"activecamera" "0"
 	camera
 	{
-		"position" "[239.771 36.6644 138.362]"
-		"look" "[1042.84 6022.31 185.531]"
+		"position" "[-848.32 57.5833 146.81]"
+		"look" "[-5640 -244.592 3810.64]"
 	}
 }
 cordons
