@@ -124,6 +124,16 @@ $Project "Client (Portal)"
 			$File    "fstop\hud_viewfinder.cpp"
 		}
 
+		$Folder "EP3"
+		{
+			$File    "ep3\c_gas_pump.cpp"
+			$File    "ep3\c_weapon_flamethrower.cpp"
+			$File    "ep3\c_weapon_icegun.cpp"
+			$File    "ep3\c_weapon_weaponizer.cpp"
+			$File	 "$SRCDIR\game\shared\ep3\weaponizer_shared.h"
+		}
+
+
 		$Folder	"Portal"
 		{
 			

@@ -307,6 +307,31 @@ $Project "Server (Portal)"
 			$File "fstop\weapon_placement.cpp"
 		}
 
+		$Folder "EP3"
+		{
+			$File	"EntityFreezing.cpp"
+			$File	"EntityFreezing.h"
+    		$File    "ep3\gas_pump.cpp"
+    		$File    "ep3\gas_pump.h"
+
+    		$File    "ep3\weapon_flamethrower.cpp"
+    		$File    "ep3\weapon_flamethrower.h"
+    		$File    "ep3\weapon_icegun.cpp"
+    		$File    "ep3\weapon_icegun.h"
+    		$File    "ep3\weapon_teleport.cpp"
+    		$File    "ep3\weapon_teleport.h"
+    		$File    "ep3\weapon_weaponizer.cpp"
+    		$File    "ep3\weapon_weaponizer.h"
+    		$File    "ep3\weaponizer_concrete.cpp"
+    		$File    "ep3\weaponizer_concrete.h"
+   	 		$File    "ep3\weaponizer_liquid.cpp"
+   	 		$File    "ep3\weaponizer_metal.cpp"
+			$File    "ep3\shape_target.cpp"
+   	 		$File    "ep3\shape_target.cpp"
+
+			$File	"$SRCDIR\game\shared\ep3\weaponizer_shared.h"
+		}
+
 		$Folder	"Portal"
 		{
 			$File	"$SRCDIR\game\shared\portal\achievements_portal.cpp"
