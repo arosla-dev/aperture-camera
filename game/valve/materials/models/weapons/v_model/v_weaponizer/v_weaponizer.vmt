@@ -1,0 +1,24 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/weapons/v_model/v_weaponizer/v_weaponizer"
+	"$bumpmap" "models/weapons/v_model/v_weaponizer/v_weaponizer_normal"
+//	"$normalmapalphaenvmapmask " 1
+//	"$basemapalphaphongmask" 1	
+//	"$normalmapalphaphongmask" 1
+	"$alphatest" "1"	
+
+//	"$envmaptint" "[ 1 1 1 ]"
+//	"$envmap" "env_cubemap"
+//	"$envmapcontrast" .95
+//	"$envmapsaturation" 1
+
+	"$phong" "1" //this turns on the phong effect
+//	"$phongexponenttexture" 	"Models/props_mining/antlion_detector_lights_exponent"
+	"$phongexponent"  "50"
+	"$phongboost" ".5" //use this to increase/decrease the highlight intensity 
+	"$phongfresnelranges" "[.5 .5 .5]" //this are the highlight intensities at different incidence angles from the camera (first value is perpendicular to the camera and the 3rd value is away from the camera)
+
+	"$surfaceprop"	"metal"
+
+//	"%keywords" 	"ep2"
+}

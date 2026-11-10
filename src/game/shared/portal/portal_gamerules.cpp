@@ -1289,6 +1289,9 @@ CAmmoDef *GetAmmoDef()
 		def.AddAmmoType("ammo_proto1",			DMG_BULLET,				TRACER_LINE,			0, 0, 10, 0, 0 );
 #endif // HL2_EPISODIC
 
+		def.AddAmmoType("FlechetteProjectile", DMG_BLAST, TRACER_NONE, "sk_plr_dmg_flechette_projectile", "sk_npc_dmg_flechette_projectile", "sk_max_flechette_projectile", 0, 0);
+		def.AddAmmoType("Fuel", DMG_BURN, TRACER_NONE, 0, 0, "sk_max_fuel", 0, 0);
+		def.AddAmmoType("Uranium", DMG_ENERGYBEAM, TRACER_NONE, NULL, NULL, "sk_max_uranium", 0, 0);
 	}
 
 	return &def;

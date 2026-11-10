@@ -18,7 +18,6 @@ STUB_WEAPON_CLASS( weapon_binoculars, WeaponBinoculars, C_BaseHLCombatWeapon );
 STUB_WEAPON_CLASS( weapon_bugbait, WeaponBugBait, C_BaseHLCombatWeapon );
 STUB_WEAPON_CLASS( weapon_flaregun, Flaregun, C_BaseHLCombatWeapon );
 STUB_WEAPON_CLASS( weapon_annabelle, WeaponAnnabelle, C_BaseHLCombatWeapon );
-STUB_WEAPON_CLASS( weapon_gauss, WeaponGaussGun, C_BaseHLCombatWeapon );
 STUB_WEAPON_CLASS( weapon_cubemap, WeaponCubemap, C_BaseCombatWeapon );
 STUB_WEAPON_CLASS( weapon_alyxgun, WeaponAlyxGun, C_HLSelectFireMachineGun );
 STUB_WEAPON_CLASS( weapon_citizenpackage, WeaponCitizenPackage, C_BaseHLCombatWeapon );
@@ -39,3 +38,9 @@ STUB_WEAPON_CLASS( weapon_hopwire, WeaponHopwire, C_BaseHLCombatWeapon );
 STUB_WEAPON_CLASS(weapon_camera, WeaponCamera, C_BaseHLCombatWeapon);
 STUB_WEAPON_CLASS(weapon_placement, WeaponPlacement, C_BaseHLCombatWeapon);
 
+STUB_WEAPON_CLASS(weapon_teleport, WeaponTeleport, C_BaseHLCombatWeapon);
+STUB_WEAPON_CLASS(weapon_egon, WeaponEgon, C_BaseHLCombatWeapon);
+STUB_WEAPON_CLASS(weapon_flechettegun, WeaponFlechetteGun, C_HLSelectFireMachineGun);
+STUB_WEAPON_CLASS(weapon_gauss, WeaponGauss, C_BaseHLCombatWeapon);
+STUB_WEAPON_CLASS(weapon_icegun, WeaponIcegun, C_BaseHLCombatWeapon);
+STUB_WEAPON_CLASS(weapon_pipebomblauncher, WeaponPipeBombLauncher, C_HLSelectFireMachineGun);
