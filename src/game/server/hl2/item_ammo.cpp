@@ -589,6 +589,39 @@ public:
 
 LINK_ENTITY_TO_CLASS( item_ammo_ar2_altfire, CItem_AR2AltFireRound );
 
+// ========================================================================
+// Uranium Ammo
+// ========================================================================
+class CItem_Uranium_Ammo : public CItem
+{
+public:
+	DECLARE_CLASS(CItem_Uranium_Ammo, CItem);
+
+	void Spawn(void)
+	{
+		Precache();
+		SetModel("models/items/battery.mdl");
+		BaseClass::Spawn();
+	}
+	void Precache(void)
+	{
+		PrecacheModel("models/items/battery.mdl");
+	}
+	bool MyTouch(CBasePlayer* pPlayer)
+	{
+		if (ITEM_GiveAmmo(pPlayer, SIZE_AMMO_URANIUM, "Uranium"))
+		{
+			if (g_pGameRules->ItemShouldRespawn(this) == GR_ITEM_RESPAWN_NO)
+			{
+				UTIL_Remove(this);
+			}
+			return true;
+		}
+		return false;
+	}
+};
+LINK_ENTITY_TO_CLASS(item_ammo_uranium, CItem_Uranium_Ammo);
+
 // ==================================================================
 // Ammo crate which will supply infinite ammo of the specified type
 // ==================================================================
