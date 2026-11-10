@@ -439,6 +439,18 @@ void CPortal_Player::GiveAllItems( void )
 
 	GiveNamedItem( "weapon_bugbait" );
 
+	GiveNamedItem( "weapon_icegun" );
+	GiveNamedItem( "weapon_weaponizer" );
+	GiveNamedItem( "weapon_teleport" );
+	GiveNamedItem( "weapon_pipebomblauncher" );
+	GiveNamedItem( "weapon_flechettegun" );
+	GiveNamedItem( "weapon_flamethrower" );
+	GiveNamedItem( "weapon_egon" );
+	GiveNamedItem( "weapon_gauss" );
+
+	CBasePlayer::GiveAmmo(999, "Fuel");
+	CBasePlayer::GiveAmmo(100, "Uranium");
+
 	//GiveNamedItem( "weapon_physcannon" );
 	CWeaponPortalgun *pPortalGun = static_cast<CWeaponPortalgun*>( GiveNamedItem( "weapon_portalgun" ) );
 

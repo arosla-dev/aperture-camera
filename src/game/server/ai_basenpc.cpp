@@ -80,9 +80,7 @@
 #include "eventlist.h"
 #include "globalstate.h"
 #include "physics_prop_ragdoll.h"
-#if defined( INFESTED_DLL )
 #include "physics_prop_statue.h"
-#endif
 #include "vphysics/friction.h"
 #include "physics_npc_solver.h"
 #include "death_pose.h"

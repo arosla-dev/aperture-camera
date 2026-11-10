@@ -627,7 +627,7 @@ void CWeaponTeleport::RemoveFiredProjectile( CBaseEntity *pProjectile )
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-static const char *TELEPORT_PROJECTILE_MODEL = "models/props_combine/teleporter_item.mdl";
+static const char* TELEPORT_PROJECTILE_MODEL = "models/weapons/w_grenade.mdl";//"models/props_combine/teleporter_item.mdl"; theaperturecat models
 static const char *TELEPORT_PROJECTILE_SPRITE = "striderbuster_trail";
 
 static const char *s_szTeleportProjectileBubbles = "TeleportProjectileBubbles";

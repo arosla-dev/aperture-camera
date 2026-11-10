@@ -49,7 +49,7 @@
 #include "EntityFlame.h"
 #include "triggers.h"
 #include "explode.h"
-#include "ep3\weaponizer_shared.h"
+#include "weaponizer_shared.h"
 	
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"

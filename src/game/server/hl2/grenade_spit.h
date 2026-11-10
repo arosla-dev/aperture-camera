@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+﻿//========= Copyright � 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose:		Projectile shot by bullsquid 
 //
@@ -29,30 +29,32 @@ enum SpitSize_e
 
 class CGrenadeSpit : public CBaseGrenade
 {
-	DECLARE_CLASS( CGrenadeSpit, CBaseGrenade );
+	DECLARE_CLASS(CGrenadeSpit, CBaseGrenade);
 
 public:
-						CGrenadeSpit( void );
+	CGrenadeSpit(void);
 
-	virtual void		Spawn( void );
-	virtual void		Precache( void );
-	virtual void		Event_Killed( const CTakeDamageInfo &info );
+	virtual void		Spawn(void);
+	virtual void		Precache(void);
+	virtual void		Event_Killed(const CTakeDamageInfo& info);
 
-	virtual	unsigned int	PhysicsSolidMaskForEntity( void ) const { return ( BaseClass::PhysicsSolidMaskForEntity() | CONTENTS_WATER ); }
+	virtual	unsigned int	PhysicsSolidMaskForEntity(void) const { return (BaseClass::PhysicsSolidMaskForEntity() | CONTENTS_WATER) & (~CONTENTS_GRATE); }
 
-	void 				GrenadeSpitTouch( CBaseEntity *pOther );
-	void				SetSpitSize( int nSize );
-	void				Detonate( void );
-	void				Think( void );
+	void 				GrenadeSpitTouch(CBaseEntity* pOther);
+	void				SetSpitSize(int nSize);
+	void				Detonate(void);
+	void				Think(void);
+	void				SpitDoesPoisonDamage(bool bEnable);
 
 private:
 	DECLARE_DATADESC();
-	
-	void	InitHissSound( void );
-	
+
+	void	InitHissSound(void);
+
 	CHandle< CParticleSystem >	m_hSpitEffect;
-	CSoundPatch		*m_pHissSound;
+	CSoundPatch* m_pHissSound;
 	bool			m_bPlaySound;
+	bool			m_bSpitDoesPoisonDamage;
 };
 
 #endif	//GRENADESPIT_H

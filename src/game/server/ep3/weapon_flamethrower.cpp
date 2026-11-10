@@ -18,7 +18,7 @@
 #include "particle_parse.h"
 #include "in_buttons.h"
 #include "eventqueue.h"
-#include "ep3\weaponizer_shared.h"
+#include "weaponizer_shared.h"
 #include "saverestore_utlvector.h"
 #include "collisionutils.h"
 

@@ -24,6 +24,7 @@
 #include "c_portal_player.h"
 #else
 #include "portal_player.h"
+#include "ep3/weapon_icegun.h"
 #endif
 #endif
 
@@ -3855,6 +3856,18 @@ void CGameMovement::CategorizePosition( void )
 		// Try and move down.
 		TryTouchGround( bumpOrigin, point, GetPlayerMins(), GetPlayerMaxs(), MASK_PLAYERSOLID, COLLISION_GROUP_PLAYER_MOVEMENT, pm );
 		
+		// Was on ground, but now suddenly am not.  If we hit a steep plane, we are not on ground
+		
+
+#ifndef CLIENT_DLL
+		float flStandableZ = 0.7;
+
+		if (Icegun_IsPlayerIceSurfing())
+		{
+			flStandableZ = 0;
+		}
+#endif
+
 		// Was on ground, but now suddenly am not.  If we hit a steep plane, we are not on ground
 		if ( !pm.m_pEnt || pm.plane.normal[2] < 0.7 )
 		{

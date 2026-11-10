@@ -347,7 +347,7 @@ void CWeaponPipeBombLauncher::Operator_ForceNPCFire( CBaseCombatCharacter *pOper
 //-----------------------------------------------------------------------------
 void CWeaponPipeBombLauncher::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator )
 {
-	switch( pEvent->event )
+	switch( pEvent->Event() )
 	{
 	case EVENT_WEAPON_SMG1:
 		{

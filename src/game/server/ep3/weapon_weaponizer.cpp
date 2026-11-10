@@ -55,7 +55,7 @@
 #include "weaponizer_concrete.h"
 #include "explode.h"
 #include "npc_antlion.h"
-#include "ep3/weaponizer_shared.h"
+#include "weaponizer_shared.h"
 
 // IDBS: temp code, piggyback CShapeTarget off the weaponizer
 #include "shape_target.h"
@@ -341,6 +341,8 @@ public:
 
 	void InputPlayLeakSound( inputdata_t &inputdata );
 
+	virtual int GetWeaponizerMaterialType(void) { return WEAPONIZER_MATERIAL_TYPE_EXPLOSIVE; };
+
 private:
 
 	CSoundPatch *m_pLiquidLoop;
@@ -384,6 +386,14 @@ class CFuncWeaponizerFire : public CTriggerMultiple
 public:
 
 	//DECLARE_DATADESC();
+
+	virtual int GetWeaponizerMaterialType()
+	{
+		if ( m_bDisabled == false )
+			return WEAPONIZER_MATERIAL_TYPE_FIRE;
+	
+		return WEAPONIZER_MATERIAL_TYPE_NONE;
+	}
 
 private:
 
@@ -5896,6 +5906,8 @@ void CWeaponWeaponizer::UTIL_WeaponizerTraceLine( const Vector &vecAbsStart, con
 //-----------------------------------------------------------------------------
 WeaponizerMaterialTypes_t CWeaponWeaponizer::GetWeaponizerMaterialType( CBaseEntity *pEntity )
 {
+	
+
 	//-----------------------------------------------------------------------------
 	// CBaseAnimating
 	//{
@@ -5993,6 +6005,8 @@ WeaponizerMaterialTypes_t CWeaponWeaponizer::GetWeaponizerMaterialType( CBaseEnt
 	//
 	//	return WEAPONIZER_MATERIAL_TYPE_NONE;
 	//}
+
+	return (WeaponizerMaterialTypes_t)pEntity->GetWeaponizerMaterialType();
 
 	return WEAPONIZER_MATERIAL_TYPE_NONE;
 }

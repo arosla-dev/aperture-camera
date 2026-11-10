@@ -50,7 +50,7 @@
 #include "triggers.h"
 #include "weaponizer_concrete.h"
 #include "dt_utlvector_send.h"
-#include "ep3\weaponizer_shared.h"
+#include "weaponizer_shared.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -302,7 +302,6 @@ void CFlak_ShootFlak( CBaseEntity *pOwner )
 }*/
 
 void SetMassAmmoModifier( CBaseEntity *pEntity, int iModifier );
-
 void CFlak_ShootFlak( CBaseEntity *pOwner, int iModifier )
 {
 	CBasePlayer *pPlayer = ToBasePlayer( pOwner );

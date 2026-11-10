@@ -15,7 +15,7 @@
 #include "c_physicsprop.h"
 #include "dt_utlvector_recv.h"
 #include "props_shared.h"
-#include "ep3\weaponizer_shared.h"
+#include "weaponizer_shared.h"
 
 
 // HACK: needs to be shared

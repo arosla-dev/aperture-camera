@@ -54,6 +54,11 @@ public:
 
 	}
 
+	void setInteractionRadius(float flNearbyDistance)
+	{
+		setCacheParams(flNearbyDistance,0);
+	}
+
 	PhysParticleCache* getParticleCache()
 	{
 		return m_pParticleCache;

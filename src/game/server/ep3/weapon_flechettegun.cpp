@@ -327,7 +327,7 @@ void CWeaponFlechetteGun::Operator_ForceNPCFire( CBaseCombatCharacter *pOperator
 //-----------------------------------------------------------------------------
 void CWeaponFlechetteGun::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator )
 {
-	switch( pEvent->event )
+	switch( pEvent->Event() )
 	{
 	case EVENT_WEAPON_SMG1:
 		{
@@ -539,7 +539,6 @@ const WeaponProficiencyInfo_t *CWeaponFlechetteGun::GetProficiencyValues()
 
 void CWeaponFlechetteGun::FireBullets( const FireBulletsInfo_t &info )
 {
-	extern void ShootFlechettes( Vector vOrigin, QAngle angles, CBaseEntity *pOwner );
 	extern void ShootFlechetteProjectiles( Vector vOrigin, QAngle angles, CBaseEntity *pOwner, CBaseEntity *pGun );
 
 	CBasePlayer *pPlayer = ToBasePlayer( GetOwner() );
@@ -582,10 +581,7 @@ void CWeaponFlechetteGun::FireBullets( const FireBulletsInfo_t &info )
 
 			qAngDirection.x -= sk_flechettegun_projectiles_arc.GetFloat(); // arc incline
 
-			if ( sk_flechettegun_projectiles.GetInt() )
-				ShootFlechetteProjectiles( info.m_vecSrc, qAngDirection, pPlayer, this );
-			else
-				ShootFlechettes( info.m_vecSrc, qAngDirection, pPlayer );
+			ShootFlechetteProjectiles( info.m_vecSrc, qAngDirection, pPlayer, this );
 
 			-- numShotsRemaining;
 			-- m_iBurstSize;

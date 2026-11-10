@@ -381,6 +381,14 @@ private:
 public:
 	bool CanSkipAnimation( void );
 
+	virtual int GetWeaponizerMaterialType()
+	{
+		if (IsOnFire())
+			return WEAPONIZER_MATERIAL_TYPE_FIRE;
+
+		return BaseClass::GetWeaponizerMaterialType();
+	}
+
 	public:
 		void SetObjectScaleLevel(int nScaleLevel) { m_nObjectScaleLevel = nScaleLevel; }
 		int GetObjectScaleLevel(void) { return m_nObjectScaleLevel; }

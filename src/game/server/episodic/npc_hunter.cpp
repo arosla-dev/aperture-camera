@@ -64,6 +64,7 @@
 #include "monstermaker.h"
 #include "weapon_rpg.h"
 
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -361,6 +362,8 @@ protected:
 	bool CreateSprites( bool bBright );
 
 	void FlechetteTouch( CBaseEntity *pOther );
+
+	virtual int	GetWeaponizerMaterialType(void) { return WEAPONIZER_MATERIAL_TYPE_CONCRETE; };
 
 	Vector m_vecShootPosition;
 	EHANDLE m_hSeekTarget;

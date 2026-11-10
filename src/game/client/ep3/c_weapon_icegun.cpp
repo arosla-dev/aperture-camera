@@ -25,6 +25,8 @@ private:
 public:
 	C_IceSculpture( void );
 
+	virtual IClientModelRenderable* GetClientModelRenderable() { return NULL; }//ported from blob, without this ice is broken
+
 	virtual void			Activate( void );
 
 	virtual const QAngle&	GetRenderAngles( void );

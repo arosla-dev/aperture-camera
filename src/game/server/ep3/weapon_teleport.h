@@ -8,8 +8,9 @@
 #ifndef EP3_WEAPON_TELEPORT_H
 #define EP3_WEAPON_TELEPORT_H
 
-extern void ShootTeleportProjectile(Vector vOrigin, QAngle angles, CBaseEntity* pOwner, CBaseEntity* pGun);
-extern CBaseEntity* ShootTeleportProjectileNPC(Vector vOrigin, Vector vTossVelocity, CBaseEntity* pOwner);
+extern void ShootTeleportProjectile( Vector vOrigin, QAngle angles, CBaseEntity *pOwner, CBaseEntity *pGun );
+extern CBaseEntity *ShootTeleportProjectileNPC( Vector vOrigin, Vector vTossVelocity, CBaseEntity *pOwner );
 
-#endif
 
+
+#endif // EP3_WEAPON_TELEPORT_H

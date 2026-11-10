@@ -9,6 +9,10 @@
 #include "utlrbtree.h"
 #include "hl2_shareddefs.h"
 
+#if !defined( CLIENT_DLL )
+#include "ep3/weapon_icegun.h"
+#endif // !CLIENT_DLL
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -1141,7 +1145,6 @@ bool CHL2GameMovement::CanAccelerate()
 
 	return true;
 }
-
 
 #ifndef PORTAL	// Portal inherits from this but needs to declare it's own global interface
 	// Expose our interface.

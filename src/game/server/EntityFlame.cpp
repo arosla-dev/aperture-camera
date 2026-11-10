@@ -121,7 +121,8 @@ void CEntityFlame::Spawn()
 	//Send to the client even though we don't have a model
 	AddEFlags( EFL_FORCE_CHECK_TRANSMIT );
 
-
+	m_iDangerSound = CSoundEnt::InsertSound(SOUND_DANGER | SOUND_CONTEXT_FROM_FIRE | SOUND_CONTEXT_FOLLOW_OWNER,
+		GetAbsOrigin(), m_flSize * 2.0f, FLT_MAX, this);
 }
 							    
 

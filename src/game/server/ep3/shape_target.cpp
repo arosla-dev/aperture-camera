@@ -16,9 +16,8 @@
 #include "hl2_player.h"
 
 #include "shape_target.h"
-//#include "ep3/npc_blob.h"
+#include "ep3/npc_blob.h"
 
-#include "ai_basenpc.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -797,7 +796,7 @@ void CShapeTarget::GetShapeEdgeList( CUtlVector<ShapeEdge_t> &edgeList, bool bCo
 //-----------------------------------------------------------------------------
 void CShapeTarget::StartTouch( CBaseEntity *pOther )
 {
-	//CNPC_Blob *pBlob = dynamic_cast<CNPC_Blob *>( pOther );
+	CNPC_Blob *pBlob = dynamic_cast<CNPC_Blob *>( pOther );
 
 	// Ignore touches while m_bPendingAction is set
 	if ( !m_bPendingThink && !IsMarkedForDeletion() )
@@ -808,6 +807,26 @@ void CShapeTarget::StartTouch( CBaseEntity *pOther )
 
 			if ( m_bInFlight )
 			{
+				// This target is in flight, not yet active
+				if ( pBlob )
+				{
+					if ( !m_bRepel )
+					{
+						if ( pBlob->HasShapeTarget( this ) )
+						{
+							// The blob's already following this shape, so stop it
+							pBlob->RemoveShapeTarget( this );
+						}
+						else if ( m_nShapeSize > 1 )
+						{
+							// Attract the touched blob to this target's shape
+							bool bDontClearExistingTargets = false;
+							pBlob->AddShapeTarget( this, bDontClearExistingTargets );
+						}
+					}
+					UTIL_Remove( this );
+				}
+				else
 				{
 					// FIXME: this doesn't work (the target stops moving even if we early-out from here...)
 					/*if ( shaper_line_of_sight.GetBool() )
@@ -860,6 +879,13 @@ void CShapeTarget::StartTouch( CBaseEntity *pOther )
 					}
 				}
 			}
+		}
+		else if ( pBlob && !m_bRepel )
+		{
+			// Active shape target
+
+			// Accidental touch (deliberate touch is fired by the blob on reaching its goal)
+			m_OnStartTouchByBlob.FireOutput( pBlob, this );
 		}
 	}
 }

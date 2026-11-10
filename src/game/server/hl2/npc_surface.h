@@ -31,7 +31,7 @@ class CNPC_Surface;
 class CNPC_Surface;
 
 #include "../common/blobulator/physics/physparticle.h"
-#include "../common/blobulator/physics/physparticlecache_inl.h"
+//#include "../common/blobulator/physics/physparticlecache_inl.h"
 #include "../common/blobulator/physics/phystiler.h"
 
 

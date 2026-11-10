@@ -937,7 +937,9 @@ void CAI_TrackPather::SelectNewDestTarget()
 	if ( !m_bPatrolling )
 		return;
 
-
+	Vector targetPos;
+	bool bTargetPosValid = GetTrackPatherTarget(&targetPos);
+	float flAvoidSq = m_flAvoidDistance * m_flAvoidDistance;
 
 	// NOTE: This version is bugged, but I didn't want to make the fix
 	// here for fear of breaking a lot of maps late in the day.
@@ -987,6 +989,15 @@ void CAI_TrackPather::SelectNewDestTarget()
 
 			pNextTrack->Visit();
 
+			if (bTargetPosValid && ShouldUseAvoidanceWhenTracking())
+			{
+				Vector posTrackPt = pNextTrack->GetAbsOrigin();
+				if ((posTrackPt - targetPos).Length2DSqr() < flAvoidSq)
+				{
+					// can't go there
+					break;
+				}
+			}
 			m_pDestPathTarget = pNextTrack;
 
 		}

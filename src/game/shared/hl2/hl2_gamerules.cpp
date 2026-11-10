@@ -120,7 +120,6 @@ ConVar	sk_npc_dmg_smg1			( "sk_npc_dmg_smg1","0", FCVAR_REPLICATED);
 ConVar	sk_max_smg1				( "sk_max_smg1","0", FCVAR_REPLICATED);
 
 ConVar	sk_max_water			( "sk_max_water","0", FCVAR_REPLICATED);
-ConVar	sk_max_fuel				( "sk_max_fuel","0", FCVAR_REPLICATED);
 
 // FIXME: remove these
 //ConVar	sk_plr_dmg_flare_round	( "sk_plr_dmg_flare_round","0", FCVAR_REPLICATED);
@@ -150,6 +149,8 @@ ConVar	sk_max_sniper_round		( "sk_max_sniper_round","0", FCVAR_REPLICATED);
 ConVar	sk_plr_dmg_grenade		( "sk_plr_dmg_grenade","0", FCVAR_REPLICATED);
 ConVar	sk_npc_dmg_grenade		( "sk_npc_dmg_grenade","0", FCVAR_REPLICATED);
 ConVar	sk_max_grenade			( "sk_max_grenade","0", FCVAR_REPLICATED);
+
+ConVar	sk_max_fuel				( "sk_max_fuel", "999", FCVAR_REPLICATED);
 
 #ifdef HL2_EPISODIC
 ConVar	sk_max_hopwire			( "sk_max_hopwire", "3", FCVAR_REPLICATED);
@@ -183,6 +184,11 @@ ConVar	sk_max_gauss_round		( "sk_max_gauss_round", "0", FCVAR_REPLICATED );
 // Gunship & Dropship cannons
 ConVar	sk_npc_dmg_gunship			( "sk_npc_dmg_gunship", "0", FCVAR_REPLICATED );
 ConVar	sk_npc_dmg_gunship_to_plr	( "sk_npc_dmg_gunship_to_plr", "0", FCVAR_REPLICATED );
+
+ConVar sk_plr_dmg_gauss("sk_plr_dmg_gauss", "0", FCVAR_REPLICATED);
+ConVar sk_plr_dmg_egon_narrow("sk_plr_dmg_egon_narrow", "0", FCVAR_REPLICATED);
+ConVar sk_plr_dmg_egon_wide("sk_plr_dmg_egon_wide", "0", FCVAR_REPLICATED);
+ConVar sk_max_uranium("sk_max_uranium", "0", FCVAR_REPLICATED);
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -1504,6 +1510,19 @@ bool CHalfLife2::ShouldCollide( int collisionGroup0, int collisionGroup1 )
 	if ( collisionGroup0 == COLLISION_GROUP_PLAYER_MOVEMENT && collisionGroup1 == HL2COLLISION_GROUP_SPIT )
 		return false;
 
+	if (collisionGroup1 == HL2COLLISION_GROUP_FUEL && collisionGroup0 != HL2COLLISION_GROUP_FIRE)
+		return false;
+
+	if (collisionGroup1 == HL2COLLISION_GROUP_FIRE)
+	{
+		if (collisionGroup0 == COLLISION_GROUP_WEAPON ||
+			collisionGroup0 == COLLISION_GROUP_PROJECTILE ||
+			collisionGroup0 == HL2COLLISION_GROUP_FIRE)
+		{
+			return false;
+		}
+	}
+
 	// HL2 treats movement and tracing against players the same, so just remap here
 	if ( collisionGroup0 == COLLISION_GROUP_PLAYER_MOVEMENT )
 	{
@@ -1552,6 +1571,12 @@ bool CHalfLife2::ShouldCollide( int collisionGroup0, int collisionGroup1 )
 	}
 
 	if (collisionGroup0 == HL2COLLISION_GROUP_HOUNDEYE && collisionGroup1 == HL2COLLISION_GROUP_HOUNDEYE )
+		return false;
+
+	if (collisionGroup0 == HL2COLLISION_GROUP_BLOB && collisionGroup1 == HL2COLLISION_GROUP_BLOB_TINY)
+		return false;
+
+	if (collisionGroup0 == HL2COLLISION_GROUP_BLOB_TINY && collisionGroup1 == HL2COLLISION_GROUP_BLOB_TINY)
 		return false;
 
 	if (collisionGroup0 == HL2COLLISION_GROUP_HOMING_MISSILE && collisionGroup1 == HL2COLLISION_GROUP_HOMING_MISSILE )

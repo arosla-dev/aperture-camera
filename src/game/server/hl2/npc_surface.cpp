@@ -86,6 +86,8 @@ ConVar	sv_surface_nearby( "surface_nearby", "3", 0, "acceptable distance (N * ra
 ConVar	sv_surface_scale( "surface_scale", "0.5" );
 ConVar	sv_surface_radius_multiplier( "surface_radius_multiplier", "1", 0, "Multiplies each surface sphere's radius on spawn" );
 
+ConVar	sv_surface_radius("surface_radius", "6.5", 0, "Radius of each sphere");//theaperturecat
+
 
 ConVar	sv_lj_strength( "lj_strength", "1", 0 );
 

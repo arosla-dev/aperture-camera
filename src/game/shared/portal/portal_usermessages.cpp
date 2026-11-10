@@ -68,4 +68,8 @@ void RegisterUserMessages()
 	usermessages->Register("ControlHelperAnimate", 2);
 	usermessages->Register("TakePhoto", sizeof(long) + sizeof(uint8));
 	usermessages->Register("Flash", sizeof(float) + sizeof(Vector));
+
+	usermessages->Register("Splatter", 1);
+	usermessages->Register("AcidSplash", 8);
+	usermessages->Register("SplatterClear", -1);
 }

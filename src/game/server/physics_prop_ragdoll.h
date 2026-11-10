@@ -118,6 +118,8 @@ private:
 
 	bool				m_bStartDisabled;
 
+	virtual int GetWeaponizerMaterialType();
+
 	CNetworkArray( Vector, m_ragPos, RAGDOLL_MAX_ELEMENTS );
 	CNetworkArray( QAngle, m_ragAngles, RAGDOLL_MAX_ELEMENTS );
 

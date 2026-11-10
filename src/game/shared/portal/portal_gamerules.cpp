@@ -1288,6 +1288,7 @@ CAmmoDef *GetAmmoDef()
 		def.AddAmmoType("CombineHeavyCannon",	DMG_BULLET,				TRACER_LINE,			40,	40, NULL, 1.5 * 750 * 12, AMMO_FORCE_DROP_IF_CARRIED ); // hit like a 100 kg weight at 750 ft/s
 		def.AddAmmoType("ammo_proto1",			DMG_BULLET,				TRACER_LINE,			0, 0, 10, 0, 0 );
 #endif // HL2_EPISODIC
+
 	}
 
 	return &def;
